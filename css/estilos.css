@@ -290,6 +290,7 @@ body {
 /* ==========================================
    BANNER MARQUEE
    ========================================== */
+   
 .marquee-banner {
     background-color: #8C1C2D;
     color: #FFFFFF;
@@ -321,94 +322,85 @@ body {
 /* ==========================================
    SECCIÓN DE MÓDULOS
    ========================================== */
-.modules-section {
+   /* Contenedor de la cuadrícula de módulos */
+.modulos-carrusel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem 1rem;
-    text-align: center;
-}
-
-.section-title {
-    font-size: 2rem;
-    font-weight: 900;
-    color: #8C1C2D;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-}
-
-.modules-container {
-    position: relative;
-    padding: 0 2rem;
-}
-
-.modules-grid {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 1.5rem;
-}
-
-@media (min-width: 576px) {
-    .modules-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (min-width: 992px) {
-    .modules-grid {
-        grid-template-columns: repeat(5, 1fr);
-    }
-}
-
-.module-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #FFFFFF;
     padding: 1rem;
+}
+
+/* Tarjeta individual del módulo */
+.modulo-card {
+    display: block;
+    background-color: #FFFFFF;
     border-radius: 1rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid rgba(140, 28, 45, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
 }
 
-.module-img {
-    height: 180px;
+.modulo-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(140, 28, 45, 0.15);
+}
+
+/* Contenedor de la imagen de cada módulo para que mantenga tamaño pequeño */
+.modulo-img-wrap {
     width: 100%;
-    object-fit: cover;
-    border-radius: 0.75rem;
+    height: 160px;
+    overflow: hidden;
+    background-color: #fce7ec;
 }
 
-.module-title {
+.modulo-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Texto dentro de la tarjeta */
+.modulo-info {
+    padding: 1rem;
+}
+
+.modulo-num {
+    font-size: 0.75rem;
+    text-transform: uppercase;
     font-weight: 700;
     color: #8C1C2D;
-    margin-top: 0.75rem;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.modulo-info h4 {
     font-size: 0.95rem;
+    font-weight: 700;
+    color: #1F2937;
+    line-height: 1.3;
+}
+.modulo-card {
+    display: block;
+    background-color: #FFFFFF;
+    border-radius: 1rem;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid rgba(140, 28, 45, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
 }
 
-.module-desc {
-    font-size: 0.75rem;
-    color: #4B5563;
-    margin-top: 0.25rem;
+.modulo-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(140, 28, 45, 0.15);
 }
 
-.carousel-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    background-color: rgba(255,255,255,0.9);
-    border: none;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    color: #8C1C2D;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.prev-btn { left: 0; }
-.next-btn { right: 0; }
 
 /* ==========================================
    BENEFICIOS DE COMPRA
@@ -624,7 +616,7 @@ body {
     padding: 2rem 1rem;
     border-top: 1px solid rgba(140, 28, 45, 0.2);
     color: #8C1C2D;
-    font-size: 0.8rem;
+    font-size: 0.9rem; /* <- Aumentado de 0.8rem a 0.9rem para mejor lectura */
 }
 
 .footer-grid {
@@ -643,8 +635,10 @@ body {
 .footer-col-links a {
     color: #8C1C2D;
     text-decoration: none;
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.4rem;
     display: inline-block;
+    font-size: 0.95rem; /* <- Enlaces con mejor presencia visual */
+    font-weight: 600;
 }
 
 .footer-col-links a:hover {
@@ -664,6 +658,7 @@ body {
 .form-title {
     font-weight: 700;
     margin-bottom: 0.75rem;
+    font-size: 0.95rem;
 }
 
 .footer-form {
@@ -681,9 +676,9 @@ body {
 .form-input {
     background-color: #FCE7EC;
     border: 1px solid rgba(140, 28, 45, 0.4);
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1rem;
     border-radius: 9999px;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     width: 100%;
     outline: none;
     color: #1F2937;
@@ -697,7 +692,7 @@ body {
     margin-top: 0.5rem;
     font-weight: 700;
     color: #047857;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
 }
 
 .hidden {
@@ -718,7 +713,7 @@ body {
     display: flex;
     justify-content: center;
     gap: 1rem;
-    font-size: 1.1rem;
+    font-size: 1.2rem; /* <- Iconos ligeramente más grandes y proporcionados */
     margin-top: 0.5rem;
 }
 
