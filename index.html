@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make It Yourself - Curso de Automaquillaje Desde Cero</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Estilos CSS Personalizados -->
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body class="bg-pink-custom text-gray-800">
+
+    <!-- HEADER / NAVBAR -->
+    <header class="navbar">
+        <div class="logo-container">
+            <span class="logo-sub">Make It</span>
+            <span class="logo-main">YOURSELF</span>
+        </div>
+
+        <nav class="nav-links" id="navLinks">
+    <!-- Si estás en index.html, este enlace te lleva directo al catálogo -->
+    <a href="cursos.html#modulos">Módulos</a>
+    <a href="cursos.html#probar" class="highlight-link">¡Probar Clase!</a>
+    <a href="index.html#testimonios">Testimonios</a>
+    <a href="index.html#aliados">Aliados</a>
+    <a href="index.html#faq">Ayuda</a>
+</nav>
+
+        <a href="#inscripcion" class="btn-primary">Inscribirme</a>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+        <div class="hero-grid">
+            
+            <!-- Columna Izquierda: Propuesta de valor -->
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    ¡Aprende a<br>
+                    <span class="hero-subtitle-hand">Maquillarte!</span>
+                </h1>
+                
+                <p class="hero-tagline">
+                    Y realza tu belleza todos los días
+                </p>
+
+                <!-- Tarjeta de Precio -->
+                <div class="price-card">
+                    <p class="price-regular">Precio Regular: $129.000 COP</p>
+                    <div class="price-current">
+                        $89.000 COP
+                    </div>
+                    <span class="price-badge">
+                        Oferta de Lanzamiento por Tiempo Limitado
+                    </span>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Imagen e Insignias -->
+            <div class="hero-image-container">
+                <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&q=80&w=800" alt="Modelo Maquillaje" class="hero-img">
+                
+                <!-- Insignias flotantes -->
+                <div class="floating-badges">
+                    <div class="badge-item">
+                        <i class="fa-solid fa-clock"></i>
+                        <span>A tu propio ritmo</span>
+                    </div>
+                    <div class="badge-item">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span>Compra inteligente</span>
+                    </div>
+                    <div class="badge-item">
+                        <i class="fa-solid fa-award"></i>
+                        <span>Certificado Digital</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- BANNER CONTINUO / MARQUEE -->
+    <div class="marquee-banner">
+        <div class="marquee-track">
+            <span>¡Aprende a tu ritmo!</span>
+            <span>•</span>
+            <span>¡Aprende a tu ritmo!</span>
+            <span>•</span>
+            <span>¡Aprende a tu ritmo!</span>
+            <span>•</span>
+            <span>¡Aprende a tu ritmo!</span>
+        </div>
+    </div>
+
+    <!-- SECCIÓN DE MÓDULOS -->
+    <section id="modulos" class="modules-section">
+        <h2 class="section-title">Nuestros Módulos Destacados</h2>
+        <div class="modules-container">
+            <button class="carousel-btn prev-btn" id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="modules-grid" id="modulesGrid">
+                <!-- Los módulos se cargan dinámicamente con JavaScript -->
+            </div>
+            <button class="carousel-btn next-btn" id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+
+        <div class="mt-8" id="probar">
+            <a href="#inscripcion" class="btn-secondary">
+                ¡Ver Clase de Prueba Gratis!
+            </a>
+        </div>
+    </section>
+
+    <!-- SECCIÓN DE BENEFICIOS DE COMPRA -->
+    <section class="benefits-section">
+        <h2 class="section-title text-burgundy mb-6">
+            ¡Ahorra en tus insumos de práctica!
+        </h2>
+
+        <div class="benefits-card">
+            <div class="benefit-col">
+                <h3>Ahorra en tus productos</h3>
+                <div class="benefit-icon-bg">
+                    <i class="fa-solid fa-piggy-bank"></i>
+                </div>
+                <p>
+                    Recibe recomendaciones de tiendas físicas locales donde podrás comprar lo que realmente necesitas.
+                </p>
+            </div>
+
+            <div class="benefit-col">
+                <h3>Beneficios exclusivos</h3>
+                <div class="benefit-icon-bg">
+                    <i class="fa-solid fa-percent"></i>
+                </div>
+                <p>
+                    Accede a promociones conjuntas especiales creadas para nuestras estudiantes.
+                </p>
+            </div>
+
+            <div class="benefit-col">
+                <h3>Compra inteligente</h3>
+                <div class="benefit-icon-bg">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </div>
+                <p>
+                    Aprende a elegir tus bases, correctores y sombras sin malgastar tu dinero.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUIÉNES SOMOS -->
+    <section id="aliados" class="about-section">
+        <div class="about-card">
+            <h2 class="section-title font-handwriting text-5xl mb-4">¿Quiénes Somos?</h2>
+            <p class="about-text">
+                <strong>Make It Yourself</strong> nació para romper el mito de que maquillarse es difícil o costoso. Somos una comunidad creada por apasionadas del diseño y la belleza para que aprendas desde cero, sin tecnicismos y con total confianza en ti misma. ¡Queremos acompañarte en cada paso de tu evolución!
+            </p>
+        </div>
+    </section>
+
+    <!-- SECCIÓN GALERÍA DE ESTUDIANTES / TESTIMONIOS -->
+    <section id="testimonios" class="testimonials-section">
+        <h2 class="section-title font-handwriting text-5xl mb-8">
+            GALERÍA DE ESTUDIANTES
+        </h2>
+
+        <div class="testimonials-wrapper">
+            <div class="testimonials-grid" id="testimonialsGrid">
+                <!-- Testimonios renderizados desde JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- PREGUNTAS FRECUENTES (FAQ) -->
+    <section id="faq" class="faq-section">
+        <h2 class="section-title text-burgundy mb-6">Preguntas Frecuentes</h2>
+        <div class="faq-container" id="faqContainer">
+            <!-- FAQ dinámico desde JavaScript -->
+        </div>
+    </section>
+
+    <!-- FOOTER / FORMULARIO QUIERO MÁS INFORMACIÓN -->
+    <footer id="inscripcion" class="footer-section">
+        <div class="footer-grid">
+            
+            <div class="footer-col-links">
+                <a href="#modulos" class="font-bold underline block mb-2">Nosotros</a>
+                <a href="#modulos" class="block">Módulos</a>
+                <a href="#testimonios" class="block">Testimonios</a>
+                <a href="#aliados" class="block">Aliados</a>
+                <a href="#faq" class="block">Ayuda</a>
+            </div>
+
+            <!-- Formulario Quiero Más Información -->
+            <div class="footer-col-form">
+                <p class="form-title"><i class="fa-regular fa-envelope"></i> ¿Quieres recibir más información y novedades?</p>
+                <form id="infoForm" class="footer-form">
+                    <input type="text" id="nombreInput" placeholder="*Nombre y Apellidos" required class="form-input">
+                    <input type="email" id="emailInput" placeholder="*E-mail" required class="form-input">
+                    <button type="submit" class="btn-primary">
+                        QUIERO MÁS INFORMACIÓN
+                    </button>
+                </form>
+                <div id="formSuccess" class="form-success-msg hidden">¡Gracias! Te contactaremos muy pronto con más detalles.</div>
+            </div>
+
+            <!-- Contacto & Redes -->
+            <div class="footer-col-contact">
+                <p class="font-bold mb-1">Contacto</p>
+                <p>info@makeit.yourself</p>
+                <p>304 351 7678</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="#"><i class="fa-regular fa-envelope"></i></a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Archivo JavaScript -->
+    <script src="js/index.js"></script>
+</body>
+</html>

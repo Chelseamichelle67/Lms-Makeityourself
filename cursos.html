@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make It Yourself - Catálogo de Cursos</title>
+    <!-- Google Fonts: Montserrat y Caveat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+    <!-- HEADER / NAVBAR -->
+    <header class="site-header">
+        <div class="header-container">
+            <!-- LOGO CLICKEABLE QUE LLEVA AL INDEX -->
+            <a href="index.html" class="logo-link">
+                <div class="logo-container">
+                    <span class="logo-sub">Make It</span>
+                    <span class="logo-main">YOURSELF</span>
+                </div>
+            </a>
+
+            <nav class="nav-links">
+        
+                <a href="cursos.html" class="nav-active">Módulos</a>
+                <a href="index.html#prueba">¡Probar Clase!</a>
+                <a href="index.html#testimonios">Testimonios</a>
+                <a href="index.html#aliados">Aliados</a>
+                <a href="index.html#ayuda">Ayuda</a>
+            </nav>
+
+            <a href="#inscripcion" class="btn-inscribirme-header">Inscribirme</a>
+        </div>
+    </header>
+
+    <!-- HERO / BANNER DE CURSOS (ESTILO IMAGEN) -->
+    <section class="hero-cursos-section">
+        <div class="hero-content-wrapper">
+            <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=900&q=85" alt="Pinceladas de maquillaje" class="hero-banner-art" style="max-height: 180px; object-fit: cover; border-radius: 1rem;">
+            
+            <div class="hero-text-container" style="margin-top: 1rem;">
+                <p class="hero-top-title">¡Explora nuestros</p>
+                <h1 class="hero-main-title">CURSOS!</h1>
+            </div>
+            
+            <!-- Insignias flotantes derechas -->
+            <div class="floating-badges-right">
+                <div class="badge-circle">
+                    <i class="fa-solid fa-clock"></i>
+                    <span>A tu ritmo</span>
+                </div>
+                <div class="badge-circle">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Compra inteligente</span>
+                </div>
+                <div class="badge-circle">
+                    <i class="fa-solid fa-award"></i>
+                    <span>Certificado Digital</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FILTROS DE CATEGORÍA -->
+    <section class="categorias-section">
+        <div class="categorias-scroll" id="filtrosContenedor">
+            <button class="filtro-pill active" data-categoria="todos">Todos</button>
+            <button class="filtro-pill" data-categoria="Automaquillaje Básico">Automaquillaje Básico</button>
+            <button class="filtro-pill" data-categoria="Técnicas Específicas (Ojos / Rostro)">Técnicas Específicas (Ojos / Rostro)</button>
+            <button class="filtro-pill" data-categoria="Cuidado de Piel & Productos">Cuidado de Piel & Productos</button>
+            <button class="filtro-pill" data-categoria="Cursos Completos con Certificado">Cursos Completos con Certificado</button>
+        </div>
+    </section>
+
+    <!-- LISTADO DE CURSOS -->
+    <main class="catalogo-main">
+        <div class="cursos-grid" id="cursosGrid">
+            <!-- Renderizado dinámico con JavaScript -->
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer id="inscripcion" class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-col-links">
+                <a href="index.html" class="footer-link-bold">Nosotros</a>
+                <a href="cursos.html">Módulos</a>
+                <a href="index.html#testimonios">Testimonios</a>
+                <a href="index.html#aliados">Aliados</a>
+                <a href="index.html#ayuda">Ayuda</a>
+            </div>
+
+            <div class="footer-col-form">
+                <p class="form-label"><i class="fa-regular fa-envelope"></i> ¿Quieres recibir nuestras novedades?</p>
+                <form class="footer-form" onsubmit="event.preventDefault(); alert('¡Suscripción exitosa!');">
+                    <input type="text" placeholder="*Nombre y Apellidos" required class="footer-input">
+                    <input type="email" placeholder="*E-mail" required class="footer-input">
+                    <button type="submit" class="footer-btn-sub">INSCRIBIRME</button>
+                </form>
+            </div>
+
+            <div class="footer-col-contact">
+                <p class="footer-contact-title">Contacto</p>
+                <p>info@makeit.yourself</p>
+                <p>304 351 7678</p>
+                <div class="footer-socials">
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="#"><i class="fa-regular fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT JS -->
+    <script src="js/cursos.js"></script>
+</body>
+</html>

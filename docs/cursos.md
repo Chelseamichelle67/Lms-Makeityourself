@@ -73,29 +73,20 @@ El precio busca ofrecer una alternativa accesible frente a las clases presencial
 * Combinación de colores.
 * Aplicación de sombras paso a paso.
 * Técnicas básicas de difuminado.
-
-#### Módulo 6: Delineado y pestañas
-
 * Diferentes tipos de delineado.
 * Cómo realizar un delineado sencillo.
 * Aplicación de máscara de pestañas.
 * Introducción a la aplicación de pestañas postizas.
 
-#### Módulo 7: Labios
+#### Módulo 6: Labios
 
 * Preparación de los labios.
 * Diferentes formas de aplicar el labial.
 * Uso de delineador de labios.
 * Combinación de tonos.
 
-#### Módulo 8: Looks de maquillaje
 
-* Maquillaje sencillo para el día a día.
-* Maquillaje para una salida o evento.
-* Combinación de diferentes técnicas.
-* Creación de un look completo paso a paso.
-
-#### Módulo 9: Práctica final
+#### Módulo 7: Práctica final
 
 * Realización de un maquillaje completo.
 * Aplicación de las técnicas aprendidas.
@@ -163,7 +154,7 @@ También se proporcionarán materiales digitales de apoyo, como:
 | **Público**               | Jóvenes de 16 a 25 años, con alcance hasta los 30                                                          |
 | **Precio regular**        | $129.000 COP                                                                                               |
 | **Precio de lanzamiento** | $89.000 COP                                                                                                |
-| **Módulos**               | 9                                                                                                          |
+| **Módulos**               | 7                                                                                                          |
 | **Lecciones**             | Aproximadamente 25                                                                                         |
 | **Duración**              | 5 a 6 horas                                                                                                |
 | **Modalidad**             | Virtual y a propio ritmo                                                                                   |
