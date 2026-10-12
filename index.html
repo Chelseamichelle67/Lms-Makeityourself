@@ -1,274 +1,866 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Make It Yourself - Curso de Automaquillaje Desde Cero</title>
+    <title>Make It Yourself - Academia de Maquillaje Profesional</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wine: {
+                            50: '#fcf2f4',
+                            100: '#f8e4e7',
+                            200: '#f1c8ce',
+                            300: '#e5a1ab',
+                            500: '#a3283c',
+                            700: '#721422',
+                            900: '#520e18'
+                        },
+                        blush: {
+                            100: '#fbe9eb',
+                            200: '#f5d5d8',
+                            500: '#e08a95',
+                            600: '#cc6a77'
+                        },
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- FontAwesome icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Estilos CSS Personalizados -->
-    <link rel="stylesheet" href="css/estilos.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fcf2f4;
+            color: #2d1519;
+            overflow-x: hidden;
+        }
+        .serif-font {
+            font-family: 'Playfair Display', serif;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: 200%;
+            animation: marquee 25s linear infinite;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(163, 40, 60, 0.15);
+        }
+        .custom-gradient {
+            background: linear-gradient(135deg, #721422 0%, #a3283c 50%, #520e18 100%);
+        }
+    </style>
 </head>
-<body class="bg-pink-custom text-gray-800">
-
-    <!-- HEADER / NAVBAR -->
-    <header class="navbar">
-        <div class="logo-container">
-            <span class="logo-sub">Make It</span>
-            <span class="logo-main">YOURSELF</span>
+<body class="bg-wine-50 antialiased selection:bg-wine-500 selection:text-white">
+    <!-- Header / Navbar Superior Horizontal -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-wine-100 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+           
+            <!-- Logo Marca Exacto -->
+            <a href="index.html" class="flex flex-col group text-left">
+                <span class="text-[10px] sm:text-xs font-semibold tracking-widest text-wine-500 uppercase font-sans">Make It</span>
+                <span class="text-xl sm:text-2xl font-bold tracking-tight text-wine-700 font-serif -mt-1 group-hover:text-wine-900 transition-colors">YOURSELF</span>
+            </a>
+            <!-- Enlaces de Navegación Conectados -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-700">
+                <a href="cursos.html" class="hover:text-wine-700 transition-colors">Módulos</a>
+                <a href="#clase-gratis" class="hover:text-wine-700 transition-colors flex items-center gap-1.5 text-wine-700 font-semibold">
+                    <i class="fa-solid fa-play text-xs bg-wine-100 p-1 rounded-full"></i> ¡Probar Clase!
+                </a>
+                <a href="#nosotros" class="hover:text-wine-700 transition-colors">Nosotros</a>
+                <a href="#galeria" class="hover:text-wine-700 transition-colors">Galería</a>
+                <a href="#testimonios" class="hover:text-wine-700 transition-colors">Testimonios</a>
+                <a href="#faq" class="hover:text-wine-700 transition-colors">Ayuda</a>
+            </nav>
+            <!-- CTA Botón Inscribirme y Menú Móvil -->
+            <div class="flex items-center space-x-4">
+                <a href="#inscripcion" class="hidden sm:inline-flex items-center justify-center px-6 py-2.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transform hover:-translate-y-0.5 transition-all">
+                    Inscribirme
+                </a>
+                <button id="menu-btn" aria-label="Abrir menú de navegación" class="md:hidden text-wine-700 focus:outline-none p-2 rounded-lg hover:bg-wine-100 transition-colors">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+            </div>
         </div>
-
-        <nav class="nav-links" id="navLinks">
-    <!-- Si estás en index.html, este enlace te lleva directo al catálogo -->
-    <a href="cursos.html">Módulos</a>
-    <a href="cursos.html#probar" class="highlight-link">¡Probar Clase!</a>
-    <a href="index.html#testimonios">Testimonios</a>
-    <a href="index.html#aliados">Aliados</a>
-    <a href="index.html#faq">Ayuda</a>
-</nav>
-
-        <a href="#inscripcion" class="btn-primary">Inscribirme</a>
+        <!-- Menú Desplegable Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-wine-100 px-6 py-4 space-y-3 shadow-lg">
+            <a href="cursos.html" class="block text-gray-700 font-medium py-1 hover:text-wine-700">Módulos</a>
+            <a href="#clase-gratis" class="block text-wine-700 font-semibold py-1">¡Probar Clase!</a>
+            <a href="#nosotros" class="block text-gray-700 font-medium py-1 hover:text-wine-700">Nosotros</a>
+            <a href="#galeria" class="block text-gray-700 font-medium py-1 hover:text-wine-700">Galería</a>
+            <a href="#testimonios" class="block text-gray-700 font-medium py-1 hover:text-wine-700">Testimonios</a>
+            <a href="#faq" class="block text-gray-700 font-medium py-1 hover:text-wine-700">Ayuda</a>
+            <div class="pt-2 border-t border-gray-100">
+                <a href="#inscripcion" class="block w-full text-center py-2.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md">
+                    Inscribirme
+                </a>
+            </div>
+        </div>
     </header>
 
-    <!-- HERO SECTION -->
-    <section class="hero-section">
-        <div class="hero-grid">
-            
-            <!-- Columna Izquierda: Propuesta de valor -->
-            <div class="hero-content">
-                <h1 class="hero-title">
-                    ¡Aprende a<br>
-                    <span class="hero-subtitle-hand">Maquillarte!</span>
-                </h1>
-                
-                <p class="hero-tagline">
-                    Y realza tu belleza todos los días
-                </p>
-
-                <!-- Tarjeta de Precio -->
-                <div class="price-card">
-                    <p class="price-regular">Precio Regular: $129.000 COP</p>
-                    <div class="price-current">
-                        $89.000 COP
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden bg-gradient-to-b from-wine-100/60 via-wine-50 to-white">
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-blush-200/40 blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 rounded-full bg-wine-500/10 blur-3xl pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+               
+                <!-- Columna de Texto Principal -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 bg-white px-4 py-1.5 rounded-full shadow-sm border border-wine-200 text-xs sm:text-sm font-medium text-wine-700">
+                        <i class="fa-solid fa-wand-magic-sparkles text-gold-500"></i>
+                        <span>Método Profesional de Maquillaje Autodidacta</span>
                     </div>
-                    <span class="price-badge">
-                        Oferta de Lanzamiento por Tiempo Limitado
-                    </span>
-                </div>
-            </div>
-
-            <!-- Columna Derecha: Imagen e Insignias -->
-            <div class="hero-image-container">
-                <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&q=80&w=800" alt="Modelo Maquillaje" class="hero-img">
-                
-                <!-- Insignias flotantes -->
-                <div class="floating-badges">
-                    <div class="badge-item">
-                        <i class="fa-solid fa-clock"></i>
-                        <span>A tu propio ritmo</span>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-wine-900 serif-font tracking-tight leading-tight">
+                        Domina el arte de maquillarte <span class="text-wine-500 italic">como una experta</span>
+                    </h1>
+                    <p class="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto lg:mx-0">
+                        Aprende técnicas profesionales adaptadas a tu tipo de rostro, ahorra dinero en productos innecesarios y resalta tu belleza natural en tiempo récord con lecciones prácticas guiadas paso a paso.
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#inscripcion" class="w-full sm:w-auto px-8 py-4 rounded-full text-base font-semibold text-white custom-gradient shadow-xl hover:shadow-wine-500/30 transform hover:-translate-y-1 transition-all text-center">
+                            ¡Comenzar Ahora!
+                        </a>
+                        <a href="#clase-gratis" class="w-full sm:w-auto px-8 py-4 rounded-full text-base font-semibold text-wine-700 bg-white border-2 border-wine-300 hover:bg-wine-50 shadow-sm transition-all text-center flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-play text-wine-500"></i> Ver Clase de Prueba
+                        </a>
                     </div>
-                    <div class="badge-item">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        <span>Compra inteligente</span>
-                    </div>
-                    <div class="badge-item">
-                        <i class="fa-solid fa-award"></i>
-                        <span>Certificado Digital</span>
+                    <!-- Estadísticas Rápidas -->
+                    <div class="grid grid-cols-3 gap-4 pt-8 border-t border-wine-200 max-w-lg mx-auto lg:mx-0">
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-bold text-wine-900 serif-font">+5.000</p>
+                            <p class="text-xs text-gray-500 font-medium">Alumnas Graduadas</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-bold text-wine-900 serif-font">4.9/5</p>
+                            <p class="text-xs text-gray-500 font-medium">Calificación Promedio</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-bold text-wine-900 serif-font">100%</p>
+                            <p class="text-xs text-gray-500 font-medium">Práctico y Garantizado</p>
+                        </div>
                     </div>
                 </div>
+                <!-- Imagen Hero & Tarjeta de Precio Flotante -->
+                <div class="lg:col-span-5 relative flex justify-center">
+                    <div class="relative w-full max-w-md">
+                       
+                        <!-- IMAGEN HERO PRINCIPAL -->
+                        <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-wine-200 aspect-[4/5]">
+                            <img src="https://i.pinimg.com/736x/24/25/35/242535a6c1b8c6f682a3874b3cec805e.jpg" alt="Modelo de maquillaje profesional Make It Yourself" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700" onerror="this.src='https://placehold.co/600x750/721422/ffffff?text=Maquillaje+Profesional'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-wine-900/60 via-transparent to-transparent"></div>
+                        </div>
+                        <!-- Insignia Flotante -->
+                        <div class="absolute -top-6 -left-6 bg-white/95 backdrop-blur-md px-4 py-3 rounded-2xl shadow-xl border border-wine-100 flex items-center space-x-3 animate-bounce duration-1000">
+                            <div class="w-10 h-10 rounded-full bg-gold-400/20 flex items-center justify-center text-gold-600 font-bold">
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 font-medium">Reseña Verificada</p>
+                                <p class="text-sm font-bold text-wine-900">"¡El mejor curso online!"</p>
+                            </div>
+                        </div>
+                        <!-- Tarjeta de Precio Flotante -->
+                        <div class="absolute -bottom-8 -right-4 sm:-right-8 bg-white/95 backdrop-blur-md p-5 rounded-3xl shadow-2xl border border-wine-200 max-w-[240px]">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="bg-wine-100 text-wine-700 text-[10px] uppercase font-bold px-2.5 py-0.5 rounded-full">Acceso Inmediato</span>
+                                <span class="text-xs text-gray-400 line-through">190.000 COP</span>
+                            </div>
+                            <p class="text-xs text-gray-500 font-medium">Inversión Única</p>
+                            <p class="text-2xl sm:text-3xl font-extrabold text-wine-900 font-serif my-1">89.000 <span class="text-sm font-sans font-normal text-gray-600">COP</span></p>
+                            <a href="#inscripcion" class="block w-full text-center py-2 px-4 rounded-xl text-xs font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-opacity">
+                                Asegurar Mi Cupo
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-
         </div>
     </section>
 
-    <!-- BANNER CONTINUO / MARQUEE -->
-    <div class="marquee-banner">
-        <div class="marquee-track">
-            <span>¡Aprende a tu ritmo!</span>
-            <span>•</span>
-            <span>¡Aprende a tu ritmo!</span>
-            <span>•</span>
-            <span>¡Aprende a tu ritmo!</span>
-            <span>•</span>
-            <span>¡Aprende a tu ritmo!</span>
+    <!-- Marquee Infinito -->
+    <div class="bg-wine-700 py-4 overflow-hidden text-white shadow-inner">
+        <div class="animate-marquee whitespace-nowrap flex items-center space-x-12 text-sm sm:text-base font-semibold tracking-wider uppercase">
+            <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-gold-400 text-xs"></i> Piel Radiante sin Excesos</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-gold-400 text-xs"></i> Técnicas de Visagismo</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-gold-400 text-xs"></i> Ojos de Alta Definición</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-gold-400 text-xs"></i> Cuidado y Selección de Insumos</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-gold-400 text-xs"></i> Piel Radiante sin Excesos</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-gold-400 text-xs"></i> Técnicas de Visagismo</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-gold-400 text-xs"></i> Ojos de Alta Definición</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-gold-400 text-xs"></i> Cuidado y Selección de Insumos</span>
         </div>
     </div>
 
-    <!-- SECCIÓN DE MÓDULOS -->
-    <div class="modulos-carrusel">
-    <!-- MÓDULO 1 -->
-    <a href="curso.html" class="modulo-card">
-        <div class="modulo-img-wrap">
-            <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=600&q=80" alt="Preparación de Piel">
-        </div>
-        <div class="modulo-info">
-            <span class="modulo-num">Módulo 1</span>
-            <h4>Preparación de piel y elección de productos</h4>
-        </div>
-    </a>
+    <!-- Sección de 5 Módulos de Maquillaje -->
+    <section id="modulos" class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+           
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest">Plan de Estudio Profesional</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font mt-2">Los 5 Módulos del Método Make It Yourself</h2>
+                <p class="text-gray-600 mt-3">Haz clic en cualquier módulo para ir a su clase explicativa.</p>
+            </div>
+            <!-- Grid de Módulos (Conectados a curso.html) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+               
+                <!-- Módulo 1 -->
+                <a href="curso.html?mod=1" class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm hover:shadow-xl hover:border-wine-300 transition-all group flex flex-col justify-between block">
+                    <div>
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="https://i.pinimg.com/736x/0c/ca/ef/0ccaef8a34d24ecf4cb8e95c198fe3cf.jpg" alt="Preparación de Piel y Skincare" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+1+Skincare'">
+                            <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full">Módulo 01</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-wine-900 mb-2 serif-font">Preparación de Piel y Skincare</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">
+                                Identifica tu tipo de piel, prepara la barrera cutánea con productos adecuados y logra un lienzo suave para un maquillaje de larga duración.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 border-t border-wine-200/60 flex items-center justify-between text-xs font-semibold text-wine-700">
+                        <span>Ver Lecciones en Video</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </a>
 
-    <!-- MÓDULO 2 -->
-    <a href="curso.html" class="modulo-card">
-        <div class="modulo-img-wrap">
-            <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80" alt="Rostro impecable">
-        </div>
-        <div class="modulo-info">
-            <span class="modulo-num">Módulo 2</span>
-            <h4>Rostro impecable</h4>
-        </div>
-    </a>
+                <!-- Módulo 2 -->
+                <a href="curso.html?mod=2" class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm hover:shadow-xl hover:border-wine-300 transition-all group flex flex-col justify-between block">
+                    <div>
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="https://i.pinimg.com/1200x/5d/7b/c6/5d7bc6405ebc0d2b3d83e5e3f54d0037.jpg" alt="Bases, Correctores y Contorno" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+2+Contorno'">
+                            <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full">Módulo 02</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-wine-900 mb-2 serif-font">Bases, Correctores y Contorno</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">
+                                Descubre tu subtono exacto de piel, aprende la técnica de corrección de imperfecciones y domina el perfilado según tu tipo de rostro.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 border-t border-wine-200/60 flex items-center justify-between text-xs font-semibold text-wine-700">
+                        <span>Ver Lecciones en Video</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </a>
 
-    <!-- MÓDULO 3 -->
-    <a href="curso.html" class="modulo-card">
-        <div class="modulo-img-wrap">
-            <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=600&q=80" alt="Ojos y mirada">
-        </div>
-        <div class="modulo-info">
-            <span class="modulo-num">Módulo 3</span>
-            <h4>Ojos y mirada</h4>
-        </div>
-    </a>
+                <!-- Módulo 3 -->
+                <a href="curso.html?mod=3" class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm hover:shadow-xl hover:border-wine-300 transition-all group flex flex-col justify-between block">
+                    <div>
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="https://i.pinimg.com/1200x/10/f2/3e/10f23e1cfdf69aa2f2599b57670d3073.jpg" alt="Cejas y Ojos de Impacto" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+3+Ojos'">
+                            <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full">Módulo 03</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-wine-900 mb-2 serif-font">Cejas Perfectas y Ojos de Impacto</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">
+                                Domina el diseño de cejas pelo a pelo, difuminados de sombras con efecto degradado, delineados asimétricos y postura de pestañas.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 border-t border-wine-200/60 flex items-center justify-between text-xs font-semibold text-wine-700">
+                        <span>Ver Lecciones en Video</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </a>
 
-    <!-- MÓDULO 4 -->
-    <a href="curso.html" class="modulo-card">
-        <div class="modulo-img-wrap">
-            <img src="https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=600&q=80" alt="Acabados y labios">
-        </div>
-        <div class="modulo-info">
-            <span class="modulo-num">Módulo 4</span>
-            <h4>Acabados y labios</h4>
-        </div>
-    </a>
+                <!-- Módulo 4 -->
+                <a href="curso.html?mod=4" class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm hover:shadow-xl hover:border-wine-300 transition-all group flex flex-col justify-between block">
+                    <div>
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="https://i.pinimg.com/736x/c0/31/6f/c0316f3f1df9d9d7f7968b0c113fd51d.jpg" alt="Labios, Rubor y Glow" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+4+Labios'">
+                            <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full">Módulo 04</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-wine-900 mb-2 serif-font">Labios, Rubor y Iluminación Glow</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">
+                                Consigue labios carnosos con perfilado de larga duración, rubor jugoso en crema e iluminador para un acabado glow natural.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 border-t border-wine-200/60 flex items-center justify-between text-xs font-semibold text-wine-700">
+                        <span>Ver Lecciones en Video</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </a>
 
-    <!-- MÓDULO 5 -->
-    <a href="curso.html" class="modulo-card">
-        <div class="modulo-img-wrap">
-            <img src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=600&q=80" alt="Ejercicios prácticos">
-        </div>
-        <div class="modulo-info">
-            <span class="modulo-num">Módulo 5</span>
-            <h4>Ejercicios prácticos</h4>
-        </div>
-    </a>
-</div>
+                <!-- Módulo 5 -->
+                <a href="curso.html?mod=5" class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm hover:shadow-xl hover:border-wine-300 transition-all group flex flex-col justify-between md:col-span-2 lg:col-span-1 block">
+                    <div>
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="https://i.pinimg.com/1200x/08/a2/00/08a20051645c8c8f801cb45ce3140ceb.jpg" alt="Maquillaje de Día a Noche" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+5+Noche'">
+                            <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full">Módulo 05</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-wine-900 mb-2 serif-font">Transición de Día a Noche</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">
+                                Adapta un look fresco de oficina a un maquillaje de gala deslumbrante en menos de 5 minutos utilizando técnicas de capas inteligentes.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 border-t border-wine-200/60 flex items-center justify-between text-xs font-semibold text-wine-700">
+                        <span>Ver Lecciones en Video</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </a>
 
-    <!-- SECCIÓN DE BENEFICIOS DE COMPRA -->
-    <section class="benefits-section">
-        <h2 class="section-title text-burgundy mb-6">
-            ¡Ahorra en tus insumos de práctica!
-        </h2>
-
-        <div class="benefits-card">
-            <div class="benefit-col">
-                <h3>Ahorra en tus productos</h3>
-                <div class="benefit-icon-bg">
-                    <i class="fa-solid fa-piggy-bank"></i>
+                <!-- Tarjeta Bono Destacado -->
+                <div class="custom-gradient rounded-3xl p-8 text-white shadow-xl flex flex-col justify-between md:col-span-2">
+                    <div>
+                        <span class="bg-gold-500 text-wine-900 font-bold text-[10px] uppercase px-3 py-1 rounded-full mb-4 inline-block">Bono Especial Incluido</span>
+                        <h3 class="text-2xl font-bold mb-3 serif-font">Guía de Compra Inteligente e Insumos</h3>
+                        <p class="text-white/90 text-sm leading-relaxed max-w-xl">
+                            Deja de gastar dinero en productos que no necesitas. Te entregamos nuestra lista secreta de marcas económicas con calidad profesional y qué herramientas vale la pena comprar.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 border-t border-white/20 flex flex-wrap items-center justify-between gap-4">
+                        <span class="text-xs font-medium text-gold-400">Valorizado en 150.000 COP (¡Gratis hoy!)</span>
+                        <a href="#inscripcion" class="bg-white text-wine-700 px-6 py-2.5 rounded-full text-xs font-bold hover:bg-wine-50 transition-colors shadow-md">
+                            Reclamar Bono Gratis
+                        </a>
+                    </div>
                 </div>
-                <p>
-                    Recibe recomendaciones de tiendas físicas locales donde podrás comprar lo que realmente necesitas.
-                </p>
-            </div>
 
-            <div class="benefit-col">
-                <h3>Beneficios exclusivos</h3>
-                <div class="benefit-icon-bg">
-                    <i class="fa-solid fa-percent"></i>
-                </div>
-                <p>
-                    Accede a promociones conjuntas especiales creadas para nuestras estudiantes.
-                </p>
-            </div>
-
-            <div class="benefit-col">
-                <h3>Compra inteligente</h3>
-                <div class="benefit-icon-bg">
-                    <i class="fa-solid fa-bag-shopping"></i>
-                </div>
-                <p>
-                    Aprende a elegir tus bases, correctores y sombras sin malgastar tu dinero.
-                </p>
             </div>
         </div>
     </section>
 
-    <!-- QUIÉNES SOMOS -->
-    <section id="aliados" class="about-section">
-        <div class="about-card">
-            <h2 class="section-title font-handwriting text-5xl mb-4">¿Quiénes Somos?</h2>
-            <p class="about-text">
-                <strong>Make It Yourself</strong> nació para romper el mito de que maquillarse es difícil o costoso. Somos una comunidad creada por apasionadas del diseño y la belleza para que aprendas desde cero, sin tecnicismos y con total confianza en ti misma. ¡Queremos acompañarte en cada paso de tu evolución!
-            </p>
-        </div>
-    </section>
-
-    <!-- SECCIÓN GALERÍA DE ESTUDIANTES / TESTIMONIOS -->
-    <section id="testimonios" class="testimonials-section">
-        <h2 class="section-title font-handwriting text-5xl mb-8">
-            GALERÍA DE ESTUDIANTES
-        </h2>
-
-        <div class="testimonials-wrapper">
-            <div class="testimonials-grid" id="testimonialsGrid">
-                <!-- Testimonios renderizados desde JS -->
-            </div>
-        </div>
-    </section>
-
-    <!-- PREGUNTAS FRECUENTES (FAQ) -->
-    <section id="faq" class="faq-section">
-        <h2 class="section-title text-burgundy mb-6">Preguntas Frecuentes</h2>
-        <div class="faq-container" id="faqContainer">
-            <!-- FAQ dinámico desde JavaScript -->
-        </div>
-    </section>
-
-    <!-- FOOTER / FORMULARIO QUIERO MÁS INFORMACIÓN -->
-    <footer id="inscripcion" class="footer-section">
-        <div class="footer-grid">
-            
-            <div class="footer-col-links">
-                <a href="#modulos" class="font-bold underline block mb-2">Nosotros</a>
-                <a href="cursos.html">Módulos</a>
-                <a href="#testimonios" class="block">Testimonios</a>
-                <a href="#aliados" class="block">Aliados</a>
-                <a href="#faq" class="block">Ayuda</a>
-            </div>
-
-            <!-- Formulario Quiero Más Información -->
-            <div class="footer-col-form">
-                <p class="form-title"><i class="fa-regular fa-envelope"></i> ¿Quieres recibir más información y novedades?</p>
-                <form id="infoForm" class="footer-form">
-                    <input type="text" id="nombreInput" placeholder="*Nombre y Apellidos" required class="form-input">
-                    <input type="email" id="emailInput" placeholder="*E-mail" required class="form-input">
-                    <button type="submit" class="btn-primary">
-                        QUIERO MÁS INFORMACIÓN
+    <!-- Sección de Clase Gratuita / Trial Class -->
+    <section id="clase-gratis" class="py-20 bg-wine-50 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="bg-white rounded-3xl p-8 sm:p-12 border border-wine-200 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+               
+                <div class="lg:col-span-6 space-y-6">
+                    <span class="bg-wine-100 text-wine-700 font-bold text-xs uppercase px-3 py-1 rounded-full">¡Empieza Sin Costo!</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font">Mira una clase de muestra gratis</h2>
+                    <p class="text-gray-600 text-sm sm:text-base leading-relaxed">
+                        Comprueba la claridad de nuestras lecciones antes de tomar una decisión. Accede inmediatamente a nuestra miniclase donde revelamos cómo corregir ojeras y unificar el tono de piel sin recargar.
+                    </p>
+                    <ul class="space-y-3 text-sm text-gray-700">
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-wine-700 bg-wine-100 p-1 rounded-full"></i> Sin tarjeta de crédito ni compromisos</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-wine-700 bg-wine-100 p-1 rounded-full"></i> Duración: 15 minutos explicados al detalle</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-wine-700 bg-wine-100 p-1 rounded-full"></i> Acceso online inmediato desde cualquier lugar</li>
+                    </ul>
+                    <button onclick="openVideoModal()" class="px-8 py-3.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-opacity inline-flex items-center gap-2">
+                        <i class="fa-solid fa-play"></i> Reproducir Clase Gratuita Ahora
                     </button>
-                </form>
-                <div id="formSuccess" class="form-success-msg hidden">¡Gracias! Te contactaremos muy pronto con más detalles.</div>
-            </div>
-
-            <!-- Contacto & Redes -->
-            <div class="footer-col-contact">
-                <p class="font-bold mb-1">Contacto</p>
-                <p>info@makeit.yourself</p>
-                <p>304 351 7678</p>
-                <div class="social-icons">
-                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="#"><i class="fa-brands fa-tiktok"></i></a>
-                    <a href="#"><i class="fa-regular fa-envelope"></i></a>
+                </div>
+                <div class="lg:col-span-6">
+                    <div class="relative rounded-2xl overflow-hidden shadow-lg aspect-video bg-wine-900 flex items-center justify-center group cursor-pointer" onclick="openVideoModal()">
+                        <img src="https://i.pinimg.com/1200x/41/43/5e/41435e184a17b7efc5b1422e13bf9bc0.jpg" alt="Vista previa video de prueba" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/800x450/721422/ffffff?text=Ver+Clase+Gratis'">
+                        <div class="absolute inset-0 bg-wine-900/30 flex items-center justify-center">
+                            <div class="w-16 h-16 rounded-full bg-white text-wine-700 flex items-center justify-center text-xl shadow-2xl transform group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-play ml-1"></i>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-4 left-4 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-lg text-white text-xs font-medium">
+                            ▶ Reproducir Clase de Prueba (15 min)
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </section>
 
+    <!-- Sección de Beneficios Prácticos y Ahorro -->
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+               
+                <div class="lg:col-span-6 space-y-6">
+                    <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest">Economía Inteligente</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font">Ahorra dinero en cosméticos que no te favorecen</h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        Aprende a realizar compras estratégicas. Te enseñamos qué tonos, texturas y brochas realmente aportan valor a tu kit de maquillaje, evitando acumular productos innecesarios.
+                    </p>
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-wine-100 text-wine-700 flex items-center justify-center flex-shrink-0 font-bold mt-1">
+                                <i class="fa-solid fa-piggy-bank"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-wine-900">Ahorro comprobado de hasta un 60%</h4>
+                                <p class="text-sm text-gray-600">Descubre productos alternativos económicos (dupes) con la misma fijación y pigmentación que las marcas de lujo.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-wine-100 text-wine-700 flex items-center justify-center flex-shrink-0 font-bold mt-1">
+                                <i class="fa-solid fa-briefcase"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-wine-900">Kit Funcional Esencial</h4>
+                                <p class="text-sm text-gray-600">Arma un cosmetiquero práctico de solo 7 elementos clave para lograr cualquier look de día o de noche.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-wine-100 text-wine-700 flex items-center justify-center flex-shrink-0 font-bold mt-1">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-wine-900">Rutinas exprés de 10 minutos</h4>
+                                <p class="text-sm text-gray-600">Aprende la secuencia de pasos optimizada para arreglarte rápidamente cada mañana sin complicaciones.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Grid de Fotos de Apoyo -->
+                <div class="lg:col-span-6 relative">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-4">
+                            <img src="https://i.pinimg.com/736x/23/27/bc/2327bc8299d3a28727e1fcac3de7961d.jpg" alt="Cosméticos ordenados" class="rounded-3xl shadow-lg w-full h-48 object-cover" onerror="this.src='https://placehold.co/400x300/721422/ffffff?text=Cosmeticos'">
+                            <img src="https://i.pinimg.com/736x/d9/b2/0a/d9b20a057b59d803eb197e79c4586c90.jpg" alt="Juego de brochas" class="rounded-3xl shadow-lg w-full h-64 object-cover" onerror="this.src='https://placehold.co/400x400/721422/ffffff?text=Brochas'">
+                        </div>
+                        <div class="space-y-4 pt-8">
+                            <img src="https://i.pinimg.com/736x/a9/b0/08/a9b008db0d64ae32e63d21b45d5b8b52.jpg" alt="Paleta de tonos" class="rounded-3xl shadow-lg w-full h-64 object-cover" onerror="this.src='https://placehold.co/400x400/721422/ffffff?text=Paleta'">
+                            <img src="https://i.pinimg.com/736x/cd/e9/7c/cde97c7ef6df52de5c008060b041559d.jpg" alt="Labiales en barra" class="rounded-3xl shadow-lg w-full h-48 object-cover" onerror="this.src='https://placehold.co/400x300/721422/ffffff?text=Labiales'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Sobre Nosotros / Nuestra Academia -->
+    <section id="nosotros" class="py-20 bg-wine-50/60 border-y border-wine-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+               
+                <div class="lg:col-span-5 relative">
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-wine-200 aspect-[4/5]">
+                        <img src="https://i.pinimg.com/1200x/36/1c/9f/361c9f688d1f1b7aeffe4051e5d754bd.jpg" alt="Instructora Principal Make It Yourself" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x750/721422/ffffff?text=Instructora+Principal'">
+                    </div>
+                </div>
+                <div class="lg:col-span-7 space-y-6">
+                    <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest">Nuestra Historia</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font">Detrás de Make It Yourself</h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        Nacimos con la visión de democratizar la educación en maquillaje profesional. Creemos que cada persona merece tener las herramientas necesarias para realzar su propia belleza de forma autónoma, sin depender de citas eternas ni de productos sobrevalorados.
+                    </p>
+                    <p class="text-gray-600 leading-relaxed">
+                        A través de una metodología práctica y clara, hemos capacitado a miles de mujeres para que ganen seguridad frente al espejo y adopten hábitos de belleza duraderos y personalizados.
+                    </p>
+                    <div class="pt-4 grid grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded-2xl border border-wine-200">
+                            <i class="fa-solid fa-graduation-cap text-wine-700 text-2xl mb-2"></i>
+                            <h4 class="font-bold text-wine-900 text-sm">Metodología Comprobada</h4>
+                            <p class="text-xs text-gray-500">Paso a paso estructurado para todos los niveles.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl border border-wine-200">
+                            <i class="fa-solid fa-heart text-wine-700 text-2xl mb-2"></i>
+                            <h4 class="font-bold text-wine-900 text-sm">Comunidad de Apoyo</h4>
+                            <p class="text-xs text-gray-500">Acompañamiento continuo y resolución de dudas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Galería de Estudiantes -->
+    <section id="galeria" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest">Resultados Reales</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font mt-2">Galería de Nuestras Estudiantes</h2>
+                <p class="text-gray-600 mt-3">Mira los cambios y acabados de maquillaje logrados por alumnas que iniciaron desde cero.</p>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                <div class="relative group rounded-2xl overflow-hidden shadow-md aspect-square bg-wine-100">
+                    <img src="https://i.pinimg.com/736x/eb/5a/9a/eb5a9aa8e28656f7d9db9d84393bb52f.jpg" alt="Estudiante Make It Yourself 1" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/400x400/721422/ffffff?text=Estudiante+1'">
+                    <div class="absolute inset-0 bg-wine-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                        <span class="text-white text-xs font-semibold">Look de Día - Mariana G.</span>
+                    </div>
+                </div>
+                <div class="relative group rounded-2xl overflow-hidden shadow-md aspect-square bg-wine-100">
+                    <img src="https://i.pinimg.com/736x/64/d2/51/64d251b6e70008270a9a546c71f9a79f.jpg" alt="Estudiante Make It Yourself 2" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/400x400/721422/ffffff?text=Estudiante+2'">
+                    <div class="absolute inset-0 bg-wine-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                        <span class="text-white text-xs font-semibold">Delineado Felino - Sofía R.</span>
+                    </div>
+                </div>
+                <div class="relative group rounded-2xl overflow-hidden shadow-md aspect-square bg-wine-100">
+                    <img src="https://i.pinimg.com/736x/a8/fb/d5/a8fbd53bef2970c73c2c1664cbb8d3d1.jpg" alt="Estudiante Make It Yourself 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/400x400/721422/ffffff?text=Estudiante+3'">
+                    <div class="absolute inset-0 bg-wine-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                        <span class="text-white text-xs font-semibold">Glow Natural - Camila V.</span>
+                    </div>
+                </div>
+                <div class="relative group rounded-2xl overflow-hidden shadow-md aspect-square bg-wine-100">
+                    <img src="https://i.pinimg.com/736x/d2/20/f4/d220f4e3e3d52de513c0818a4ec398da.jpg" alt="Estudiante Make It Yourself 4" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/400x400/721422/ffffff?text=Estudiante+4'">
+                    <div class="absolute inset-0 bg-wine-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                        <span class="text-white text-xs font-semibold">Maquillaje de Noche - Laura P.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Testimonios -->
+    <section id="testimonios" class="py-24 bg-wine-50/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest">Casos de Éxito</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font mt-2">Lo que dicen nuestras estudiantes</h2>
+                <p class="text-gray-600 mt-3">Experiencias reales de alumnas que transformaron su rutina diaria.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+               
+                <!-- Testimonio 1 -->
+                <div class="bg-white rounded-3xl p-8 border border-wine-100 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-1 text-gold-500 mb-4 text-sm">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-700 text-sm leading-relaxed italic">
+                            "Antes tardaba más de una hora maquillándome y nunca lograba el acabado que quería. Con el método aprendí a arreglarme en 10 minutos con un aspecto radiante."
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-wine-100 flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-full bg-wine-700 text-white font-bold flex items-center justify-center text-sm">
+                            CM
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-wine-900 text-sm">Carolina Mendoza</h4>
+                            <p class="text-xs text-gray-500">Bogotá, Colombia</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimonio 2 -->
+                <div class="bg-white rounded-3xl p-8 border border-wine-100 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-1 text-gold-500 mb-4 text-sm">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-700 text-sm leading-relaxed italic">
+                            "La guía de insumos me ahorró muchísimo dinero. Dejé de comprar cosas caras que no se adaptaban a mi tono y ahora uso alternativas económicas excelentes."
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-wine-100 flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-full bg-wine-700 text-white font-bold flex items-center justify-center text-sm">
+                            AR
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-wine-900 text-sm">Alejandra Rueda</h4>
+                            <p class="text-xs text-gray-500">Medellín, Colombia</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimonio 3 -->
+                <div class="bg-white rounded-3xl p-8 border border-wine-100 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-1 text-gold-500 mb-4 text-sm">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-700 text-sm leading-relaxed italic">
+                            "Las lecciones de delineado y contorno son increíbles. Explicadas al detalle y sin complicaciones. Siento mucha más seguridad al arreglarme para eventos."
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-wine-100 flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-full bg-wine-700 text-white font-bold flex items-center justify-center text-sm">
+                            VS
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-wine-900 text-sm">Valeria Soto</h4>
+                            <p class="text-xs text-gray-500">Cali, Colombia</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Preguntas Frecuentes (FAQ) Interactivas -->
+    <section id="faq" class="py-24 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest">Resuelve tus Dudas</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font mt-2">Preguntas Frecuentes</h2>
+            </div>
+            <div class="space-y-4">
+               
+                <!-- FAQ 1 -->
+                <div class="bg-wine-50/50 rounded-2xl border border-wine-200 overflow-hidden shadow-sm transition-all">
+                    <button class="faq-toggle w-full px-6 py-5 text-left font-bold text-wine-900 flex justify-between items-center focus:outline-none">
+                        <span>¿Necesito conocimientos previos de maquillaje?</span>
+                        <i class="fa-solid fa-chevron-down text-wine-700 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-5 text-sm text-gray-600 leading-relaxed border-t border-wine-100 pt-3">
+                        No necesitas ninguna experiencia previa. El programa está diseñado paso a paso desde el nivel principiante hasta técnicas avanzadas.
+                    </div>
+                </div>
+                <!-- FAQ 2 -->
+                <div class="bg-wine-50/50 rounded-2xl border border-wine-200 overflow-hidden shadow-sm transition-all">
+                    <button class="faq-toggle w-full px-6 py-5 text-left font-bold text-wine-900 flex justify-between items-center focus:outline-none">
+                        <span>¿Por cuánto tiempo tendré acceso al curso?</span>
+                        <i class="fa-solid fa-chevron-down text-wine-700 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-5 text-sm text-gray-600 leading-relaxed border-t border-wine-100 pt-3">
+                        El acceso es vitalicio. Podrás revisar el contenido y las lecciones las veces que quieras desde celular, tablet o computador.
+                    </div>
+                </div>
+                <!-- FAQ 3 -->
+                <div class="bg-wine-50/50 rounded-2xl border border-wine-200 overflow-hidden shadow-sm transition-all">
+                    <button class="faq-toggle w-full px-6 py-5 text-left font-bold text-wine-900 flex justify-between items-center focus:outline-none">
+                        <span>¿Cuáles son los medios de pago disponibles?</span>
+                        <i class="fa-solid fa-chevron-down text-wine-700 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-5 text-sm text-gray-600 leading-relaxed border-t border-wine-100 pt-3">
+                        Aceptamos tarjetas de crédito, PSE, Nequi, Daviplata y pagos en efectivo a través de Efecty con un valor único de 89.000 COP.
+                    </div>
+                </div>
+                <!-- FAQ 4 -->
+                <div class="bg-wine-50/50 rounded-2xl border border-wine-200 overflow-hidden shadow-sm transition-all">
+                    <button class="faq-toggle w-full px-6 py-5 text-left font-bold text-wine-900 flex justify-between items-center focus:outline-none">
+                        <span>¿El curso entrega certificado al finalizar?</span>
+                        <i class="fa-solid fa-chevron-down text-wine-700 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-5 text-sm text-gray-600 leading-relaxed border-t border-wine-100 pt-3">
+                        Sí, al completar la totalidad de los módulos podrás descargar tu certificado digital nominativo avalado por Make It Yourself.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer y Sección de Inscripción -->
+    <footer id="inscripcion" class="bg-wine-900 text-white pt-20 pb-12 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#e08a95_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
+               
+                <!-- Detalles de Contacto e Información -->
+                <div class="lg:col-span-6 space-y-6">
+                    <div class="flex flex-col text-left">
+                        <span class="text-xs font-semibold tracking-widest text-blush-500 uppercase">Make It</span>
+                        <span class="text-3xl font-bold tracking-tight text-white font-serif -mt-1">YOURSELF</span>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed max-w-md">
+                        La academia líder en maquillaje profesional autodidacta. Potencia tu imagen, gana seguridad y aprende de forma práctica y guiada.
+                    </p>
+                    <div class="space-y-3 text-sm text-gray-300 pt-2">
+                        <p class="flex items-center gap-3"><i class="fa-solid fa-envelope text-blush-500"></i> contacto@makeityourself.com</p>
+                        <p class="flex items-center gap-3"><i class="fa-solid fa-phone text-blush-500"></i> +57 (300) 123-4567</p>
+                        <p class="flex items-center gap-3"><i class="fa-solid fa-location-dot text-blush-500"></i> Colombia / Atención Online Global</p>
+                    </div>
+                    <!-- Redes Sociales -->
+                    <div class="flex items-center space-x-4 text-xl pt-2">
+                        <a href="#" aria-label="Instagram de Make It Yourself" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-wine-500 transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" aria-label="TikTok de Make It Yourself" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-wine-500 transition-colors"><i class="fa-brands fa-tiktok"></i></a>
+                        <a href="#" aria-label="YouTube de Make It Yourself" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-wine-500 transition-colors"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" aria-label="WhatsApp de Make It Yourself" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-wine-500 transition-colors"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <!-- Formulario de Inscripción Validado -->
+                <div class="lg:col-span-6 bg-white rounded-3xl p-8 sm:p-10 text-gray-900 shadow-2xl border border-wine-500/20">
+                    <div class="text-center mb-6">
+                        <span class="bg-wine-100 text-wine-700 text-xs font-bold uppercase px-3 py-1 rounded-full">Cupos Limitados</span>
+                        <h3 class="text-2xl font-bold text-wine-900 serif-font mt-2">Inscríbete Ahora por 89.000 COP</h3>
+                        <p class="text-xs text-gray-500 mt-1">Ingresa tus datos para recibir acceso inmediato.</p>
+                    </div>
+                    <form id="enrollment-form" class="space-y-4" novalidate>
+                        <div>
+                            <label for="nombre" class="block text-xs font-semibold text-gray-700 mb-1">Nombre Completo</label>
+                            <input type="text" id="nombre" name="nombre" placeholder="Ej. Ana María Gómez" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-wine-700 focus:ring-1 focus:ring-wine-700 transition-all">
+                            <p id="error-nombre" class="text-xs text-red-500 mt-1 hidden">Por favor ingresa tu nombre completo.</p>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-xs font-semibold text-gray-700 mb-1">Correo Electrónico</label>
+                            <input type="email" id="email" name="email" placeholder="tucorreo@email.com" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-wine-700 focus:ring-1 focus:ring-wine-700 transition-all">
+                            <p id="error-email" class="text-xs text-red-500 mt-1 hidden">Por favor ingresa un correo válido.</p>
+                        </div>
+                        <div>
+                            <label for="telefono" class="block text-xs font-semibold text-gray-700 mb-1">Teléfono / WhatsApp</label>
+                            <input type="tel" id="telefono" name="telefono" placeholder="Ej. 300 123 4567" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-wine-700 focus:ring-1 focus:ring-wine-700 transition-all">
+                            <p id="error-telefono" class="text-xs text-red-500 mt-1 hidden">Por favor ingresa un número válido.</p>
+                        </div>
+                        <button type="submit" class="w-full py-4 rounded-xl text-white font-bold text-sm custom-gradient shadow-lg hover:opacity-95 transform hover:-translate-y-0.5 transition-all">
+                            ¡Quiero Inscribirme por 89.000 COP!
+                        </button>
+                    </form>
+                    <!-- Mensaje de confirmación -->
+                    <div id="success-msg" class="hidden text-center py-8 space-y-3">
+                        <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-wine-900 serif-font">¡Inscripción Recibida!</h4>
+                        <p class="text-sm text-gray-600">Te enviamos los detalles de pago y acceso a tu correo electrónico. ¡Bienvenida!</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Registro a Boletín / Newsletter -->
+            <div class="py-8 border-t border-b border-white/10 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <div class="md:col-span-6">
+                        <h4 class="text-sm font-bold text-white">Suscríbete a nuestro boletín de tips</h4>
+                        <p class="text-xs text-gray-400">Recibe consejos semanales de maquillaje y ofertas exclusivas.</p>
+                    </div>
+                    <div class="md:col-span-6">
+                        <form id="newsletter-form" class="flex gap-2">
+                            <input type="email" id="newsletter-email" placeholder="Tu correo electrónico" class="w-full px-4 py-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 text-xs focus:outline-none focus:border-blush-500">
+                            <button type="submit" class="px-5 py-2.5 rounded-xl bg-blush-500 text-wine-900 text-xs font-bold hover:bg-blush-600 transition-colors whitespace-nowrap">
+                                Suscribirme
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Derechos de Autor -->
+            <div class="flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400">
+                <p>&copy; 2026 Make It Yourself. Todos los derechos reservados.</p>
+                <div class="flex space-x-6 mt-4 sm:mt-0">
+                    <a href="#" class="hover:text-white transition-colors">Términos y Condiciones</a>
+                    <a href="#" class="hover:text-white transition-colors">Política de Privacidad</a>
+                </div>
+            </div>
         </div>
     </footer>
 
-    <!-- Archivo JavaScript -->
-    <script src="js/index.js"></script>
+    <!-- Modal de Video para Clase Gratuita -->
+    <div id="video-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 relative shadow-2xl">
+            <button onclick="closeVideoModal()" aria-label="Cerrar modal de video" class="absolute top-4 right-4 text-gray-500 hover:text-gray-900 text-xl font-bold w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-xl font-bold text-wine-900 serif-font mb-4">Masterclass Gratuita de Muestra</h3>
+            <div class="aspect-video bg-gray-900 rounded-2xl overflow-hidden flex items-center justify-center text-white">
+                <div class="text-center p-6 space-y-3">
+                    <i class="fa-solid fa-circle-play text-5xl text-gold-500 animate-pulse"></i>
+                    <p class="font-semibold text-lg">Reproduciendo lección de muestra...</p>
+                    <p class="text-xs text-gray-400">Aprende la técnica de corrección de ojeras e iluminación en 3 sencillos pasos.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts Interactivos JS -->
+    <script>
+        // Menú Móvil Toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // FAQ Acordeón
+        const faqToggles = document.querySelectorAll('.faq-toggle');
+        faqToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const content = toggle.nextElementSibling;
+                const icon = toggle.querySelector('i');
+               
+                faqToggles.forEach(otherToggle => {
+                    if (otherToggle !== toggle) {
+                        otherToggle.nextElementSibling.classList.add('hidden');
+                        otherToggle.querySelector('i').classList.remove('rotate-180');
+                    }
+                });
+                content.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+            });
+        });
+
+        // Modal de Video
+        function openVideoModal() {
+            document.getElementById('video-modal').classList.remove('hidden');
+        }
+        function closeVideoModal() {
+            document.getElementById('video-modal').classList.add('hidden');
+        }
+
+        // Validación del Formulario de Inscripción
+        const form = document.getElementById('enrollment-form');
+        const successMsg = document.getElementById('success-msg');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+           
+            const nombre = document.getElementById('nombre');
+            const email = document.getElementById('email');
+            const telefono = document.getElementById('telefono');
+            const errorNombre = document.getElementById('error-nombre');
+            const errorEmail = document.getElementById('error-email');
+            const errorTelefono = document.getElementById('error-telefono');
+            let isValid = true;
+
+            if (nombre.value.trim() === '') {
+                errorNombre.classList.remove('hidden');
+                nombre.classList.add('border-red-500');
+                isValid = false;
+            } else {
+                errorNombre.classList.add('hidden');
+                nombre.classList.remove('border-red-500');
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value.trim())) {
+                errorEmail.classList.remove('hidden');
+                email.classList.add('border-red-500');
+                isValid = false;
+            } else {
+                errorEmail.classList.add('hidden');
+                email.classList.remove('border-red-500');
+            }
+
+            if (telefono.value.trim().length < 7) {
+                errorTelefono.classList.remove('hidden');
+                telefono.classList.add('border-red-500');
+                isValid = false;
+            } else {
+                errorTelefono.classList.add('hidden');
+                telefono.classList.remove('border-red-500');
+            }
+
+            if (isValid) {
+                form.classList.add('hidden');
+                successMsg.classList.remove('hidden');
+            }
+        });
+
+        // Newsletter Handler
+        document.getElementById('newsletter-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const input = document.getElementById('newsletter-email');
+            if (input.value.trim() !== '') {
+                input.value = '';
+                alert('¡Gracias por suscribirte a nuestro boletín!');
+            }
+        });
+    </script>
 </body>
 </html>
