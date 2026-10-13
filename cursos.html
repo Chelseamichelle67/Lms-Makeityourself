@@ -1,125 +1,295 @@
+
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Make It Yourself - Catálogo de Cursos</title>
-    <!-- Google Fonts: Montserrat y Caveat -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- FontAwesome icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Estilos CSS -->
-    <link rel="stylesheet" href="css/estilos.css">
-</head>
-<body>
+    <title>Make It Yourself - Catálogo de Módulos</title>
 
-    <!-- HEADER / NAVBAR -->
-    <header class="site-header">
-        <div class="header-container">
-            <!-- LOGO CLICKEABLE QUE LLEVA AL INDEX -->
-            <a href="index.html" class="logo-link">
-                <div class="logo-container">
-                    <span class="logo-sub">Make It</span>
-                    <span class="logo-main">YOURSELF</span>
-                </div>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wine: {
+                            50: '#fcf2f4',
+                            100: '#f8e4e7',
+                            200: '#f1c8ce',
+                            300: '#e5a1ab',
+                            500: '#a3283c',
+                            700: '#721422',
+                            900: '#520e18'
+                        },
+                        blush: {
+                            100: '#fbe9eb',
+                            200: '#f5d5d8',
+                            500: '#e08a95',
+                            600: '#cc6a77'
+                        },
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        handwriting: ['Caveat', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fcf2f4;
+            color: #2d1519;
+            overflow-x: hidden;
+        }
+
+        .serif-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .custom-gradient {
+            background: linear-gradient(
+                135deg,
+                #721422 0%,
+                #a3283c 50%,
+                #520e18 100%
+            );
+        }
+    </style>
+</head>
+
+<body class="bg-wine-50 antialiased selection:bg-wine-500 selection:text-white">
+
+    <!-- HEADER -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-wine-100 shadow-sm">
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+
+            <a href="index.html" class="flex flex-col group text-left">
+                <span class="text-[10px] sm:text-xs font-semibold tracking-widest text-wine-500 uppercase">
+                    Make It
+                </span>
+
+                <span class="text-xl sm:text-2xl font-bold tracking-tight text-wine-700 font-serif -mt-1 group-hover:text-wine-900 transition-colors">
+                    YOURSELF
+                </span>
             </a>
 
-            <nav class="nav-links">
-        
-                <a href="cursos.html" class="nav-active">Módulos</a>
-                <a href="index.html#prueba">¡Probar Clase!</a>
-                <a href="index.html#testimonios">Testimonios</a>
-                <a href="index.html#aliados">Aliados</a>
-                <a href="index.html#ayuda">Ayuda</a>
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-700">
+                <a href="cursos.html" class="text-wine-700 font-semibold border-b-2 border-wine-700 pb-1">
+                    Módulos
+                </a>
+
+                <a href="index.html#clase-gratis" class="hover:text-wine-700 transition-colors">
+                    ¡Probar Clase!
+                </a>
+
+                <a href="index.html#nosotros" class="hover:text-wine-700 transition-colors">
+                    Nosotros
+                </a>
+
+                <a href="index.html#testimonios" class="hover:text-wine-700 transition-colors">
+                    Testimonios
+                </a>
+
+                <a href="index.html#faq" class="hover:text-wine-700 transition-colors">
+                    Ayuda
+                </a>
             </nav>
 
-            <a href="#inscripcion" class="btn-inscribirme-header">Inscribirme</a>
+            <div class="flex items-center space-x-4">
+                <a href="registro.html" class="hidden sm:inline-flex items-center justify-center px-6 py-2.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-all">
+                    Inscribirme
+                </a>
+
+                <button id="menu-btn" aria-label="Abrir menú" aria-expanded="false" class="md:hidden text-wine-700 p-2 rounded-lg hover:bg-wine-100">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- MENÚ MÓVIL -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-wine-100 px-6 py-4 space-y-3 shadow-lg">
+
+            <a href="cursos.html" class="block text-wine-700 font-semibold py-1">Módulos</a>
+            <a href="index.html#clase-gratis" class="block text-gray-700 py-1">¡Probar Clase!</a>
+            <a href="index.html#nosotros" class="block text-gray-700 py-1">Nosotros</a>
+            <a href="index.html#testimonios" class="block text-gray-700 py-1">Testimonios</a>
+            <a href="index.html#faq" class="block text-gray-700 py-1">Ayuda</a>
+
+            <div class="pt-2 border-t border-gray-100">
+                <a href="registro.html" class="block w-full text-center py-2.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md">
+                    Inscribirme
+                </a>
+            </div>
         </div>
     </header>
 
-    <!-- HERO / BANNER DE CURSOS (ESTILO IMAGEN) -->
-    <section class="hero-cursos-section">
-        <div class="hero-content-wrapper">
-            <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=900&q=85" alt="Pinceladas de maquillaje" class="hero-banner-art" style="max-height: 180px; object-fit: cover; border-radius: 1rem;">
-            
-            <div class="hero-text-container" style="margin-top: 1rem;">
-                <p class="hero-top-title">¡Explora nuestros</p>
-                <h1 class="hero-main-title">CURSOS!</h1>
-            </div>
-            
-            <!-- Insignias flotantes derechas -->
-            <div class="floating-badges-right">
-                <div class="badge-circle">
-                    <i class="fa-solid fa-clock"></i>
-                    <span>A tu ritmo</span>
-                </div>
-                <div class="badge-circle">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span>Compra inteligente</span>
-                </div>
-                <div class="badge-circle">
-                    <i class="fa-solid fa-award"></i>
-                    <span>Certificado Digital</span>
-                </div>
+    <!-- BANNER -->
+    <section class="relative pt-32 pb-16 lg:pt-40 lg:pb-20 overflow-hidden bg-gradient-to-b from-wine-100/60 via-wine-50 to-white text-center">
+
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest">
+                Plan de Estudio Oficial
+            </span>
+
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-wine-900 serif-font mt-2">
+                Nuestros Módulos
+            </h1>
+
+            <p class="text-gray-600 mt-3 text-sm sm:text-base max-w-xl mx-auto">
+                Explora nuestros módulos de automaquillaje y descubre las técnicas que aprenderás en cada uno.
+            </p>
+        </div>
+    </section>
+
+    <!-- FILTROS -->
+    <section class="py-6 bg-white border-y border-wine-100 sticky top-20 z-40">
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="flex items-center justify-start md:justify-center overflow-x-auto pb-2 gap-3">
+
+                <button type="button" onclick="filtrarCursos('todos', this)" class="filtro-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold bg-wine-700 text-white shadow-sm whitespace-nowrap">
+                    Todos los módulos
+                </button>
+
+                <button type="button" onclick="filtrarCursos('piel', this)" class="filtro-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold bg-wine-50 text-wine-700 hover:bg-wine-100 whitespace-nowrap">
+                    Preparación de piel
+                </button>
+
+                <button type="button" onclick="filtrarCursos('rostro', this)" class="filtro-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold bg-wine-50 text-wine-700 hover:bg-wine-100 whitespace-nowrap">
+                    Rostro
+                </button>
+
+                <button type="button" onclick="filtrarCursos('ojos', this)" class="filtro-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold bg-wine-50 text-wine-700 hover:bg-wine-100 whitespace-nowrap">
+                    Ojos
+                </button>
+
+                <button type="button" onclick="filtrarCursos('labios', this)" class="filtro-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold bg-wine-50 text-wine-700 hover:bg-wine-100 whitespace-nowrap">
+                    Labios
+                </button>
+
+                <button type="button" onclick="filtrarCursos('noche', this)" class="filtro-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold bg-wine-50 text-wine-700 hover:bg-wine-100 whitespace-nowrap">
+                    Día a noche
+                </button>
+
             </div>
         </div>
     </section>
 
-    <!-- FILTROS DE CATEGORÍA -->
-    <section class="categorias-section">
-        <div class="categorias-scroll" id="filtrosContenedor">
-            <button class="filtro-pill active" data-categoria="todos">Todos</button>
-            <button class="filtro-pill" data-categoria="Automaquillaje Básico">Automaquillaje Básico</button>
-            <button class="filtro-pill" data-categoria="Técnicas Específicas (Ojos / Rostro)">Técnicas Específicas (Ojos / Rostro)</button>
-            <button class="filtro-pill" data-categoria="Cuidado de Piel & Productos">Cuidado de Piel & Productos</button>
-            <button class="filtro-pill" data-categoria="Cursos Completos con Certificado">Cursos Completos con Certificado</button>
-        </div>
-    </section>
+    <!-- MÓDULOS CARGADOS DESDE FIREBASE -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
-    <!-- LISTADO DE CURSOS -->
-    <main class="catalogo-main">
-        <div class="cursos-grid" id="cursosGrid">
-            <!-- Renderizado dinámico con JavaScript -->
+        <div id="estadoCursos" class="text-center text-gray-600 py-12">
+            <i class="fa-solid fa-spinner fa-spin text-wine-700 text-3xl mb-4"></i>
+            <p>Cargando módulos...</p>
         </div>
+
+        <div id="cursosGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" aria-live="polite">
+        </div>
+
     </main>
 
     <!-- FOOTER -->
-    <footer id="inscripcion" class="site-footer">
-        <div class="footer-grid">
-            <div class="footer-col-links">
-                <a href="index.html" class="footer-link-bold">Nosotros</a>
-                <a href="cursos.html">Módulos</a>
-                <a href="index.html#testimonios">Testimonios</a>
-                <a href="index.html#aliados">Aliados</a>
-                <a href="index.html#ayuda">Ayuda</a>
+    <footer id="inscripcion" class="bg-wine-900 text-white pt-20 pb-12 relative overflow-hidden">
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
+
+                <div class="lg:col-span-6 space-y-6">
+
+                    <div class="flex flex-col text-left">
+                        <span class="text-xs font-semibold tracking-widest text-blush-500 uppercase">
+                            Make It
+                        </span>
+
+                        <span class="text-3xl font-bold tracking-tight text-white font-serif -mt-1">
+                            YOURSELF
+                        </span>
+                    </div>
+
+                    <p class="text-gray-300 text-sm leading-relaxed max-w-md">
+                        Aprende nuevas técnicas de maquillaje a tu ritmo y descubre cómo crear diferentes looks.
+                    </p>
+
+                    <div class="space-y-3 text-sm text-gray-300 pt-2">
+                        <p class="flex items-center gap-3">
+                            <i class="fa-solid fa-envelope text-blush-500"></i>
+                            contacto@makeityourself.com
+                        </p>
+
+                        <p class="flex items-center gap-3">
+                            <i class="fa-solid fa-phone text-blush-500"></i>
+                            +57 (300) 123-4567
+                        </p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 bg-white rounded-3xl p-8 sm:p-10 text-gray-900 shadow-2xl border border-wine-500/20 text-center">
+
+                    <span class="bg-wine-100 text-wine-700 text-xs font-bold uppercase px-3 py-1 rounded-full">
+                        Acceso a la plataforma
+                    </span>
+
+                    <h3 class="text-2xl font-bold text-wine-900 serif-font mt-3">
+                        ¿Lista para comenzar?
+                    </h3>
+
+                    <p class="text-xs text-gray-500 mt-2 mb-6">
+                        Crea tu cuenta para continuar.
+                    </p>
+
+                    <a href="registro.html" class="block w-full py-4 rounded-xl text-white font-bold text-sm custom-gradient shadow-lg hover:opacity-95 transition-all text-center">
+                        ¡Crear Mi Cuenta!
+                    </a>
+                </div>
             </div>
 
-            <div class="footer-col-form">
-                <p class="form-label"><i class="fa-regular fa-envelope"></i> ¿Quieres recibir nuestras novedades?</p>
-                <form class="footer-form" onsubmit="event.preventDefault(); alert('¡Suscripción exitosa!');">
-                    <input type="text" placeholder="*Nombre y Apellidos" required class="footer-input">
-                    <input type="email" placeholder="*E-mail" required class="footer-input">
-                    <button type="submit" class="footer-btn-sub">INSCRIBIRME</button>
-                </form>
-            </div>
+            <div class="flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 pt-8 border-t border-white/10">
 
-            <div class="footer-col-contact">
-                <p class="footer-contact-title">Contacto</p>
-                <p>info@makeit.yourself</p>
-                <p>304 351 7678</p>
-                <div class="footer-socials">
-                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="#"><i class="fa-brands fa-tiktok"></i></a>
-                    <a href="#"><i class="fa-regular fa-envelope"></i></a>
+                <p>&copy; 2026 Make It Yourself. Todos los derechos reservados.</p>
+
+                <div class="flex space-x-6 mt-4 sm:mt-0">
+                    <a href="index.html" class="hover:text-white">Inicio</a>
+                    <a href="cursos.html" class="hover:text-white">Módulos</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- SCRIPT JS -->
-    <script src="js/cursos.js"></script>
+    <!-- MENÚ MÓVIL -->
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuBtn.addEventListener('click', () => {
+            const estaCerrado = mobileMenu.classList.toggle('hidden');
+            menuBtn.setAttribute('aria-expanded', String(!estaCerrado));
+            menuBtn.setAttribute(
+                'aria-label',
+                estaCerrado ? 'Abrir menú' : 'Cerrar menú'
+            );
+        });
+    </script>
+
+    <!-- CONEXIÓN CON FIREBASE -->
+    <script type="module" src="js/catalogo.js"></script>
+
 </body>
 </html>

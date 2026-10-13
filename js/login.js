@@ -1,6 +1,19 @@
+
 import { auth, db } from './firebase-config.js';
-import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
-import { doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+
+import {
+    signInWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup,
+    signOut
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+
+import {
+    doc,
+    getDoc,
+    setDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
 
 const form = document.getElementById('login-form');
 const alertBox = document.getElementById('error-alert');
@@ -9,17 +22,44 @@ const btnText = document.getElementById('btn-text');
 const btnSpinner = document.getElementById('btn-spinner');
 const btnGoogle = document.getElementById('btn-google');
 
+// Mostrar mensajes de error
 function mostrarError(mensaje) {
     alertBox.textContent = mensaje;
     alertBox.classList.remove('hidden');
 }
 
+// Ocultar mensajes de error
 function ocultarError() {
     alertBox.textContent = '';
     alertBox.classList.add('hidden');
 }
 
-// Inicio de sesión con Correo y Contraseña
+// Restaurar el botón de inicio de sesión
+function restaurarBoton() {
+    btnSubmit.disabled = false;
+    btnText.textContent = 'Ingresar';
+    btnSpinner.classList.add('hidden');
+}
+
+// Consultar el rol del usuario y enviarlo a la página correcta
+async function redirigirSegunRol(user) {
+    const userDocRef = doc(db, 'users', user.uid);
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (!userDocSnap.exists()) {
+        throw new Error('NO_USER_PROFILE');
+    }
+
+    const datosUsuario = userDocSnap.data();
+
+    if (datosUsuario.role === 'admin') {
+        window.location.href = 'admin.html';
+    } else {
+        window.location.href = 'mis-cursos.html';
+    }
+}
+
+// Inicio de sesión con correo y contraseña
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     ocultarError();
@@ -37,52 +77,86 @@ form.addEventListener('submit', async (e) => {
     btnSpinner.classList.remove('hidden');
 
     try {
-        await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = 'mis-cursos.html';
-    } catch (error) {
-        console.error("Error en login:", error);
-        let mensajeAmigable = 'Correo o contraseña incorrectos.';
+        const resultado = await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
 
-        if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
-            mensajeAmigable = 'Las credenciales ingresadas son incorrectas.';
+        await redirigirSegunRol(resultado.user);
+
+    } catch (error) {
+        console.error('Error en login:', error);
+
+        if (error.message === 'NO_USER_PROFILE') {
+            mostrarError(
+                'No se encontró el perfil de este usuario. Contacta al administrador.'
+            );
+
+            try {
+                await signOut(auth);
+            } catch (signOutError) {
+                console.error('Error al cerrar sesión:', signOutError);
+            }
+        } else if (
+            error.code === 'auth/user-not-found' ||
+            error.code === 'auth/wrong-password' ||
+            error.code === 'auth/invalid-credential'
+        ) {
+            mostrarError('Las credenciales ingresadas son incorrectas.');
         } else if (error.code === 'auth/too-many-requests') {
-            mensajeAmigable = 'Demasiados intentos fallidos. Inténtalo más tarde.';
+            mostrarError(
+                'Demasiados intentos fallidos. Inténtalo más tarde.'
+            );
+        } else {
+            mostrarError(
+                'No se pudo iniciar sesión. Verifica tu conexión e inténtalo de nuevo.'
+            );
         }
 
-        mostrarError(mensajeAmigable);
-
-        btnSubmit.disabled = false;
-        btnText.textContent = 'Ingresar';
-        btnSpinner.classList.add('hidden');
+        restaurarBoton();
     }
 });
 
-// Inicio de sesión con Google (Opcional habilitado)
+// Inicio de sesión con Google
 btnGoogle.addEventListener('click', async () => {
     ocultarError();
+
     const provider = new GoogleAuthProvider();
 
     try {
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
+        const resultado = await signInWithPopup(auth, provider);
+        const user = resultado.user;
 
-        // Verificar si el usuario ya existe en Firestore, si no, crearlo con rol "student"
-        const userDocRef = doc(db, "users", user.uid);
+        const userDocRef = doc(db, 'users', user.uid);
         const userDocSnap = await getDoc(userDocRef);
 
+        // Si es la primera vez que inicia sesión con Google,
+        // crear su perfil como estudiante.
         if (!userDocSnap.exists()) {
             await setDoc(userDocRef, {
                 uid: user.uid,
                 name: user.displayName || 'Estudiante',
                 email: user.email,
-                role: "student",
+                role: 'student',
                 createdAt: serverTimestamp()
             });
         }
 
-        window.location.href = 'mis-cursos.html';
+        // Consultar el rol y redirigir según corresponda.
+        await redirigirSegunRol(user);
+
     } catch (error) {
-        console.error("Error con Google Auth:", error);
-        mostrarError('No se pudo iniciar sesión con Google. Inténtalo de nuevo.');
+        console.error('Error con Google Auth:', error);
+
+        if (error.message === 'NO_USER_PROFILE') {
+            mostrarError(
+                'No se encontró el perfil de este usuario. Contacta al administrador.'
+            );
+        } else {
+            mostrarError(
+                'No se pudo iniciar sesión con Google. Inténtalo de nuevo.'
+            );
+        }
     }
 });

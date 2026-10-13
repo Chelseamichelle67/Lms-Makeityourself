@@ -690,9 +690,9 @@
                 <!-- Formulario de Inscripción Validado -->
                 <div class="lg:col-span-6 bg-white rounded-3xl p-8 sm:p-10 text-gray-900 shadow-2xl border border-wine-500/20">
                     <div class="text-center mb-6">
-                        <span class="bg-wine-100 text-wine-700 text-xs font-bold uppercase px-3 py-1 rounded-full">Cupos Limitados</span>
-                        <h3 class="text-2xl font-bold text-wine-900 serif-font mt-2">Inscríbete Ahora por 89.000 COP</h3>
-                        <p class="text-xs text-gray-500 mt-1">Ingresa tus datos para recibir acceso inmediato.</p>
+                        <span class="bg-wine-100 text-wine-700 text-xs font-bold uppercase px-3 py-1 rounded-full">Make it yourself</span>
+                        <h3 class="text-2xl font-bold text-wine-900 serif-font mt-2">¿Quieres saber mas?</h3>
+                        <p class="text-xs text-gray-500 mt-1">Ingresa tus datos para recibir información adicional.</p>
                     </div>
                     <form id="enrollment-form" class="space-y-4" novalidate>
                         <div>
@@ -710,8 +710,23 @@
                             <input type="tel" id="telefono" name="telefono" placeholder="Ej. 300 123 4567" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-wine-700 focus:ring-1 focus:ring-wine-700 transition-all">
                             <p id="error-telefono" class="text-xs text-red-500 mt-1 hidden">Por favor ingresa un número válido.</p>
                         </div>
+                    <div class="flex items-start gap-2 text-xs text-gray-600">
+    <input
+        type="checkbox"
+        id="consent"
+        name="consent"
+        required
+        class="mt-1 accent-wine-700"
+    >
+    <label for="consent">
+        Autorizo el uso de mis datos de contacto para recibir información
+        sobre los cursos de Make It Yourself.
+    </label>
+</div>
+
+<p id="firebase-error" class="hidden text-sm text-red-600" role="alert"></p>
                         <button type="submit" class="w-full py-4 rounded-xl text-white font-bold text-sm custom-gradient shadow-lg hover:opacity-95 transform hover:-translate-y-0.5 transition-all">
-                            ¡Quiero Inscribirme por 89.000 COP!
+                            ¡Quiero recibir más información!
                         </button>
                     </form>
                     <!-- Mensaje de confirmación -->
@@ -720,7 +735,7 @@
                             <i class="fa-solid fa-check"></i>
                         </div>
                         <h4 class="text-xl font-bold text-wine-900 serif-font">¡Inscripción Recibida!</h4>
-                        <p class="text-sm text-gray-600">Te enviamos los detalles de pago y acceso a tu correo electrónico. ¡Bienvenida!</p>
+                        <p class="text-sm text-gray-600">Te enviamos los detalles a tu correo electrónico. ¡Bienvenida!</p>
                     </div>
                 </div>
             </div>
@@ -810,52 +825,7 @@
         }
 
         // Validación del Formulario de Inscripción
-        const form = document.getElementById('enrollment-form');
-        const successMsg = document.getElementById('success-msg');
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-           
-            const nombre = document.getElementById('nombre');
-            const email = document.getElementById('email');
-            const telefono = document.getElementById('telefono');
-            const errorNombre = document.getElementById('error-nombre');
-            const errorEmail = document.getElementById('error-email');
-            const errorTelefono = document.getElementById('error-telefono');
-            let isValid = true;
-
-            if (nombre.value.trim() === '') {
-                errorNombre.classList.remove('hidden');
-                nombre.classList.add('border-red-500');
-                isValid = false;
-            } else {
-                errorNombre.classList.add('hidden');
-                nombre.classList.remove('border-red-500');
-            }
-
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email.value.trim())) {
-                errorEmail.classList.remove('hidden');
-                email.classList.add('border-red-500');
-                isValid = false;
-            } else {
-                errorEmail.classList.add('hidden');
-                email.classList.remove('border-red-500');
-            }
-
-            if (telefono.value.trim().length < 7) {
-                errorTelefono.classList.remove('hidden');
-                telefono.classList.add('border-red-500');
-                isValid = false;
-            } else {
-                errorTelefono.classList.add('hidden');
-                telefono.classList.remove('border-red-500');
-            }
-
-            if (isValid) {
-                form.classList.add('hidden');
-                successMsg.classList.remove('hidden');
-            }
-        });
+        
 
         // Newsletter Handler
         document.getElementById('newsletter-form').addEventListener('submit', (e) => {
@@ -867,5 +837,6 @@
             }
         });
     </script>
+    <script type="module" src="js/leads.js"></script>
 </body>
 </html>

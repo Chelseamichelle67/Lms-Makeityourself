@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Make It Yourself</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wine: {
+                            50: '#fcf2f4',
+                            100: '#f8e4e7',
+                            200: '#f1c8ce',
+                            300: '#e5a1ab',
+                            500: '#a3283c',
+                            700: '#721422',
+                            900: '#520e18'
+                        },
+                        blush: {
+                            100: '#fbe9eb',
+                            200: '#f5d5d8',
+                            500: '#e08a95',
+                            600: '#cc6a77'
+                        },
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fcf2f4;
+            color: #2d1519;
+            overflow-x: hidden;
+        }
+        .serif-font {
+            font-family: 'Playfair Display', serif;
+        }
+        .custom-gradient {
+            background: linear-gradient(135deg, #721422 0%, #a3283c 50%, #520e18 100%);
+        }
+    </style>
+</head>
+<body class="bg-wine-50 antialiased selection:bg-wine-500 selection:text-white min-h-screen flex flex-col justify-between">
+
+    <!-- ENCABEZADO / NAVBAR -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-wine-100 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex flex-col group text-left">
+                <span class="text-[10px] sm:text-xs font-semibold tracking-widest text-wine-500 uppercase">Make It</span>
+                <span class="text-xl sm:text-2xl font-bold tracking-tight text-wine-700 font-serif -mt-1 group-hover:text-wine-900 transition-colors">YOURSELF</span>
+            </a>
+
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-700">
+                <a href="mis-cursos.html" class="hover:text-wine-700 transition-colors">Mis Cursos</a>
+                <a href="cursos.html" class="hover:text-wine-700 transition-colors">Catálogo</a>
+                <a href="admin.html" class="text-wine-700 font-semibold border-b-2 border-wine-700 pb-1">Administración</a>
+                <a href="index.html#clase-gratis" class="hover:text-wine-700 transition-colors">¡Probar Clase!</a>
+            </nav>
+
+            <div class="flex items-center space-x-4">
+                <span class="text-xs font-semibold bg-wine-700 text-white px-3 py-1.5 rounded-full shadow-sm">Admin</span>
+                <button id="menu-btn" aria-label="Abrir menú" class="md:hidden text-wine-700 focus:outline-none p-2 rounded-lg hover:bg-wine-100 transition-colors">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Menú Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-wine-100 px-6 py-4 space-y-3 shadow-lg">
+            <a href="mis-cursos.html" class="block text-gray-700 font-medium py-1">Mis Cursos</a>
+            <a href="cursos.html" class="block text-gray-700 font-medium py-1">Catálogo</a>
+            <a href="admin.html" class="block text-wine-700 font-semibold py-1">Administración</a>
+            <a href="index.html#clase-gratis" class="block text-gray-700 font-medium py-1">¡Probar Clase!</a>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="flex-grow pt-32 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+
+        <!-- TÍTULO Y MIGAS DE PAN -->
+        <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <span class="bg-wine-100 text-wine-700 font-bold text-xs uppercase px-3 py-1 rounded-full">Panel de Control</span>
+                <h1 id="admin-title" class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font mt-2">Gestión de Cursos</h1>
+                <p id="admin-subtitle" class="text-gray-600 text-sm mt-1">Crea, edita y organiza los contenidos de tu academia de automaquillaje.</p>
+            </div>
+            <div id="breadcrumb-container" class="flex items-center gap-2">
+                <!-- Botón de acción principal dinámico -->
+                <button id="btn-nuevo-curso" class="px-6 py-3 rounded-full text-xs sm:text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Nuevo Curso
+                </button>
+            </div>
+        </div>
+
+        <!-- ALERTAS Y MENSAJES DE ESTADO -->
+        <div id="admin-alert" class="hidden mb-6 p-4 rounded-2xl text-xs sm:text-sm font-medium border shadow-sm"></div>
+
+        <!-- INDICADOR DE CARGA -->
+        <div id="admin-loading" class="hidden text-center py-20 space-y-3">
+            <i class="fa-solid fa-spinner fa-spin text-3xl text-wine-700"></i>
+            <p class="text-sm text-gray-600 font-medium">Procesando información...</p>
+        </div>
+
+        <!-- ================= VISTA 1: LISTADO DE CURSOS ================= -->
+        <section id="view-cursos" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="grid-cursos">
+                <!-- Tarjeta de Ejemplo Estática -->
+                <div class="bg-white rounded-3xl p-6 border border-wine-100 shadow-sm flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="bg-green-100 text-green-800 text-[10px] font-bold uppercase px-2.5 py-1 rounded-full">Publicado</span>
+                            <span class="text-xs text-gray-400 font-mono">ID: SS777MOfOK</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-wine-900 serif-font mb-2">Maquillaje Profesional Autodidacta</h3>
+                        <p class="text-xs text-gray-600 leading-relaxed mb-4">Programa completo de automaquillaje desde cero con técnicas avanzadas.</p>
+                        <p class="text-sm font-extrabold text-wine-700">Precio: $89.000 COP</p>
+                    </div>
+                    <div class="pt-4 border-t border-wine-100 flex items-center justify-between gap-2">
+                        <button class="flex-1 py-2 px-3 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 text-xs font-bold transition-colors">
+                            <i class="fa-solid fa-layer-group mr-1"></i> Módulos
+                        </button>
+                        <button class="py-2 px-3 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 text-xs font-bold transition-colors">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button class="py-2 px-3 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 text-xs font-bold transition-colors">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VISTA 2: LISTADO DE MÓDULOS (Oculta por defecto) ================= -->
+        <section id="view-modulos" class="hidden space-y-6">
+            <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-wine-100 shadow-sm">
+                <div>
+                    <span class="text-xs text-gray-500">Curso seleccionado:</span>
+                    <h2 id="current-course-title" class="text-lg font-bold text-wine-900 serif-font">Nombre del Curso</h2>
+                </div>
+                <button id="btn-volver-cursos" class="px-4 py-2 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 text-xs font-bold transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i> Volver a Cursos
+                </button>
+            </div>
+
+            <div class="flex justify-end">
+                <button id="btn-nuevo-modulo" class="px-6 py-2.5 rounded-full text-xs font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Nuevo Módulo
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="grid-modulos">
+                <!-- Módulos de ejemplo -->
+                <div class="bg-white rounded-2xl p-6 border border-wine-100 shadow-sm flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="bg-wine-100 text-wine-700 text-xs font-bold px-2.5 py-1 rounded-md">Orden: 1</span>
+                            <span class="bg-green-100 text-green-800 text-[10px] font-bold uppercase px-2.5 py-1 rounded-full">Publicado</span>
+                        </div>
+                        <h4 class="font-bold text-wine-900 text-base mb-1">Preparación de Piel y Skincare</h4>
+                        <p class="text-xs text-gray-600">Identifica tu tipo de piel y prepara la barrera cutánea.</p>
+                    </div>
+                    <div class="pt-4 border-t border-wine-100 flex items-center justify-between gap-2">
+                        <button class="flex-1 py-2 px-3 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 text-xs font-bold transition-colors">
+                            <i class="fa-solid fa-video mr-1"></i> Lecciones
+                        </button>
+                        <button class="py-2 px-3 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 text-xs font-bold transition-colors">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button class="py-2 px-3 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 text-xs font-bold transition-colors">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VISTA 3: LISTADO DE LECCIONES (Oculta por defecto) ================= -->
+        <section id="view-lecciones" class="hidden space-y-6">
+            <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-wine-100 shadow-sm">
+                <div>
+                    <span class="text-xs text-gray-500">Módulo seleccionado:</span>
+                    <h2 id="current-module-title" class="text-lg font-bold text-wine-900 serif-font">Nombre del Módulo</h2>
+                </div>
+                <button id="btn-volver-modulos" class="px-4 py-2 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 text-xs font-bold transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i> Volver a Módulos
+                </button>
+            </div>
+
+            <div class="flex justify-end">
+                <button id="btn-nueva-leccion" class="px-6 py-2.5 rounded-full text-xs font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Nueva Lección
+                </button>
+            </div>
+
+            <div class="space-y-4" id="grid-lecciones">
+                <!-- Lección de ejemplo -->
+                <div class="bg-white rounded-2xl p-6 border border-wine-100 shadow-sm flex items-center justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-1">
+                            <span class="bg-wine-100 text-wine-700 text-xs font-bold px-2 py-0.5 rounded">Orden: 1</span>
+                            <h4 class="font-bold text-wine-900 text-base">Lección 1: Limpieza e hidratación</h4>
+                        </div>
+                        <p class="text-xs text-gray-600">Video explicativo sobre productos recomendados.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button class="py-2 px-3 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 text-xs font-bold transition-colors">
+                            <i class="fa-solid fa-pen"></i> Editar
+                        </button>
+                        <button class="py-2 px-3 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 text-xs font-bold transition-colors">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-wine-900 text-white py-10 mt-20 text-center text-xs">
+        <div class="max-w-7xl mx-auto px-4 space-y-3">
+            <p>&copy; 2026 Make It Yourself. Panel de Administración.</p>
+            <div class="flex justify-center space-x-6 text-gray-300">
+                <a href="index.html" class="hover:text-white transition-colors">Inicio</a>
+                <a href="mis-cursos.html" class="hover:text-white transition-colors">Mis Cursos</a>
+                <a href="cursos.html" class="hover:text-white transition-colors">Catálogo</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT PARA MENÚ MÓVIL Y CAMBIO DE VISTAS -->
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+<script type="module" src="js/admin.js"></script>
+</body>
+</html>
