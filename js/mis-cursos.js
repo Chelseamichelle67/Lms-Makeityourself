@@ -1,4 +1,3 @@
-
 import { db, auth } from './firebase-config.js';
 
 import {
@@ -41,10 +40,13 @@ function porcentaje(completadas, total) {
 }
 
 function actualizarResumen(cursos, completadas, total) {
-    elemento('total-cursos').textContent = cursos;
-    elemento('total-lecciones').textContent = `${completadas} / ${total}`;
-    elemento('avance-general').textContent =
-        `${porcentaje(completadas, total)}%`;
+    const elTotalCursos = elemento('total-cursos');
+    const elTotalLecciones = elemento('total-lecciones');
+    const elAvanceGeneral = elemento('avance-general');
+
+    if (elTotalCursos) elTotalCursos.textContent = cursos;
+    if (elTotalLecciones) elTotalLecciones.textContent = `${completadas} / ${total}`;
+    if (elAvanceGeneral) elAvanceGeneral.textContent = `${porcentaje(completadas, total)}%`;
 }
 
 function mostrarCarga(visible) {
@@ -54,8 +56,11 @@ function mostrarCarga(visible) {
 function mostrarVacio(titulo, descripcion) {
     if (!estadoVacio) return;
 
-    estadoVacio.querySelector('h3').textContent = titulo;
-    estadoVacio.querySelector('p').textContent = descripcion;
+    const h3 = estadoVacio.querySelector('h3');
+    const p = estadoVacio.querySelector('p');
+    
+    if (h3) h3.textContent = titulo;
+    if (p) p.textContent = descripcion;
     estadoVacio.classList.remove('hidden');
 }
 
@@ -257,12 +262,11 @@ async function cargarMisCursos(usuario) {
     mostrarCarga(true);
     ocultarVacio();
 
-    contenedor.innerHTML = '';
-
+    if (contenedor) contenedor.innerHTML = '';
     actualizarResumen(0, 0, 0);
 
     try {
-        // Consultamos las matrículas del estudiante actual.
+        // 1. Consultamos las matrículas del estudiante actual.
         const consultaMatriculas = query(
             collection(db, 'enrollments'),
             where('userId', '==', usuario.uid)
@@ -282,79 +286,83 @@ async function cargarMisCursos(usuario) {
             return;
         }
 
-        // Cargamos únicamente los cursos publicados y sus módulos.
+        // 2. Cargamos cursos, módulos y lecciones de forma segura
         const cursosCargados = await Promise.all(
             matriculas.map(async matricula => {
-                const courseId = matricula.courseId;
+                try {
+                    const courseId = matricula.courseId;
+                    if (!courseId) return null;
 
-                if (!courseId) return null;
+                    const referenciaCurso = doc(db, 'courses', courseId);
+                    const resultadoCurso = await getDoc(referenciaCurso);
 
-                const referenciaCurso = doc(db, 'courses', courseId);
-                const resultadoCurso = await getDoc(referenciaCurso);
+                    if (!resultadoCurso.exists()) return null;
 
-                if (!resultadoCurso.exists()) return null;
+                    const datosCurso = resultadoCurso.data();
+                    if (datosCurso.published !== true) return null;
 
-                const datosCurso = resultadoCurso.data();
+                    const consultaModulos = query(
+                        collection(db, 'courses', courseId, 'modules'),
+                        where('published', '==', true)
+                    );
 
-                if (datosCurso.published !== true) return null;
+                    const resultadoModulos = await getDocs(consultaModulos);
 
-                const consultaModulos = query(
-                    collection(db, 'courses', courseId, 'modules'),
-                    where('published', '==', true)
-                );
+                    const modulos = await Promise.all(
+                        resultadoModulos.docs.map(async documentoModulo => {
+                            try {
+                                const moduloId = documentoModulo.id;
+                                const datosModulo = documentoModulo.data();
 
-                const resultadoModulos = await getDocs(consultaModulos);
+                                const consultaLecciones = query(
+                                    collection(
+                                        db,
+                                        'courses',
+                                        courseId,
+                                        'modules',
+                                        moduloId,
+                                        'lessons'
+                                    ),
+                                    where('published', '==', true)
+                                );
 
-                const modulos = await Promise.all(
-                    resultadoModulos.docs.map(async documentoModulo => {
-                        const moduloId = documentoModulo.id;
-                        const datosModulo = documentoModulo.data();
+                                const resultadoLecciones = await getDocs(consultaLecciones);
 
-                        const consultaLecciones = query(
-                            collection(
-                                db,
-                                'courses',
-                                courseId,
-                                'modules',
-                                moduloId,
-                                'lessons'
-                            ),
-                            where('published', '==', true)
-                        );
+                                const lecciones = resultadoLecciones.docs
+                                    .map(documento => ({
+                                        id: documento.id,
+                                        ...documento.data()
+                                    }))
+                                    .sort((a, b) =>
+                                        (Number(a.order) || 0) -
+                                        (Number(b.order) || 0)
+                                    );
 
-                        const resultadoLecciones = await getDocs(
-                            consultaLecciones
-                        );
+                                return {
+                                    id: moduloId,
+                                    ...datosModulo,
+                                    lecciones,
+                                    completadas: 0
+                                };
+                            } catch (err) {
+                                console.warn(`Error al cargar módulo del curso ${courseId}:`, err);
+                                return null;
+                            }
+                        })
+                    );
 
-                        const lecciones = resultadoLecciones.docs
-                            .map(documento => ({
-                                id: documento.id,
-                                ...documento.data()
-                            }))
-                            .sort((a, b) =>
-                                (Number(a.order) || 0) -
-                                (Number(b.order) || 0)
-                            );
+                    const modulosValidos = modulos.filter(Boolean);
+                    modulosValidos.sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0));
 
-                        return {
-                            id: moduloId,
-                            ...datosModulo,
-                            lecciones,
-                            completadas: 0
-                        };
-                    })
-                );
-
-                modulos.sort((a, b) =>
-                    (Number(a.order) || 0) -
-                    (Number(b.order) || 0)
-                );
-
-                return {
-                    id: courseId,
-                    ...datosCurso,
-                    modulos
-                };
+                    return {
+                        id: courseId,
+                        ...datosCurso,
+                        modulos: modulosValidos
+                    };
+                } catch (err) {
+                    console.warn(`Error al procesar curso para matrícula:`, err);
+                    return null;
+                }
             })
         );
 
@@ -368,13 +376,18 @@ async function cargarMisCursos(usuario) {
             return;
         }
 
-        // Consultamos el progreso del estudiante autenticado.
-        const consultaProgreso = query(
-            collection(db, 'progress'),
-            where('userId', '==', usuario.uid)
-        );
-
-        const resultadoProgreso = await getDocs(consultaProgreso);
+        // 3. Consultamos el progreso del estudiante autenticado.
+        let resultadoProgreso;
+        try {
+            const consultaProgreso = query(
+                collection(db, 'progress'),
+                where('userId', '==', usuario.uid)
+            );
+            resultadoProgreso = await getDocs(consultaProgreso);
+        } catch (err) {
+            console.warn('No se pudo cargar el progreso (posible falta de permisos o colección vacía):', err);
+            resultadoProgreso = { docs: [] };
+        }
 
         const progresoGuardado = new Set();
 
@@ -386,7 +399,6 @@ async function cargarMisCursos(usuario) {
                     `${dato.courseId}_${dato.moduleId}_${dato.lessonId}`
                 );
             } else {
-                // Compatibilidad con registros que tengan el ID anterior.
                 progresoGuardado.add(documento.id);
             }
         });
@@ -399,9 +411,7 @@ async function cargarMisCursos(usuario) {
                 modulo.lecciones.forEach(leccion => {
                     totalLecciones++;
 
-                    const clave =
-                        `${curso.id}_${modulo.id}_${leccion.id}`;
-
+                    const clave = `${curso.id}_${modulo.id}_${leccion.id}`;
                     const idAntiguo = [
                         usuario.uid,
                         curso.id,
@@ -426,25 +436,29 @@ async function cargarMisCursos(usuario) {
             totalLecciones
         );
 
-        contenedor.innerHTML = cursos.map(dibujarCurso).join('');
+        if (contenedor) {
+            contenedor.innerHTML = cursos.map(dibujarCurso).join('');
+        }
 
     } catch (error) {
-        console.error('Error al cargar Mis cursos:', error);
+        console.error('Error crítico al cargar Mis cursos:', error);
 
-        contenedor.innerHTML = `
-            <div class="bg-white rounded-2xl border border-wine-100
-                p-6 text-center">
-                <i class="fa-solid fa-circle-exclamation
-                    text-3xl text-wine-500 mb-3"></i>
-                <p class="font-bold text-wine-900 mb-2">
-                    No pudimos cargar tus cursos
-                </p>
-                <p class="text-sm text-gray-600">
-                    Comprueba tu conexión y vuelve a intentarlo.
-                    Si el problema continúa, revisaremos los permisos de Firebase.
-                </p>
-            </div>
-        `;
+        if (contenedor) {
+            contenedor.innerHTML = `
+                <div class="bg-white rounded-2xl border border-wine-100
+                    p-6 text-center">
+                    <i class="fa-solid fa-circle-exclamation
+                        text-3xl text-wine-500 mb-3"></i>
+                    <p class="font-bold text-wine-900 mb-2">
+                        No pudimos cargar tus cursos
+                    </p>
+                    <p class="text-sm text-gray-600">
+                        Comprueba tu conexión y vuelve a intentarlo.
+                        Detalle del error: ${escaparHTML(error.message)}
+                    </p>
+                </div>
+            `;
+        }
     } finally {
         mostrarCarga(false);
     }
@@ -457,7 +471,7 @@ async function cargarMisCursos(usuario) {
 onAuthStateChanged(auth, usuario => {
     if (!usuario) {
         mostrarCarga(false);
-        contenedor.innerHTML = '';
+        if (contenedor) contenedor.innerHTML = '';
 
         actualizarResumen(0, 0, 0);
 
