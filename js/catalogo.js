@@ -1,4 +1,3 @@
-
 import { db } from './firebase-config.js';
 
 import {
@@ -18,6 +17,15 @@ const imagenesModulos = {
     3: 'https://i.pinimg.com/1200x/10/f2/3e/10f23e1cfdf69aa2f2599b57670d3073.jpg',
     4: 'https://i.pinimg.com/736x/c0/31/6f/c0316f3f1df9d9d7f7968b0c113fd51d.jpg',
     5: 'https://i.pinimg.com/1200x/08/a2/00/08a20051645c8c8f801cb45ce3140ceb.jpg'
+};
+
+// Mapeo exacto del número de módulo a su página HTML independiente estática.
+const paginasModulos = {
+    1: 'modulo-piel.html',
+    2: 'modulo-rostro.html',
+    3: 'modulo-ojos.html',
+    4: 'modulo-labios.html',
+    5: 'modulo-ejercicios.html'
 };
 
 // Categorías para los filtros.
@@ -79,7 +87,7 @@ function obtenerDescripcion(modulo, curso, numero) {
     );
 }
 
-// Crea una tarjeta para cada módulo publicado.
+// Crea una tarjeta para cada módulo publicado apuntando a su página estática limpia.
 function crearTarjeta(cursoId, modulo, descripcion, numero) {
     const categoria = categoriasModulos[numero] || 'otros';
 
@@ -97,9 +105,8 @@ function crearTarjeta(cursoId, modulo, descripcion, numero) {
 
     tarjeta.dataset.categoria = categoria;
 
-    const enlaceModulo =
-        `curso.html?courseId=${encodeURIComponent(cursoId)}` +
-        `&moduleId=${encodeURIComponent(modulo.id)}`;
+    // Asigna la página HTML independiente estática correspondiente
+    const enlaceModulo = paginasModulos[numero] || 'curso-completo.html';
 
     tarjeta.innerHTML = `
         <div>
@@ -220,7 +227,6 @@ async function cargarModulos() {
                     modulo.order
                 );
 
-                // No consultamos la subcolección lessons.
                 const descripcion = obtenerDescripcion(
                     modulo,
                     curso,
@@ -262,7 +268,7 @@ async function cargarModulos() {
 // Muestra un mensaje cuando no hay resultados o sucede un error.
 function mostrarEstado(mensaje) {
     cursosGrid.innerHTML = '';
-    estadoCursos.classList.remove('hidden');
+    estadoCursos.classList.add('hidden'); // Oculta el spinner si hay error textual limpio
     estadoCursos.textContent = mensaje;
 }
 

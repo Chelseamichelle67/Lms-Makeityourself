@@ -2,10 +2,10 @@ const cursosData = [
     {
         id: 1,
         titulo: "Curso Completo de Automaquillaje",
-        subtitulo: "+ Elección de Productos",
+        subtitulo: "+ Todos los Módulos Incluidos",
         categoria: "Cursos Completos con Certificado",
         nivel: "Más Vendido",
-        descripcionPill: "Elige tus productos ideales y aprende a maquillarte",
+        descripcionPill: "Aprende desde la preparación de piel hasta acabados profesionales",
         detalles: [
             "5 a 6 Horas",
             "Módulos paso a paso",
@@ -13,7 +13,8 @@ const cursosData = [
         ],
         precioRegular: "$129.000 COP",
         precioActual: "$89.000 COP",
-        imagen: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80"
+        imagen: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80",
+        enlace: "curso-completo.html"
     },
     {
         id: 2,
@@ -27,14 +28,15 @@ const cursosData = [
             "Descuentos Especiales",
             "Certificado Digital"
         ],
-        precioRegular: "",
-        precioActual: "$39.000 COP",
-        imagen: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=600&q=80"
+        precioRegular: "$39.000 COP",
+        precioActual: "$17.800 COP",
+        imagen: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=600&q=80",
+        enlace: "modulo-piel.html"
     },
     {
         id: 3,
         titulo: "Rostro Impecable",
-        subtitulo: "+ Elige el Tono Ideal Según tu Colormetría",
+        subtitulo: "+ Elige el Tono Ideal Según tu Colorimetría",
         categoria: "Automaquillaje Básico",
         nivel: "Principiante",
         descripcionPill: "Aplicación Progresiva Paso a Paso de Bases y Correctores",
@@ -43,9 +45,10 @@ const cursosData = [
             "Descuentos Especiales",
             "Certificado Digital"
         ],
-        precioRegular: "",
-        precioActual: "$49.000 COP",
-        imagen: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80"
+        precioRegular: "$49.000 COP",
+        precioActual: "$17.800 COP",
+        imagen: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80",
+        enlace: "modulo-rostro.html"
     },
     {
         id: 4,
@@ -53,15 +56,16 @@ const cursosData = [
         subtitulo: "+ Delineados y Sombras para Eventos",
         categoria: "Técnicas Específicas (Ojos / Rostro)",
         nivel: "Intermedio",
-        descripcionPill: "Aplicación de Sombras para el Día y Día",
+        descripcionPill: "Aplicación de Sombras para el Día y la Noche",
         detalles: [
             "2 Horas",
             "Descuentos Especiales",
             "Certificado Digital"
         ],
-        precioRegular: "",
-        precioActual: "$49.000 COP",
-        imagen: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=600&q=80"
+        precioRegular: "$49.000 COP",
+        precioActual: "$17.800 COP",
+        imagen: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=600&q=80",
+        enlace: "modulo-ojos.html"
     },
     {
         id: 5,
@@ -75,9 +79,10 @@ const cursosData = [
             "Descuentos Especiales",
             "Certificado Digital"
         ],
-        precioRegular: "",
-        precioActual: "$39.000 COP",
-        imagen: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=600&q=80"
+        precioRegular: "$39.000 COP",
+        precioActual: "$17.800 COP",
+        imagen: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=600&q=80",
+        enlace: "modulo-labios.html"
     },
     {
         id: 6,
@@ -91,9 +96,10 @@ const cursosData = [
             "Descuentos Especiales",
             "Certificado Digital"
         ],
-        precioRegular: "",
-        precioActual: "$29.000 COP",
-        imagen: "https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=600&q=80"
+        precioRegular: "$29.000 COP",
+        precioActual: "$17.800 COP",
+        imagen: "https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=600&q=80",
+        enlace: "modulo-ejercicios.html"
     }
 ];
 
@@ -132,8 +138,8 @@ function renderCursos(categoriaFiltro = "todos") {
                         ${curso.precioRegular ? `<span class="precio-regular">Precio Regular: ${curso.precioRegular}</span>` : ''}
                         <span class="precio-actual">${curso.precioActual}</span>
                     </div>
-                    <!-- BOTÓN "Detalles de curso" -->
-                    <a href="curso.html?id=${curso.id}" class="btn-detalles-card">Detalles de curso</a>
+                    <!-- Enlace directo a la página HTML independiente de cada módulo/curso -->
+                    <a href="${curso.enlace}" class="btn-detalles-card">Detalles de curso</a>
                 </div>
             </div>
         `;

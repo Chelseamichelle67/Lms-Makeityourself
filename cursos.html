@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es" class="scroll-smooth">
 <head>
@@ -45,7 +44,6 @@
     </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -75,14 +73,12 @@
 
     <!-- HEADER -->
     <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-wine-100 shadow-sm">
-
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
 
             <a href="index.html" class="flex flex-col group text-left">
                 <span class="text-[10px] sm:text-xs font-semibold tracking-widest text-wine-500 uppercase">
                     Make It
                 </span>
-
                 <span class="text-xl sm:text-2xl font-bold tracking-tight text-wine-700 font-serif -mt-1 group-hover:text-wine-900 transition-colors">
                     YOURSELF
                 </span>
@@ -92,19 +88,15 @@
                 <a href="cursos.html" class="text-wine-700 font-semibold border-b-2 border-wine-700 pb-1">
                     Módulos
                 </a>
-
                 <a href="index.html#clase-gratis" class="hover:text-wine-700 transition-colors">
                     ¡Probar Clase!
                 </a>
-
                 <a href="index.html#nosotros" class="hover:text-wine-700 transition-colors">
                     Nosotros
                 </a>
-
                 <a href="index.html#testimonios" class="hover:text-wine-700 transition-colors">
                     Testimonios
                 </a>
-
                 <a href="index.html#faq" class="hover:text-wine-700 transition-colors">
                     Ayuda
                 </a>
@@ -123,7 +115,6 @@
 
         <!-- MENÚ MÓVIL -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-wine-100 px-6 py-4 space-y-3 shadow-lg">
-
             <a href="cursos.html" class="block text-wine-700 font-semibold py-1">Módulos</a>
             <a href="index.html#clase-gratis" class="block text-gray-700 py-1">¡Probar Clase!</a>
             <a href="index.html#nosotros" class="block text-gray-700 py-1">Nosotros</a>
@@ -140,9 +131,7 @@
 
     <!-- BANNER -->
     <section class="relative pt-32 pb-16 lg:pt-40 lg:pb-20 overflow-hidden bg-gradient-to-b from-wine-100/60 via-wine-50 to-white text-center">
-
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-
             <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest">
                 Plan de Estudio Oficial
             </span>
@@ -159,66 +148,257 @@
 
     <!-- FILTROS -->
     <section class="py-6 bg-white border-y border-wine-100 sticky top-20 z-40">
-
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
             <div class="flex items-center justify-start md:justify-center overflow-x-auto pb-2 gap-3">
-
                 <button type="button" onclick="filtrarCursos('todos', this)" class="filtro-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold bg-wine-700 text-white shadow-sm whitespace-nowrap">
                     Todos los módulos
                 </button>
-
                 <button type="button" onclick="filtrarCursos('piel', this)" class="filtro-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold bg-wine-50 text-wine-700 hover:bg-wine-100 whitespace-nowrap">
                     Preparación de piel
                 </button>
-
                 <button type="button" onclick="filtrarCursos('rostro', this)" class="filtro-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold bg-wine-50 text-wine-700 hover:bg-wine-100 whitespace-nowrap">
                     Rostro
                 </button>
-
                 <button type="button" onclick="filtrarCursos('ojos', this)" class="filtro-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold bg-wine-50 text-wine-700 hover:bg-wine-100 whitespace-nowrap">
                     Ojos
                 </button>
-
                 <button type="button" onclick="filtrarCursos('labios', this)" class="filtro-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold bg-wine-50 text-wine-700 hover:bg-wine-100 whitespace-nowrap">
                     Labios
                 </button>
-
-                <button type="button" onclick="filtrarCursos('noche', this)" class="filtro-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold bg-wine-50 text-wine-700 hover:bg-wine-100 whitespace-nowrap">
-                    Día a noche
+                <button type="button" onclick="filtrarCursos('completo', this)" class="filtro-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold bg-wine-50 text-wine-700 hover:bg-wine-100 whitespace-nowrap">
+                    Curso Completo
                 </button>
-
             </div>
         </div>
     </section>
 
-    <!-- MÓDULOS CARGADOS DESDE FIREBASE -->
+    <!-- GRID DE MÓDULOS (ESTÁTICO CON TUS IMÁGENES ORIGINALES) -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div id="cursosGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-        <div id="estadoCursos" class="text-center text-gray-600 py-12">
-            <i class="fa-solid fa-spinner fa-spin text-wine-700 text-3xl mb-4"></i>
-            <p>Cargando módulos...</p>
+            <!-- TARJETA 1: PREPARACIÓN DE PIEL -->
+            <article class="curso-card bg-white rounded-3xl overflow-hidden border border-wine-100 shadow-sm hover:shadow-xl hover:border-wine-300 transition-all flex flex-col justify-between" data-categoria="piel">
+                <div>
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://i.pinimg.com/736x/0c/ca/ef/0ccaef8a34d24ecf4cb8e95c198fe3cf.jpg" alt="Preparación de Piel" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy">
+                        <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                            Módulo 01
+                        </span>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs font-semibold text-wine-500 uppercase tracking-wider">
+                            Preparación de Piel
+                        </span>
+                        <h3 class="text-xl font-bold text-wine-900 mt-2 mb-2 serif-font">
+                            Preparación de la Piel
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Aprende a identificar tu tipo de piel y seleccionar la rutina de preparación perfecta para un acabado impecable.
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-wine-50 flex items-center justify-between">
+                            <span class="text-xs text-gray-400 line-through">$39.000 COP</span>
+                            <span class="text-lg font-bold text-wine-700">$17.800 COP</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 pt-0 flex items-center justify-between gap-3">
+                    <a href="modulo-piel.html" class="flex-1 text-center py-2.5 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 text-xs font-bold transition-colors">
+                        Ver módulo
+                    </a>
+                    <a href="registro.html" class="flex-1 text-center py-2.5 rounded-xl custom-gradient text-white text-xs font-bold shadow-md hover:opacity-95 transition-all">
+                        Inscribirme
+                    </a>
+                </div>
+            </article>
+
+            <!-- TARJETA 2: ROSTRO -->
+            <article class="curso-card bg-white rounded-3xl overflow-hidden border border-wine-100 shadow-sm hover:shadow-xl hover:border-wine-300 transition-all flex flex-col justify-between" data-categoria="rostro">
+                <div>
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://i.pinimg.com/1200x/5d/7b/c6/5d7bc6405ebc0d2b3d83e5e3f54d0037.jpg" alt="Rostro Impecable" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy">
+                        <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                            Módulo 02
+                        </span>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs font-semibold text-wine-500 uppercase tracking-wider">
+                            Rostro Impecable
+                        </span>
+                        <h3 class="text-xl font-bold text-wine-900 mt-2 mb-2 serif-font">
+                            Rostro Impecable
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Aprende técnicas para aplicar bases, correctores, contornos y dar dimensión profesional al rostro.
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-wine-50 flex items-center justify-between">
+                            <span class="text-xs text-gray-400 line-through">$49.000 COP</span>
+                            <span class="text-lg font-bold text-wine-700">$17.800 COP</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 pt-0 flex items-center justify-between gap-3">
+                    <a href="modulo-rostro.html" class="flex-1 text-center py-2.5 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 text-xs font-bold transition-colors">
+                        Ver módulo
+                    </a>
+                    <a href="registro.html" class="flex-1 text-center py-2.5 rounded-xl custom-gradient text-white text-xs font-bold shadow-md hover:opacity-95 transition-all">
+                        Inscribirme
+                    </a>
+                </div>
+            </article>
+
+            <!-- TARJETA 3: OJOS -->
+            <article class="curso-card bg-white rounded-3xl overflow-hidden border border-wine-100 shadow-sm hover:shadow-xl hover:border-wine-300 transition-all flex flex-col justify-between" data-categoria="ojos">
+                <div>
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://i.pinimg.com/1200x/10/f2/3e/10f23e1cfdf69aa2f2599b57670d3073.jpg" alt="Ojos y Mirada" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy">
+                        <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                            Módulo 03
+                        </span>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs font-semibold text-wine-500 uppercase tracking-wider">
+                            Ojos y Mirada
+                        </span>
+                        <h3 class="text-xl font-bold text-wine-900 mt-2 mb-2 serif-font">
+                            Técnicas de Ojos
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Explora técnicas de sombreado, delineados según tu tipo de párpado y diseño de cejas.
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-wine-50 flex items-center justify-between">
+                            <span class="text-xs text-gray-400 line-through">$49.000 COP</span>
+                            <span class="text-lg font-bold text-wine-700">$17.800 COP</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 pt-0 flex items-center justify-between gap-3">
+                    <a href="modulo-ojos.html" class="flex-1 text-center py-2.5 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 text-xs font-bold transition-colors">
+                        Ver módulo
+                    </a>
+                    <a href="registro.html" class="flex-1 text-center py-2.5 rounded-xl custom-gradient text-white text-xs font-bold shadow-md hover:opacity-95 transition-all">
+                        Inscribirme
+                    </a>
+                </div>
+            </article>
+
+            <!-- TARJETA 4: LABIOS -->
+            <article class="curso-card bg-white rounded-3xl overflow-hidden border border-wine-100 shadow-sm hover:shadow-xl hover:border-wine-300 transition-all flex flex-col justify-between" data-categoria="labios">
+                <div>
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://i.pinimg.com/736x/c0/31/6f/c0316f3f1df9d9d7f7968b0c113fd51d.jpg" alt="Acabados y Labios" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy">
+                        <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                            Módulo 04
+                        </span>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs font-semibold text-wine-500 uppercase tracking-wider">
+                            Acabados & Labios
+                        </span>
+                        <h3 class="text-xl font-bold text-wine-900 mt-2 mb-2 serif-font">
+                            Acabados y Labios
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Conoce cómo delinear, rellenar y fijar tus labiales para lograr acabados duraderos y armoniosos.
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-wine-50 flex items-center justify-between">
+                            <span class="text-xs text-gray-400 line-through">$39.000 COP</span>
+                            <span class="text-lg font-bold text-wine-700">$17.800 COP</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 pt-0 flex items-center justify-between gap-3">
+                    <a href="modulo-labios.html" class="flex-1 text-center py-2.5 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 text-xs font-bold transition-colors">
+                        Ver módulo
+                    </a>
+                    <a href="registro.html" class="flex-1 text-center py-2.5 rounded-xl custom-gradient text-white text-xs font-bold shadow-md hover:opacity-95 transition-all">
+                        Inscribirme
+                    </a>
+                </div>
+            </article>
+
+            <!-- TARJETA 5: EJERCICIOS -->
+            <article class="curso-card bg-white rounded-3xl overflow-hidden border border-wine-100 shadow-sm hover:shadow-xl hover:border-wine-300 transition-all flex flex-col justify-between" data-categoria="rostro">
+                <div>
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://i.pinimg.com/1200x/08/a2/00/08a20051645c8c8f801cb45ce3140ceb.jpg" alt="Ejercicios Prácticos" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy">
+                        <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                            Módulo 05
+                        </span>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs font-semibold text-wine-500 uppercase tracking-wider">
+                            Práctica Guiada
+                        </span>
+                        <h3 class="text-xl font-bold text-wine-900 mt-2 mb-2 serif-font">
+                            Ejercicios Prácticos
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Practica paso a paso con rutinas en video para consolidar todo lo aprendido en los módulos.
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-wine-50 flex items-center justify-between">
+                            <span class="text-xs text-gray-400 line-through">$29.000 COP</span>
+                            <span class="text-lg font-bold text-wine-700">$17.800 COP</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 pt-0 flex items-center justify-between gap-3">
+                    <a href="modulo-ejercicios.html" class="flex-1 text-center py-2.5 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 text-xs font-bold transition-colors">
+                        Ver módulo
+                    </a>
+                    <a href="registro.html" class="flex-1 text-center py-2.5 rounded-xl custom-gradient text-white text-xs font-bold shadow-md hover:opacity-95 transition-all">
+                        Inscribirme
+                    </a>
+                </div>
+            </article>
+
+            <!-- TARJETA 6: CURSO COMPLETO -->
+            <article class="curso-card bg-white rounded-3xl overflow-hidden border-2 border-wine-500 shadow-md hover:shadow-xl transition-all flex flex-col justify-between" data-categoria="completo">
+                <div>
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=85" alt="Curso Completo" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy">
+                        <span class="absolute top-4 left-4 bg-gold-500 text-wine-900 text-xs font-extrabold px-3 py-1 rounded-full shadow-md uppercase">
+                            Más Vendido • Todos los Módulos
+                        </span>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs font-bold text-wine-700 uppercase tracking-wider">
+                            Paquete Completo
+                        </span>
+                        <h3 class="text-xl font-bold text-wine-900 mt-2 mb-2 serif-font">
+                            Curso Completo de Automaquillaje
+                        </h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Incluye los 5 módulos especializados: Piel, Rostro, Ojos, Labios y Ejercicios + Certificado Digital.
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-wine-50 flex items-center justify-between">
+                            <span class="text-xs text-gray-400 line-through">$129.000 COP</span>
+                            <span class="text-xl font-extrabold text-wine-700">$89.000 COP</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 pt-0 flex items-center justify-between gap-3">
+                    <a href="curso-completo.html" class="flex-1 text-center py-2.5 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 text-xs font-bold transition-colors">
+                        Ver curso
+                    </a>
+                    <a href="registro.html" class="flex-1 text-center py-2.5 rounded-xl custom-gradient text-white text-xs font-bold shadow-md hover:opacity-95 transition-all">
+                        Inscribirme
+                    </a>
+                </div>
+            </article>
+
         </div>
-
-        <div id="cursosGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" aria-live="polite">
-        </div>
-
     </main>
 
     <!-- FOOTER -->
     <footer id="inscripcion" class="bg-wine-900 text-white pt-20 pb-12 relative overflow-hidden">
-
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
-
                 <div class="lg:col-span-6 space-y-6">
-
                     <div class="flex flex-col text-left">
                         <span class="text-xs font-semibold tracking-widest text-blush-500 uppercase">
                             Make It
                         </span>
-
                         <span class="text-3xl font-bold tracking-tight text-white font-serif -mt-1">
                             YOURSELF
                         </span>
@@ -233,7 +413,6 @@
                             <i class="fa-solid fa-envelope text-blush-500"></i>
                             contacto@makeityourself.com
                         </p>
-
                         <p class="flex items-center gap-3">
                             <i class="fa-solid fa-phone text-blush-500"></i>
                             +57 (300) 123-4567
@@ -242,7 +421,6 @@
                 </div>
 
                 <div class="lg:col-span-6 bg-white rounded-3xl p-8 sm:p-10 text-gray-900 shadow-2xl border border-wine-500/20 text-center">
-
                     <span class="bg-wine-100 text-wine-700 text-xs font-bold uppercase px-3 py-1 rounded-full">
                         Acceso a la plataforma
                     </span>
@@ -262,9 +440,7 @@
             </div>
 
             <div class="flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 pt-8 border-t border-white/10">
-
                 <p>&copy; 2026 Make It Yourself. Todos los derechos reservados.</p>
-
                 <div class="flex space-x-6 mt-4 sm:mt-0">
                     <a href="index.html" class="hover:text-white">Inicio</a>
                     <a href="cursos.html" class="hover:text-white">Módulos</a>
@@ -273,7 +449,7 @@
         </div>
     </footer>
 
-    <!-- MENÚ MÓVIL -->
+    <!-- SCRIPT SENCILLO PARA MENÚ Y FILTROS -->
     <script>
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -281,15 +457,27 @@
         menuBtn.addEventListener('click', () => {
             const estaCerrado = mobileMenu.classList.toggle('hidden');
             menuBtn.setAttribute('aria-expanded', String(!estaCerrado));
-            menuBtn.setAttribute(
-                'aria-label',
-                estaCerrado ? 'Abrir menú' : 'Cerrar menú'
-            );
         });
+
+        function filtrarCursos(categoria, boton) {
+            document.querySelectorAll('.filtro-btn').forEach(btn => {
+                btn.classList.remove('bg-wine-700', 'text-white', 'shadow-sm');
+                btn.classList.add('bg-wine-50', 'text-wine-700');
+            });
+
+            if (boton) {
+                boton.classList.remove('bg-wine-50', 'text-wine-700');
+                boton.classList.add('bg-wine-700', 'text-white', 'shadow-sm');
+            }
+
+            document.querySelectorAll('.curso-card').forEach(card => {
+                if (categoria === 'todos' || card.dataset.categoria === categoria) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
     </script>
-
-    <!-- CONEXIÓN CON FIREBASE -->
-    <script type="module" src="js/catalogo.js"></script>
-
 </body>
 </html>

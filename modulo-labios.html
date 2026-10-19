@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acabados & Labios | Make It Yourself</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wine: { 50: '#fcf2f4', 100: '#f8e4e7', 200: '#f1c8ce', 300: '#e5a1ab', 500: '#a3283c', 700: '#721422', 900: '#520e18' },
+                        blush: { 100: '#fbe9eb', 200: '#f5d5d8', 500: '#e08a95' },
+                        gold: { 500: '#eab308' }
+                    },
+                    fontFamily: { sans: ['Montserrat', 'sans-serif'], serif: ['Playfair Display', 'serif'] }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #fcf2f4; color: #2d1519; }
+        .serif-font { font-family: 'Playfair Display', serif; }
+        .custom-gradient { background: linear-gradient(135deg, #721422 0%, #a3283c 50%, #520e18 100%); }
+    </style>
+</head>
+<body class="bg-wine-50 antialiased">
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-wine-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex flex-col group text-left">
+                <span class="text-[10px] sm:text-xs font-semibold tracking-widest text-wine-500 uppercase">Make It</span>
+                <span class="text-xl sm:text-2xl font-bold tracking-tight text-wine-700 font-serif -mt-1 group-hover:text-wine-900 transition-colors">YOURSELF</span>
+            </a>
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-700">
+                <a href="cursos.html" class="text-wine-700 font-semibold border-b-2 border-wine-700 pb-1">Módulos</a>
+                <a href="index.html#clase-gratis" class="hover:text-wine-700 transition-colors">¡Probar Clase!</a>
+            </nav>
+            <a href="#checkout" class="px-6 py-2.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-all">Inscribirme</a>
+        </div>
+    </header>
+
+    <main class="pt-32 pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+            <div class="space-y-6">
+                <span class="bg-wine-100 text-wine-700 text-xs font-bold uppercase px-3 py-1 rounded-full">Módulo 04 Individual</span>
+                <h1 class="text-4xl sm:text-5xl font-extrabold text-wine-900 serif-font">Acabados & Labios</h1>
+                <p class="text-gray-600 text-base leading-relaxed">Conoce los secretos para elegir labiales de larga duración, aplicarlos correctamente y sellar tu maquillaje para que permanezca intacto todo el día.</p>
+                <div class="flex items-center gap-4 text-sm text-gray-500">
+                    <span><i class="fa-solid fa-clock text-wine-500 mr-2"></i>1 Hora</span>
+                    <span><i class="fa-solid fa-certificate text-wine-500 mr-2"></i>Certificado Digital</span>
+                </div>
+            </div>
+            <div class="rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+                <img src="https://i.pinimg.com/736x/c0/31/6f/c0316f3f1df9d9d7f7968b0c113fd51d.jpg" alt="Acabados y Labios" class="w-full h-96 object-cover hover:scale-105 transition-transform duration-500">
+            </div>
+        </div>
+
+        <section class="bg-white rounded-3xl p-8 sm:p-12 shadow-xl border border-wine-100 mb-16">
+            <h2 class="text-2xl font-bold text-wine-900 serif-font mb-6">Temario del Módulo</h2>
+            <div class="border border-wine-100 rounded-2xl overflow-hidden">
+                <button onclick="toggleAcordeon(this)" class="w-full flex justify-between items-center p-5 bg-wine-50/50 hover:bg-wine-100/50 font-bold text-wine-900 text-left">
+                    <span>Lecciones del Módulo 4</span>
+                    <i class="fa-solid fa-chevron-down transition-transform duration-300"></i>
+                </button>
+                <div class="p-5 bg-white space-y-3 text-gray-600 text-sm">
+                    <p class="flex items-center gap-2"><i class="fa-solid fa-check text-wine-500"></i> Lección 4.1: Elección de labiales de larga duración.</p>
+                    <p class="flex items-center gap-2"><i class="fa-solid fa-check text-wine-500"></i> Lección 4.2: Aplicación de rubor y sellado final.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="checkout" class="bg-gradient-to-br from-wine-900 to-wine-700 rounded-3xl p-8 sm:p-12 text-white shadow-2xl text-center max-w-3xl mx-auto">
+            <span class="bg-blush-500/20 text-blush-200 text-xs font-bold uppercase px-3 py-1 rounded-full">Oferta Especial de Módulo</span>
+            <div class="my-6">
+                <span class="text-gray-300 line-through text-lg mr-3">$39.000 COP</span>
+                <span class="text-4xl sm:text-5xl font-extrabold text-white">$17.800 COP</span>
+            </div>
+          <a href="comprar.html?curso=Preparacion%20de%20Piel&precio=17.800" class="block w-full py-4 rounded-xl bg-white text-wine-900 font-extrabold text-base shadow-lg hover:bg-wine-50 transition-all text-center">
+    ¡Comprar Módulo Ahora!
+</a>
+            <p class="text-xs text-wine-200">Pago 100% seguro | Acceso digital inmediato</p>
+        </section>
+    </main>
+
+    <footer class="bg-wine-900 text-white py-8 text-center text-xs text-gray-400 mt-20">
+        <p>&copy; 2026 Make It Yourself. Todos los derechos reservados.</p>
+    </footer>
+    <script>
+        function toggleAcordeon(btn) {
+            const content = btn.nextElementSibling;
+            const icon = btn.querySelector('.fa-chevron-down');
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+    </script>
+</body>
+</html>

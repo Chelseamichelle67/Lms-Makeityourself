@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscripción y Pago | Make It Yourself</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wine: { 50: '#fcf2f4', 100: '#f8e4e7', 200: '#f1c8ce', 300: '#e5a1ab', 500: '#a3283c', 700: '#721422', 900: '#520e18' },
+                        blush: { 100: '#fbe9eb', 200: '#f5d5d8', 500: '#e08a95' },
+                        gold: { 500: '#eab308' }
+                    },
+                    fontFamily: { sans: ['Montserrat', 'sans-serif'], serif: ['Playfair Display', 'serif'] }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #fcf2f4; color: #2d1519; }
+        .serif-font { font-family: 'Playfair Display', serif; }
+        .custom-gradient { background: linear-gradient(135deg, #721422 0%, #a3283c 50%, #520e18 100%); }
+    </style>
+</head>
+<body class="bg-wine-50 antialiased">
+    <!-- HEADER -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-wine-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex flex-col group text-left">
+                <span class="text-[10px] sm:text-xs font-semibold tracking-widest text-wine-500 uppercase">Make It</span>
+                <span class="text-xl sm:text-2xl font-bold tracking-tight text-wine-700 font-serif -mt-1 group-hover:text-wine-900 transition-colors">YOURSELF</span>
+            </a>
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-700">
+                <a href="cursos.html" class="hover:text-wine-700 transition-colors">Módulos</a>
+                <a href="index.html#clase-gratis" class="hover:text-wine-700 transition-colors">¡Probar Clase!</a>
+            </nav>
+            <a href="cursos.html" class="text-sm font-semibold text-wine-700 hover:text-wine-900 transition-colors">
+                <i class="fa-solid fa-arrow-left mr-2"></i>Volver al catálogo
+            </a>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="pt-32 pb-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest">Plataforma de Pago Seguro</span>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-wine-900 serif-font mt-2">Completa tu Inscripción</h1>
+            <p class="text-gray-600 mt-2 text-sm sm:text-base">Estás a un paso de acceder a tu contenido digital.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- FORMULARIO DE DATOS -->
+            <div class="lg:col-span-7 bg-white rounded-3xl p-8 shadow-xl border border-wine-100">
+                <h2 class="text-xl font-bold text-wine-900 serif-font mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-user-pen text-wine-500"></i> Tus Datos Personales
+                </h2>
+                
+                <form id="formCheckout" class="space-y-5">
+                    <div>
+                        <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-2">Nombre Completo</label>
+                        <input type="text" id="inputNombre" required placeholder="Ej. Chelsea Pertuz" class="w-full px-4 py-3 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-wine-50/30">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-2">Correo Electrónico (Para enviar tu acceso)</label>
+                        <input type="email" id="inputEmail" required placeholder="tucorreo@email.com" class="w-full px-4 py-3 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-wine-50/30">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-2">Número de Celular / WhatsApp</label>
+                        <input type="tel" id="inputTelefono" required placeholder="+57 300 1234567" class="w-full px-4 py-3 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-wine-50/30">
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit" id="btnPagar" class="w-full py-4 rounded-xl text-white font-extrabold text-sm custom-gradient shadow-lg hover:opacity-95 transition-all text-center">
+                            Proceder al Pago Seguro
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- RESUMEN DE COMPRA DINÁMICO -->
+            <div class="lg:col-span-5 bg-gradient-to-br from-wine-900 to-wine-700 text-white rounded-3xl p-8 shadow-xl">
+                <h3 class="text-xl font-bold serif-font mb-6 border-b border-white/10 pb-4">Resumen de tu Orden</h3>
+                
+                <div class="mb-6">
+                    <span class="text-xs text-wine-200 uppercase tracking-wider font-bold">Curso / Módulo Seleccionado:</span>
+                    <h4 id="lblNombreCurso" class="text-lg font-bold text-white mt-1">Cargando selección...</h4>
+                </div>
+
+                <div class="space-y-4 text-sm text-wine-100 mb-8 border-t border-white/10 pt-4">
+                    <div class="flex justify-between">
+                        <span>Acceso a plataforma</span>
+                        <span class="font-semibold text-white">Inmediato</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Formato</span>
+                        <span class="font-semibold text-white">100% Digital en HD</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Garantía</span>
+                        <span class="font-semibold text-white">7 Días</span>
+                    </div>
+                </div>
+
+                <div class="bg-white/10 rounded-2xl p-5 mb-8 border border-white/10 flex justify-between items-center">
+                    <span class="font-bold text-sm">Total a pagar:</span>
+                    <span id="lblPrecioTotal" class="text-2xl font-extrabold text-gold-400">$17.800 COP</span>
+                </div>
+
+                <div class="space-y-3 text-xs text-wine-200">
+                    <p class="flex items-center gap-2"><i class="fa-solid fa-lock text-gold-400"></i> Transacción cifrada y protegida.</p>
+                    <p class="flex items-center gap-2"><i class="fa-solid fa-headset text-gold-400"></i> Soporte personalizado vía WhatsApp.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-wine-900 text-white py-8 text-center text-xs text-gray-400 border-t border-white/10">
+        <p>&copy; 2026 Make It Yourself. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- SCRIPT EXTERNO DE COMPRA -->
+    <script src="js/compra.js"></script>
+</body>
+</html>
