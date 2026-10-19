@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscripción y Pago | Make It Yourself</title>
+    <title>Pasarela de Pago | Make It Yourself</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -35,10 +35,6 @@
                 <span class="text-[10px] sm:text-xs font-semibold tracking-widest text-wine-500 uppercase">Make It</span>
                 <span class="text-xl sm:text-2xl font-bold tracking-tight text-wine-700 font-serif -mt-1 group-hover:text-wine-900 transition-colors">YOURSELF</span>
             </a>
-            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-700">
-                <a href="cursos.html" class="hover:text-wine-700 transition-colors">Módulos</a>
-                <a href="index.html#clase-gratis" class="hover:text-wine-700 transition-colors">¡Probar Clase!</a>
-            </nav>
             <a href="cursos.html" class="text-sm font-semibold text-wine-700 hover:text-wine-900 transition-colors">
                 <i class="fa-solid fa-arrow-left mr-2"></i>Volver al catálogo
             </a>
@@ -48,38 +44,107 @@
     <!-- MAIN CONTAINER -->
     <main class="pt-32 pb-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-2xl mx-auto mb-12">
-            <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest">Plataforma de Pago Seguro</span>
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-wine-900 serif-font mt-2">Completa tu Inscripción</h1>
-            <p class="text-gray-600 mt-2 text-sm sm:text-base">Estás a un paso de acceder a tu contenido digital.</p>
+            <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest"><i class="fa-solid fa-shield-halved mr-1"></i> Checkout Seguro</span>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-wine-900 serif-font mt-2">Finaliza tu Compra</h1>
+            <p class="text-gray-600 mt-2 text-sm sm:text-base">Elige tu método de pago preferido e ingresa tus datos.</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            <!-- FORMULARIO DE DATOS -->
+            <!-- FORMULARIO DE PAGO -->
             <div class="lg:col-span-7 bg-white rounded-3xl p-8 shadow-xl border border-wine-100">
-                <h2 class="text-xl font-bold text-wine-900 serif-font mb-6 flex items-center gap-2">
-                    <i class="fa-solid fa-user-pen text-wine-500"></i> Tus Datos Personales
-                </h2>
-                
-                <form id="formCheckout" class="space-y-5">
+                <form id="formCheckout" class="space-y-6">
+                    
+                    <!-- PASO 1: DATOS PERSONALES -->
                     <div>
-                        <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-2">Nombre Completo</label>
-                        <input type="text" id="inputNombre" required placeholder="Ej. Chelsea Pertuz" class="w-full px-4 py-3 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-wine-50/30">
+                        <h2 class="text-lg font-bold text-wine-900 serif-font mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-user-circle text-wine-500"></i> 1. Tus Datos Personales
+                        </h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-1">Nombre Completo</label>
+                                <input type="text" id="inputNombre" required placeholder="Ej. Chelsea Pertuz" class="w-full px-4 py-3 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-wine-50/30">
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-1">Correo Electrónico</label>
+                                    <input type="email" id="inputEmail" required placeholder="tucorreo@email.com" class="w-full px-4 py-3 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-wine-50/30">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-1">Celular / WhatsApp</label>
+                                    <input type="tel" id="inputTelefono" required placeholder="+57 300 1234567" class="w-full px-4 py-3 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-wine-50/30">
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
+                    <hr class="border-wine-100">
+
+                    <!-- PASO 2: MÉTODO DE PAGO -->
                     <div>
-                        <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-2">Correo Electrónico (Para enviar tu acceso)</label>
-                        <input type="email" id="inputEmail" required placeholder="tucorreo@email.com" class="w-full px-4 py-3 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-wine-50/30">
+                        <h2 class="text-lg font-bold text-wine-900 serif-font mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-credit-card text-wine-500"></i> 2. Método de Pago
+                        </h2>
+                        
+                        <!-- Pestañas de métodos -->
+                        <div class="grid grid-cols-3 gap-3 mb-5">
+                            <button type="button" onclick="cambiarMetodo('tarjeta')" id="btnTabTarjeta" class="py-3 px-3 rounded-xl border-2 border-wine-500 bg-wine-50 text-wine-900 font-bold text-xs flex flex-col items-center gap-1 transition-all">
+                                <i class="fa-solid fa-credit-card text-base text-wine-700"></i> Tarjeta
+                            </button>
+                            <button type="button" onclick="cambiarMetodo('pse')" id="btnTabPse" class="py-3 px-3 rounded-xl border-2 border-gray-200 bg-white text-gray-600 font-bold text-xs flex flex-col items-center gap-1 transition-all">
+                                <i class="fa-solid fa-building-columns text-base"></i> PSE / Banco
+                            </button>
+                            <button type="button" onclick="cambiarMetodo('nequi')" id="btnTabNequi" class="py-3 px-3 rounded-xl border-2 border-gray-200 bg-white text-gray-600 font-bold text-xs flex flex-col items-center gap-1 transition-all">
+                                <i class="fa-solid fa-mobile-screen-button text-base"></i> Nequi / Daviplata
+                            </button>
+                        </div>
+
+                        <!-- CONTENEDOR TARJETA DE CRÉDITO / DÉBITO -->
+                        <div id="seccionTarjeta" class="space-y-4 bg-wine-50/50 p-5 rounded-2xl border border-wine-100">
+                            <div>
+                                <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-1">Número de Tarjeta</label>
+                                <div class="relative">
+                                    <input type="text" id="inputNumTarjeta" maxlength="19" placeholder="4532 •••• •••• 8920" class="w-full px-4 py-3 pl-12 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-white">
+                                    <i class="fa-solid fa-credit-card absolute left-4 top-3.5 text-wine-400"></i>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-1">Vencimiento (MM/AA)</label>
+                                    <input type="text" id="inputExpiracion" maxlength="5" placeholder="12/28" class="w-full px-4 py-3 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-white">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-1">CVV / Seg</label>
+                                    <input type="password" id="inputCvv" maxlength="4" placeholder="•••" class="w-full px-4 py-3 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-white">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CONTENEDOR PSE -->
+                        <div id="seccionPse" class="hidden space-y-4 bg-wine-50/50 p-5 rounded-2xl border border-wine-100">
+                            <div>
+                                <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-1">Selecciona tu Banco</label>
+                                <select id="selectBanco" class="w-full px-4 py-3 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-white">
+                                    <option value="bancolombia">Bancolombia</option>
+                                    <option value="nequi_pse">Nequi (vía PSE)</option>
+                                    <option value="davivienda">Davivienda</option>
+                                    <option value="bbva">BBVA Colombia</option>
+                                    <option value="bogota">Banco de Bogotá</option>
+                                    <option value="nubank">Nu Colombia</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- CONTENEDOR NEQUI / DAVIPLATA -->
+                        <div id="seccionNequi" class="hidden space-y-4 bg-wine-50/50 p-5 rounded-2xl border border-wine-100 text-center py-6">
+                            <i class="fa-solid fa-qrcode text-4xl text-wine-700 mb-2"></i>
+                            <p class="text-xs text-gray-600">Se generará una notificación push a tu celular vinculado o podrás escanear el código QR en la siguiente pantalla simulada.</p>
+                        </div>
                     </div>
 
-                    <div>
-                        <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-2">Número de Celular / WhatsApp</label>
-                        <input type="tel" id="inputTelefono" required placeholder="+57 300 1234567" class="w-full px-4 py-3 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-wine-50/30">
-                    </div>
-
-                    <div class="pt-4">
+                    <div class="pt-2">
                         <button type="submit" id="btnPagar" class="w-full py-4 rounded-xl text-white font-extrabold text-sm custom-gradient shadow-lg hover:opacity-95 transition-all text-center">
-                            Proceder al Pago Seguro
+                            Pagar Ahora $17.800 COP
                         </button>
                     </div>
                 </form>
@@ -115,7 +180,7 @@
                 </div>
 
                 <div class="space-y-3 text-xs text-wine-200">
-                    <p class="flex items-center gap-2"><i class="fa-solid fa-lock text-gold-400"></i> Transacción cifrada y protegida.</p>
+                    <p class="flex items-center gap-2"><i class="fa-solid fa-lock text-gold-400"></i> Transacción cifrada y protegida por SSL.</p>
                     <p class="flex items-center gap-2"><i class="fa-solid fa-headset text-gold-400"></i> Soporte personalizado vía WhatsApp.</p>
                 </div>
             </div>
@@ -128,7 +193,7 @@
         <p>&copy; 2026 Make It Yourself. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- SCRIPT EXTERNO DE COMPRA -->
+    <!-- SCRIPT DE PASARELA -->
     <script src="js/compra.js"></script>
 </body>
 </html>
