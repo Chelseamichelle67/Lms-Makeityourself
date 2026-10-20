@@ -1,199 +1,721 @@
+
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pasarela de Pago | Make It Yourself</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        wine: { 50: '#fcf2f4', 100: '#f8e4e7', 200: '#f1c8ce', 300: '#e5a1ab', 500: '#a3283c', 700: '#721422', 900: '#520e18' },
-                        blush: { 100: '#fbe9eb', 200: '#f5d5d8', 500: '#e08a95' },
-                        gold: { 500: '#eab308' }
-                    },
-                    fontFamily: { sans: ['Montserrat', 'sans-serif'], serif: ['Playfair Display', 'serif'] }
-                }
-            }
-        }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #fcf2f4; color: #2d1519; }
-        .serif-font { font-family: 'Playfair Display', serif; }
-        .custom-gradient { background: linear-gradient(135deg, #721422 0%, #a3283c 50%, #520e18 100%); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fcf2f4">
+  <title>Confirmar compra | Make It Yourself</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --wine-50: #fcf2f4;
+      --wine-100: #f8e4e7;
+      --wine-200: #f1c8ce;
+      --wine-400: #e5a1ab;
+      --wine-600: #a3283c;
+      --wine-700: #721422;
+      --wine-900: #520e18;
+      --blush: #fbe9eb;
+      --gold: #ca8a04;
+      --text: #2d1519;
+      --muted: #806a6e;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at top left, #f8e4e7 0, transparent 48%),
+        var(--wine-50);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .header {
+      height: 82px;
+      padding: 0 7%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255,255,255,.86);
+      border-bottom: 1px solid rgba(163,40,60,.12);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      color: var(--wine-700);
+      line-height: 1;
+    }
+
+    .brand-small {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 4px;
+    }
+
+    .brand-large {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 25px;
+      font-weight: 700;
+      letter-spacing: .5px;
+    }
+
+    .back-link {
+      color: var(--wine-700);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .back-link:hover {
+      color: var(--wine-600);
+    }
+
+    .page {
+      width: min(1060px, 90%);
+      margin: 48px auto 70px;
+    }
+
+    .intro {
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      color: var(--wine-600);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    h1 {
+      margin: 12px 0;
+      color: var(--wine-900);
+      font-size: clamp(30px, 5vw, 43px);
+      font-weight: 600;
+    }
+
+    .intro p {
+      max-width: 520px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr .85fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .card {
+      overflow: hidden;
+      background: rgba(255,255,255,.94);
+      border: 1px solid rgba(163,40,60,.14);
+      border-radius: 22px;
+      box-shadow: 0 14px 45px rgba(82,14,24,.06);
+    }
+
+    .card-content {
+      padding: 28px;
+    }
+
+    .card h2 {
+      margin: 0 0 20px;
+      color: var(--wine-900);
+      font-size: 23px;
+    }
+
+    .product-art {
+      position: relative;
+      min-height: 190px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 25px;
+      overflow: hidden;
+      text-align: center;
+      background: linear-gradient(135deg, #fbe9eb, #f8e4e7 58%, #f1c8ce);
+    }
+
+    .product-art::before,
+    .product-art::after {
+      position: absolute;
+      content: "";
+      width: 180px;
+      height: 180px;
+      border: 1px solid rgba(163,40,60,.14);
+      border-radius: 50%;
+    }
+
+    .product-art::before {
+      top: -100px;
+      left: -65px;
+    }
+
+    .product-art::after {
+      right: -90px;
+      bottom: -120px;
+      width: 240px;
+      height: 240px;
+    }
+
+    .sparkle {
+      margin-bottom: 10px;
+      color: var(--wine-600);
+      font-size: 35px;
+    }
+
+    .product-label {
+      position: relative;
+      z-index: 1;
+      color: var(--wine-600);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .product-art h2 {
+      position: relative;
+      z-index: 1;
+      max-width: 360px;
+      margin: 10px 0 0;
+      font-size: 28px;
+      line-height: 1.3;
+    }
+
+    .product-description {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .detail-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 15px 0;
+      border-bottom: 1px solid #f3e5e7;
+      font-size: 13px;
+    }
+
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+
+    .detail-label {
+      color: var(--muted);
+    }
+
+    .detail-value {
+      color: var(--wine-900);
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .price-box {
+      margin-top: 18px;
+      padding: 20px;
+      background: var(--wine-50);
+      border: 1px solid var(--wine-100);
+      border-radius: 16px;
+    }
+
+    .price-label {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .price {
+      margin-top: 6px;
+      color: var(--wine-700);
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .price-note {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .security-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin: 20px 0;
+      padding: 15px;
+      background: #fffaf0;
+      border: 1px solid #f5e7c6;
+      border-radius: 14px;
+    }
+
+    .security-icon {
+      color: var(--gold);
+      font-size: 20px;
+    }
+
+    .security-note strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--wine-900);
+      font-size: 12px;
+    }
+
+    .security-note p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .confirm-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 18px 0;
+      color: #665258;
+      font-size: 12px;
+      line-height: 1.7;
+      cursor: pointer;
+    }
+
+    .confirm-label input {
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+      accent-color: var(--wine-600);
+      flex-shrink: 0;
+    }
+
+    .button {
+      width: 100%;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 20px;
+      border: none;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--wine-700), var(--wine-600), var(--wine-900));
+      color: white;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .2s, opacity .2s;
+    }
+
+    .button:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    .button:disabled {
+      cursor: not-allowed;
+      opacity: .45;
+    }
+
+    .status {
+      margin-top: 15px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .status.error {
+      color: #b42335;
+    }
+
+    .status.success {
+      color: #247348;
+    }
+
+    .login-link {
+      color: var(--wine-600);
+      font-weight: 800;
+      text-decoration: underline;
+    }
+
+    .footer {
+      padding: 24px;
+      color: var(--muted);
+      font-size: 11px;
+      text-align: center;
+    }
+
+    @media (max-width: 760px) {
+      .header {
+        height: 72px;
+        padding: 0 5%;
+      }
+
+      .brand-large {
+        font-size: 21px;
+      }
+
+      .back-link {
+        font-size: 11px;
+      }
+
+      .page {
+        width: 92%;
+        margin-top: 32px;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .card-content {
+        padding: 22px;
+      }
+
+      .product-art {
+        min-height: 160px;
+      }
+
+      .product-art h2 {
+        font-size: 25px;
+      }
+    }
+  </style>
 </head>
-<body class="bg-wine-50 antialiased">
-    <!-- HEADER -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-wine-100 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <a href="index.html" class="flex flex-col group text-left">
-                <span class="text-[10px] sm:text-xs font-semibold tracking-widest text-wine-500 uppercase">Make It</span>
-                <span class="text-xl sm:text-2xl font-bold tracking-tight text-wine-700 font-serif -mt-1 group-hover:text-wine-900 transition-colors">YOURSELF</span>
-            </a>
-            <a href="cursos.html" class="text-sm font-semibold text-wine-700 hover:text-wine-900 transition-colors">
-                <i class="fa-solid fa-arrow-left mr-2"></i>Volver al catálogo
-            </a>
+
+<body>
+  <header class="header">
+    <a href="index.html" class="brand" aria-label="Make It Yourself, inicio">
+      <span class="brand-small">MAKE IT</span>
+      <span class="brand-large">YOURSELF</span>
+    </a>
+    <a href="cursos.html" class="back-link">← Volver a los cursos</a>
+  </header>
+
+  <main class="page">
+    <section class="intro">
+      <span class="eyebrow">Tu próxima experiencia comienza aquí</span>
+      <h1>Confirma tu compra</h1>
+      <p>
+        Revisa los detalles de tu selección y prepárate para aprender,
+        practicar y descubrir tu propio estilo.
+      </p>
+    </section>
+
+    <div class="layout">
+      <section class="card">
+        <div class="product-art">
+          <span class="sparkle">✧</span>
+          <span class="product-label">Make It Yourself Academy</span>
+          <h2 id="productTitle">Cargando producto...</h2>
         </div>
-    </header>
 
-    <!-- MAIN CONTAINER -->
-    <main class="pt-32 pb-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-2xl mx-auto mb-12">
-            <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest"><i class="fa-solid fa-shield-halved mr-1"></i> Checkout Seguro</span>
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-wine-900 serif-font mt-2">Finaliza tu Compra</h1>
-            <p class="text-gray-600 mt-2 text-sm sm:text-base">Elige tu método de pago preferido e ingresa tus datos.</p>
-        </div>
+        <div class="card-content">
+          <h2>Tu selección</h2>
+          <p class="product-description" id="productDescription">
+            Estamos verificando los detalles de tu producto.
+          </p>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            
-            <!-- FORMULARIO DE PAGO -->
-            <div class="lg:col-span-7 bg-white rounded-3xl p-8 shadow-xl border border-wine-100">
-                <form id="formCheckout" class="space-y-6">
-                    
-                    <!-- PASO 1: DATOS PERSONALES -->
-                    <div>
-                        <h2 class="text-lg font-bold text-wine-900 serif-font mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-user-circle text-wine-500"></i> 1. Tus Datos Personales
-                        </h2>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-1">Nombre Completo</label>
-                                <input type="text" id="inputNombre" required placeholder="Ej. Chelsea Pertuz" class="w-full px-4 py-3 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-wine-50/30">
-                            </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-1">Correo Electrónico</label>
-                                    <input type="email" id="inputEmail" required placeholder="tucorreo@email.com" class="w-full px-4 py-3 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-wine-50/30">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-1">Celular / WhatsApp</label>
-                                    <input type="tel" id="inputTelefono" required placeholder="+57 300 1234567" class="w-full px-4 py-3 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-wine-50/30">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+          <div class="detail-row">
+            <span class="detail-label">Tipo de acceso</span>
+            <span class="detail-value" id="productType">—</span>
+          </div>
 
-                    <hr class="border-wine-100">
+          <div class="detail-row">
+            <span class="detail-label">Modalidad</span>
+            <span class="detail-value">Contenido digital</span>
+          </div>
 
-                    <!-- PASO 2: MÉTODO DE PAGO -->
-                    <div>
-                        <h2 class="text-lg font-bold text-wine-900 serif-font mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-credit-card text-wine-500"></i> 2. Método de Pago
-                        </h2>
-                        
-                        <!-- Pestañas de métodos -->
-                        <div class="grid grid-cols-3 gap-3 mb-5">
-                            <button type="button" onclick="cambiarMetodo('tarjeta')" id="btnTabTarjeta" class="py-3 px-3 rounded-xl border-2 border-wine-500 bg-wine-50 text-wine-900 font-bold text-xs flex flex-col items-center gap-1 transition-all">
-                                <i class="fa-solid fa-credit-card text-base text-wine-700"></i> Tarjeta
-                            </button>
-                            <button type="button" onclick="cambiarMetodo('pse')" id="btnTabPse" class="py-3 px-3 rounded-xl border-2 border-gray-200 bg-white text-gray-600 font-bold text-xs flex flex-col items-center gap-1 transition-all">
-                                <i class="fa-solid fa-building-columns text-base"></i> PSE / Banco
-                            </button>
-                            <button type="button" onclick="cambiarMetodo('nequi')" id="btnTabNequi" class="py-3 px-3 rounded-xl border-2 border-gray-200 bg-white text-gray-600 font-bold text-xs flex flex-col items-center gap-1 transition-all">
-                                <i class="fa-solid fa-mobile-screen-button text-base"></i> Nequi / Daviplata
-                            </button>
-                        </div>
+          <div class="detail-row">
+            <span class="detail-label">Cuenta</span>
+            <span class="detail-value" id="userEmail">Comprobando...</span>
+          </div>
 
-                        <!-- CONTENEDOR TARJETA DE CRÉDITO / DÉBITO -->
-                        <div id="seccionTarjeta" class="space-y-4 bg-wine-50/50 p-5 rounded-2xl border border-wine-100">
-                            <div>
-                                <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-1">Número de Tarjeta</label>
-                                <div class="relative">
-                                    <input type="text" id="inputNumTarjeta" maxlength="19" placeholder="4532 •••• •••• 8920" class="w-full px-4 py-3 pl-12 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-white">
-                                    <i class="fa-solid fa-credit-card absolute left-4 top-3.5 text-wine-400"></i>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-1">Vencimiento (MM/AA)</label>
-                                    <input type="text" id="inputExpiracion" maxlength="5" placeholder="12/28" class="w-full px-4 py-3 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-white">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-1">CVV / Seg</label>
-                                    <input type="password" id="inputCvv" maxlength="4" placeholder="•••" class="w-full px-4 py-3 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-white">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- CONTENEDOR PSE -->
-                        <div id="seccionPse" class="hidden space-y-4 bg-wine-50/50 p-5 rounded-2xl border border-wine-100">
-                            <div>
-                                <label class="block text-xs font-bold text-wine-900 uppercase tracking-wider mb-1">Selecciona tu Banco</label>
-                                <select id="selectBanco" class="w-full px-4 py-3 rounded-xl border border-wine-200 focus:outline-none focus:border-wine-500 text-sm bg-white">
-                                    <option value="bancolombia">Bancolombia</option>
-                                    <option value="nequi_pse">Nequi (vía PSE)</option>
-                                    <option value="davivienda">Davivienda</option>
-                                    <option value="bbva">BBVA Colombia</option>
-                                    <option value="bogota">Banco de Bogotá</option>
-                                    <option value="nubank">Nu Colombia</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- CONTENEDOR NEQUI / DAVIPLATA -->
-                        <div id="seccionNequi" class="hidden space-y-4 bg-wine-50/50 p-5 rounded-2xl border border-wine-100 text-center py-6">
-                            <i class="fa-solid fa-qrcode text-4xl text-wine-700 mb-2"></i>
-                            <p class="text-xs text-gray-600">Se generará una notificación push a tu celular vinculado o podrás escanear el código QR en la siguiente pantalla simulada.</p>
-                        </div>
-                    </div>
-
-                    <div class="pt-2">
-                        <button type="submit" id="btnPagar" class="w-full py-4 rounded-xl text-white font-extrabold text-sm custom-gradient shadow-lg hover:opacity-95 transition-all text-center">
-                            Pagar Ahora $17.800 COP
-                        </button>
-                    </div>
-                </form>
+          <div class="price-box">
+            <div class="price-label">Precio de tu selección</div>
+            <div class="price" id="productPrice">—</div>
+            <div class="price-note">
+              Precio en pesos colombianos (COP).
             </div>
-
-            <!-- RESUMEN DE COMPRA DINÁMICO -->
-            <div class="lg:col-span-5 bg-gradient-to-br from-wine-900 to-wine-700 text-white rounded-3xl p-8 shadow-xl">
-                <h3 class="text-xl font-bold serif-font mb-6 border-b border-white/10 pb-4">Resumen de tu Orden</h3>
-                
-                <div class="mb-6">
-                    <span class="text-xs text-wine-200 uppercase tracking-wider font-bold">Curso / Módulo Seleccionado:</span>
-                    <h4 id="lblNombreCurso" class="text-lg font-bold text-white mt-1">Cargando selección...</h4>
-                </div>
-
-                <div class="space-y-4 text-sm text-wine-100 mb-8 border-t border-white/10 pt-4">
-                    <div class="flex justify-between">
-                        <span>Acceso a plataforma</span>
-                        <span class="font-semibold text-white">Inmediato</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>Formato</span>
-                        <span class="font-semibold text-white">100% Digital en HD</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>Garantía</span>
-                        <span class="font-semibold text-white">7 Días</span>
-                    </div>
-                </div>
-
-                <div class="bg-white/10 rounded-2xl p-5 mb-8 border border-white/10 flex justify-between items-center">
-                    <span class="font-bold text-sm">Total a pagar:</span>
-                    <span id="lblPrecioTotal" class="text-2xl font-extrabold text-gold-400">$17.800 COP</span>
-                </div>
-
-                <div class="space-y-3 text-xs text-wine-200">
-                    <p class="flex items-center gap-2"><i class="fa-solid fa-lock text-gold-400"></i> Transacción cifrada y protegida por SSL.</p>
-                    <p class="flex items-center gap-2"><i class="fa-solid fa-headset text-gold-400"></i> Soporte personalizado vía WhatsApp.</p>
-                </div>
-            </div>
-
+          </div>
         </div>
-    </main>
+      </section>
 
-    <!-- FOOTER -->
-    <footer class="bg-wine-900 text-white py-8 text-center text-xs text-gray-400 border-t border-white/10">
-        <p>&copy; 2026 Make It Yourself. Todos los derechos reservados.</p>
-    </footer>
+      <section class="card">
+        <div class="card-content">
+          <h2>Finaliza tu pedido</h2>
+          <p class="product-description">
+            Antes de continuar, revisa el producto seleccionado y confirma
+            que deseas proceder al pago.
+          </p>
 
-    <!-- SCRIPT DE PASARELA -->
-    <script src="js/compra.js"></script>
+          <div class="security-note">
+            <span class="security-icon">✧</span>
+            <div>
+              <strong>Pago procesado por Mercado Pago</strong>
+              <p>
+                El pago se realizará en la plataforma de Mercado Pago.
+                El acceso al contenido se habilitará una vez se verifique
+                la aprobación de la transacción.
+              </p>
+            </div>
+          </div>
+
+          <div id="loginNotice" class="status" hidden>
+            Para comprar, primero debes
+            <a class="login-link" href="login.html">iniciar sesión</a>.
+          </div>
+
+          <label class="confirm-label">
+            <input type="checkbox" id="confirmCheckbox">
+            <span>
+              Confirmo que el producto y el precio mostrados corresponden
+              a mi selección y deseo continuar al pago.
+            </span>
+          </label>
+
+          <button id="payButton" class="button" disabled>
+            Confirmar y continuar al pago
+          </button>
+
+          <p id="statusMessage" class="status" aria-live="polite">
+            Comprobando tu sesión...
+          </p>
+
+          <p class="status">
+            ¿Tienes dudas? Regresa a los cursos para revisar tu selección.
+          </p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="brand" style="margin-bottom:10px">
+      <span class="brand-small">MAKE IT</span>
+      <span class="brand-large">YOURSELF</span>
+    </div>
+    Aprende a tu ritmo. Crea a tu manera.
+  </footer>
+
+  <script type="module">
+    import { auth } from "./js/firebase-config.js";
+    import { onAuthStateChanged } from
+      "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+
+    // IMPORTANTE: reemplaza este texto por la URL /exec
+    // de tu implementación web de Google Apps Script.
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx1Jjs_NJC7UuD9nUdBljjvISVtaV2fh0ofxh7ryjCfiUUkaTjtJpPAxzEs42fPxYzhOg/exec";
+
+    const products = {
+      completo: {
+        name: "Curso completo de automaquillaje",
+        description:
+          "Accede a la experiencia completa: preparación de la piel, rostro, ojos, labios y ejercicios prácticos.",
+        type: "Curso completo",
+        price: 89000
+      },
+      piel: {
+        name: "Preparación de la piel",
+        description:
+          "Aprende las bases para preparar la piel antes de comenzar tu maquillaje.",
+        type: "Módulo individual",
+        price: 17800
+      },
+      rostro: {
+        name: "Rostro impecable",
+        description:
+          "Aprende técnicas de maquillaje para trabajar el rostro y crear un acabado uniforme.",
+        type: "Módulo individual",
+        price: 17800
+      },
+      ojos: {
+        name: "Maquillaje de ojos",
+        description:
+          "Explora técnicas y recursos para crear distintos estilos de maquillaje de ojos.",
+        type: "Módulo individual",
+        price: 17800
+      },
+      labios: {
+        name: "Maquillaje de labios",
+        description:
+          "Aprende técnicas para trabajar el color, el delineado y el acabado de los labios.",
+        type: "Módulo individual",
+        price: 17800
+      },
+      ejercicios: {
+        name: "Módulo de ejercicios",
+        description:
+          "Refuerza lo aprendido mediante actividades y ejercicios prácticos.",
+        type: "Módulo individual",
+        price: 17800
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const productKey = params.get("producto") || "";
+    const product = products[productKey];
+
+    const titleElement = document.getElementById("productTitle");
+    const descriptionElement = document.getElementById("productDescription");
+    const typeElement = document.getElementById("productType");
+    const priceElement = document.getElementById("productPrice");
+    const emailElement = document.getElementById("userEmail");
+    const checkbox = document.getElementById("confirmCheckbox");
+    const payButton = document.getElementById("payButton");
+    const statusMessage = document.getElementById("statusMessage");
+    const loginNotice = document.getElementById("loginNotice");
+
+    let currentUser = null;
+    let sessionChecked = false;
+    let submitting = false;
+
+    function setStatus(message, type = "") {
+      statusMessage.textContent = message;
+      statusMessage.className = "status " + type;
+    }
+
+    function updateButton() {
+      payButton.disabled =
+        !product ||
+        !currentUser ||
+        !sessionChecked ||
+        !checkbox.checked ||
+        submitting;
+    }
+
+    if (!product) {
+      titleElement.textContent = "Producto no válido";
+      descriptionElement.textContent =
+        "No pudimos identificar el producto. Regresa a los cursos y selecciónalo nuevamente.";
+      typeElement.textContent = "No disponible";
+      priceElement.textContent = "—";
+      checkbox.disabled = true;
+      setStatus("Selecciona un producto válido desde la página de cursos.", "error");
+    } else {
+      titleElement.textContent = product.name;
+      descriptionElement.textContent = product.description;
+      typeElement.textContent = product.type;
+      priceElement.textContent = product.price.toLocaleString("es-CO", {
+        style: "currency",
+        currency: "COP",
+        maximumFractionDigits: 0
+      });
+    }
+
+    checkbox.addEventListener("change", updateButton);
+
+    onAuthStateChanged(auth, (user) => {
+      currentUser = user;
+      sessionChecked = true;
+
+      if (user) {
+        emailElement.textContent = user.email || "Sesión iniciada";
+        loginNotice.hidden = true;
+
+        if (product) {
+          setStatus("Sesión verificada. Revisa tu selección antes de pagar.");
+        }
+      } else {
+        emailElement.textContent = "Inicia sesión para comprar";
+        loginNotice.hidden = false;
+
+        if (product) {
+          setStatus("Debes iniciar sesión antes de continuar.", "error");
+        }
+      }
+
+      updateButton();
+    });
+
+    payButton.addEventListener("click", async () => {
+      if (!product || !currentUser || !checkbox.checked || submitting) {
+        return;
+      }
+
+      if (
+        !APPS_SCRIPT_URL.startsWith("https://script.google.com/") ||
+        !APPS_SCRIPT_URL.endsWith("/exec")
+      ) {
+        setStatus(
+          "Falta configurar la URL /exec de Google Apps Script.",
+          "error"
+        );
+        return;
+      }
+
+      submitting = true;
+      updateButton();
+      setStatus("Preparando tu pago seguro...");
+
+      try {
+        const idToken = await currentUser.getIdToken(true);
+
+        // El navegador envía el identificador del producto y el token.
+        // Apps Script verifica el usuario y determina el precio real.
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = APPS_SCRIPT_URL;
+        form.target = "_self";
+        form.style.display = "none";
+
+        const fields = {
+          action: "createPreference",
+          producto: productKey,
+          idToken: idToken
+        };
+
+        Object.entries(fields).forEach(([name, value]) => {
+          const input = document.createElement("input");
+          input.type = "hidden";
+          input.name = name;
+          input.value = value;
+          form.appendChild(input);
+        });
+
+        document.body.appendChild(form);
+        form.submit();
+      } catch (error) {
+        console.error("Error al iniciar el pago:", error);
+        submitting = false;
+        updateButton();
+        setStatus(
+          "No pudimos iniciar el pago. Comprueba tu conexión e inténtalo de nuevo.",
+          "error"
+        );
+      }
+    });
+  </script>
 </body>
 </html>
