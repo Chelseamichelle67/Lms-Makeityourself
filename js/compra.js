@@ -1,5 +1,5 @@
 // URL de tu Apps Script publicada
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx1Jjs_NJC7UuD9nUdBljjvISVtaV2fh0ofxh7ryjCfiUUkaTjtJpPAxzEs42fPxYzhOg/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw--mjJRXsIk6iiatFG3TeuzMZQpYwmzsUOoQElZUlvRsdDGspskyXuOoHFPPRhWeTapg/exec";
 
 let metodoSeleccionado = 'tarjeta';
 
