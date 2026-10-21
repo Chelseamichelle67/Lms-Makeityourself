@@ -530,9 +530,9 @@
   </footer>
 
   <script type="module">
-    import { auth } from "./js/firebase-config.js";
-    import { onAuthStateChanged } from
-      "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+    import { auth, db } from "./js/firebase-config.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+    import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
 
     // URL de tu función Serverless en Vercel
     const APPS_SCRIPT_URL = "https://makeityourself67.vercel.app/api/crear-pago";
@@ -578,6 +578,7 @@
 
     const params = new URLSearchParams(window.location.search);
     const productKey = params.get("producto") || "";
+    const resultado = params.get("resultado");
     const product = products[productKey];
 
     const titleElement = document.getElementById("productTitle");
@@ -628,8 +629,8 @@
 
     checkbox.addEventListener("change", updateButton);
 
-    // 1. Verificación de sesión al cargar la página
-    onAuthStateChanged(auth, (user) => {
+    // ÚNICO escuchador de sesión que gestiona la vista y el autorregistro de la inscripción
+    onAuthStateChanged(auth, async (user) => {
       currentUser = user;
       sessionChecked = true;
 
@@ -637,9 +638,32 @@
         emailElement.textContent = user.email || "Sesión iniciada";
         loginNotice.hidden = true;
 
-        if (product) {
+        // 1. Verificar si el usuario regresó con pago exitoso para crear el enrollment
+        if (resultado === "exito" && productKey) {
+          try {
+            await addDoc(collection(db, "enrollments"), {
+              userId: user.uid,
+              email: user.email,
+              productKey: productKey,
+              status: "active",
+              createdAt: serverTimestamp()
+            });
+
+            console.log("¡Inscripción registrada con éxito en Firestore!");
+            
+            // Limpiar los parámetros de la URL para evitar duplicados al recargar
+            window.history.replaceState({}, document.title, window.location.pathname);
+            
+            setStatus("¡Pago aprobado! Tu curso ha sido activado con éxito.", "success");
+
+          } catch (error) {
+            console.error("Error al registrar la inscripción:", error);
+            setStatus("El pago fue exitoso, pero hubo un error al registrar tu inscripción.", "error");
+          }
+        } else if (product) {
           setStatus("Sesión verificada. Revisa tu selección antes de pagar.");
         }
+
       } else {
         emailElement.textContent = "Inicia sesión para comprar";
         loginNotice.hidden = false;
@@ -652,45 +676,7 @@
       updateButton();
     });
 
-    // 2. DETECTOR DE REGRESO EXITOSO (Fuera del botón, se ejecuta al cargar si vienes de Mercado Pago)
-    onAuthStateChanged(auth, async (user) => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const resultado = urlParams.get("resultado");
-      const prodComprado = urlParams.get("producto");
-
-      if (user && resultado === "exito" && prodComprado) {
-        try {
-          const { getFirestore, collection, addDoc, serverTimestamp } = 
-            await import("https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js");
-          
-          const dbInstance = getFirestore();
-          
-          await addDoc(collection(dbInstance, "enrollments"), {
-            userId: user.uid,
-            email: user.email,
-            productKey: prodComprado,
-            status: "active",
-            createdAt: serverTimestamp()
-          });
-
-          console.log("¡Inscripción registrada con éxito!");
-          
-          // Limpiar la URL para evitar duplicados
-          window.history.replaceState({}, document.title, window.location.pathname);
-          
-          const statusMsg = document.getElementById("statusMessage");
-          if(statusMsg) {
-            statusMsg.textContent = "¡Pago aprobado! Tu curso ha sido activado con éxito.";
-            statusMsg.className = "status success";
-          }
-
-        } catch (error) {
-          console.error("Error al registrar la inscripción:", error);
-        }
-      }
-    });
-
-    // 3. Acción del botón de pago
+    // Acción del botón de pago
     payButton.addEventListener("click", async () => {
       if (!product || !currentUser || !checkbox.checked || submitting) {
         return;
