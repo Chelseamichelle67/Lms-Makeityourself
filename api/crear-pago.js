@@ -1,10 +1,14 @@
 export default async function handler(req, res) {
-  // Configurar CORS para permitir peticiones desde GitHub Pages
+  // Configuración indispensable de CORS para GitHub Pages
+  res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', 'https://chelseamichelle67.github.io');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization'
+  );
 
-  // Responder inmediatamente a la petición de comprobación del navegador
+  // Responder de inmediato a la petición preflight del navegador
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
@@ -50,7 +54,7 @@ export default async function handler(req, res) {
     const purchaseId = "purchase_" + Date.now();
 
     // Crear preferencia en Mercado Pago
-  // Dentro de preferenceData en api/crear-pago.js:
+    const mpToken = process.env.PASARELA_TOKEN;
     const preferenceData = {
       items: [{
         id: producto,
@@ -60,13 +64,6 @@ export default async function handler(req, res) {
         unit_price: prodInfo.price
       }],
       external_reference: purchaseId,
-      metadata: {
-        user_id: userId,
-        user_email: userEmail,
-        product_key: producto,
-        course_id: "SS777MOfOK3VVX17JLKn",
-        module_id: prodInfo.moduleId || ""
-      },
       back_urls: {
         success: `${siteUrl}comprar.html?resultado=exito&producto=${encodeURIComponent(producto)}`,
         pending: `${siteUrl}comprar.html?resultado=pendiente&producto=${encodeURIComponent(producto)}`,
@@ -74,3 +71,28 @@ export default async function handler(req, res) {
       },
       auto_return: "approved"
     };
+
+    const mpResponse = await fetch("https://api.mercadopago.com/checkout/preferences", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${mpToken}`
+      },
+      body: JSON.stringify(preferenceData)
+    });
+
+    if (!mpResponse.ok) {
+      return res.status(500).json({ error: "Mercado Pago no pudo crear la preferencia." });
+    }
+
+    const mpResult = await mpResponse.json();
+
+    return res.status(200).json({
+      success: true,
+      init_point: mpResult.sandbox_init_point
+    });
+
+  } catch (error) {
+    return res.status(500).json({ error: error.message || "Error interno." });
+  }
+}
