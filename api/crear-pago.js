@@ -1,16 +1,12 @@
 export default async function handler(req, res) {
-  // Permitir peticiones CORS desde tu sitio web en GitHub Pages
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
+  // Configurar CORS para permitir peticiones desde GitHub Pages
+  res.setHeader('Access-Control-Allow-Origin', 'https://chelseamichelle67.github.io');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
+  // Responder inmediatamente a la petición de comprobación del navegador
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+    return res.status(200).end();
   }
 
   if (req.method !== 'POST') {
@@ -21,17 +17,16 @@ export default async function handler(req, res) {
     const { producto, idToken } = req.body;
 
     if (!producto || !idToken) {
-      return res.status(400).json({ error: 'Faltan datos obligatorios (producto o idToken).' });
+      return res.status(400).json({ error: 'Faltan datos obligatorios.' });
     }
 
-    // Definición de productos permitidos
     const productos = {
-      completo: { name: "Curso completo de automaquillaje", price: 89000, type: "full_course", moduleId: "" },
-      piel: { name: "Módulo de Piel", price: 17800, type: "module", moduleId: "modulo-1" },
-      rostro: { name: "Módulo de Rostro", price: 17800, type: "module", moduleId: "modulo-2" },
-      ojos: { name: "Módulo de Ojos", price: 17800, type: "module", moduleId: "modulo-3" },
-      labios: { name: "Módulo de Labios", price: 17800, type: "module", moduleId: "modulo-4" },
-      ejercicios: { name: "Módulo de Ejercicios", price: 17800, type: "module", moduleId: "modulo-5" }
+      completo: { name: "Curso completo de automaquillaje", price: 89000 },
+      piel: { name: "Módulo de Piel", price: 17800 },
+      rostro: { name: "Módulo de Rostro", price: 17800 },
+      ojos: { name: "Módulo de Ojos", price: 17800 },
+      labios: { name: "Módulo de Labios", price: 17800 },
+      ejercicios: { name: "Módulo de Ejercicios", price: 17800 }
     };
 
     const prodInfo = productos[producto];
@@ -39,7 +34,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Producto no válido.' });
     }
 
-    // Validar el token de Firebase del usuario usando la API REST de Google Identity Toolkit
+    // Validar token de Firebase
     const firebaseApiKey = process.env.FIREBASE_WEB_API_KEY;
     const fbResponse = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${firebaseApiKey}`, {
       method: 'POST',
@@ -48,21 +43,11 @@ export default async function handler(req, res) {
     });
 
     if (!fbResponse.ok) {
-      return res.status(401).json({ error: 'No se pudo validar la sesión del usuario con Firebase.' });
+      return res.status(401).json({ error: 'No se pudo validar la sesión del usuario.' });
     }
 
-    const fbData = await fbResponse.json();
-    const user = fbData.users && fbData.users[0];
-    if (!user || user.disabled) {
-      return res.status(401).json({ error: 'Cuenta no válida o deshabilitada.' });
-    }
-
-    const userId = user.localId;
-    const userEmail = user.email || '';
-
-    // URL base de tu sitio en GitHub Pages
     const siteUrl = "https://chelseamichelle67.github.io/Lms-Makeityourself/";
-    const purchaseId = "purchase_" + Date.now() + "_" + Math.random().toString(36.substring(2, 7));
+    const purchaseId = "purchase_" + Date.now();
 
     // Crear preferencia en Mercado Pago
     const mpToken = process.env.PASARELA_TOKEN;
@@ -93,29 +78,17 @@ export default async function handler(req, res) {
     });
 
     if (!mpResponse.ok) {
-      const errText = await mpResponse.text();
-      console.error("Error Mercado Pago:", errText);
-      return res.status(500).json({ error: "Mercado Pago no pudo crear la preferencia de pago." });
+      return res.status(500).json({ error: "Mercado Pago no pudo crear la preferencia." });
     }
 
     const mpResult = await mpResponse.json();
-    const sandboxInitPoint = mpResult.sandbox_init_point;
-
-    if (!sandboxInitPoint) {
-      return res.status(500).json({ error: "No se recibió el enlace de pago de prueba de Mercado Pago." });
-    }
-
-    // Opcional: Registrar la compra pendiente en Firestore usando la API REST de Firestore
-    // (Asegúrate de configurar las variables de entorno de Firestore si deseas registrarlo aquí)
 
     return res.status(200).json({
       success: true,
-      init_point: sandboxInitPoint,
-      purchaseId: purchaseId
+      init_point: mpResult.sandbox_init_point
     });
 
   } catch (error) {
-    console.error("Error en la Serverless Function:", error);
-    return res.status(500).json({ error: error.message || "Error interno en el servidor." });
+    return res.status(500).json({ error: error.message || "Error interno." });
   }
 }
