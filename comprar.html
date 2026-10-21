@@ -540,43 +540,37 @@
     const products = {
       completo: {
         name: "Curso completo de automaquillaje",
-        description:
-          "Accede a la experiencia completa: preparación de la piel, rostro, ojos, labios y ejercicios prácticos.",
+        description: "Accede a la experiencia completa: preparación de la piel, rostro, ojos, labios y ejercicios prácticos.",
         type: "Curso completo",
         price: 89000
       },
       piel: {
         name: "Preparación de la piel",
-        description:
-          "Aprende las bases para preparar la piel antes de comenzar tu maquillaje.",
+        description: "Aprende las bases para preparar la piel antes de comenzar tu maquillaje.",
         type: "Módulo individual",
         price: 17800
       },
       rostro: {
         name: "Rostro impecable",
-        description:
-          "Aprende técnicas de maquillaje para trabajar el rostro y crear un acabado uniforme.",
+        description: "Aprende técnicas de maquillaje para trabajar el rostro y crear un acabado uniforme.",
         type: "Módulo individual",
         price: 17800
       },
       ojos: {
         name: "Maquillaje de ojos",
-        description:
-          "Explora técnicas y recursos para crear distintos estilos de maquillaje de ojos.",
+        description: "Explora técnicas y recursos para crear distintos estilos de maquillaje de ojos.",
         type: "Módulo individual",
         price: 17800
       },
       labios: {
         name: "Maquillaje de labios",
-        description:
-          "Aprende técnicas para trabajar el color, el delineado y el acabado de los labios.",
+        description: "Aprende técnicas para trabajar el color, el delineado y el acabado de los labios.",
         type: "Módulo individual",
         price: 17800
       },
       ejercicios: {
         name: "Módulo de ejercicios",
-        description:
-          "Refuerza lo aprendido mediante actividades y ejercicios prácticos.",
+        description: "Refuerza lo aprendido mediante actividades y ejercicios prácticos.",
         type: "Módulo individual",
         price: 17800
       }
@@ -616,8 +610,7 @@
 
     if (!product) {
       titleElement.textContent = "Producto no válido";
-      descriptionElement.textContent =
-        "No pudimos identificar el producto. Regresa a los cursos y selecciónalo nuevamente.";
+      descriptionElement.textContent = "No pudimos identificar el producto. Regresa a los cursos y selecciónalo nuevamente.";
       typeElement.textContent = "No disponible";
       priceElement.textContent = "—";
       checkbox.disabled = true;
@@ -635,6 +628,7 @@
 
     checkbox.addEventListener("change", updateButton);
 
+    // 1. Verificación de sesión al cargar la página
     onAuthStateChanged(auth, (user) => {
       currentUser = user;
       sessionChecked = true;
@@ -658,6 +652,45 @@
       updateButton();
     });
 
+    // 2. DETECTOR DE REGRESO EXITOSO (Fuera del botón, se ejecuta al cargar si vienes de Mercado Pago)
+    onAuthStateChanged(auth, async (user) => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const resultado = urlParams.get("resultado");
+      const prodComprado = urlParams.get("producto");
+
+      if (user && resultado === "exito" && prodComprado) {
+        try {
+          const { getFirestore, collection, addDoc, serverTimestamp } = 
+            await import("https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js");
+          
+          const dbInstance = getFirestore();
+          
+          await addDoc(collection(dbInstance, "enrollments"), {
+            userId: user.uid,
+            email: user.email,
+            productKey: prodComprado,
+            status: "active",
+            createdAt: serverTimestamp()
+          });
+
+          console.log("¡Inscripción registrada con éxito!");
+          
+          // Limpiar la URL para evitar duplicados
+          window.history.replaceState({}, document.title, window.location.pathname);
+          
+          const statusMsg = document.getElementById("statusMessage");
+          if(statusMsg) {
+            statusMsg.textContent = "¡Pago aprobado! Tu curso ha sido activado con éxito.";
+            statusMsg.className = "status success";
+          }
+
+        } catch (error) {
+          console.error("Error al registrar la inscripción:", error);
+        }
+      }
+    });
+
+    // 3. Acción del botón de pago
     payButton.addEventListener("click", async () => {
       if (!product || !currentUser || !checkbox.checked || submitting) {
         return;
@@ -670,7 +703,6 @@
       try {
         const idToken = await currentUser.getIdToken(true);
 
-        // Petición POST moderna en JSON hacia la función de Vercel
         const response = await fetch(APPS_SCRIPT_URL, {
           method: "POST",
           headers: {
@@ -688,7 +720,6 @@
           throw new Error(data.error || "No se pudo iniciar el pago.");
         }
 
-        // Redirigir al usuario al Checkout Pro (Sandbox) de Mercado Pago
         if (data.init_point) {
           window.location.href = data.init_point;
         } else {
