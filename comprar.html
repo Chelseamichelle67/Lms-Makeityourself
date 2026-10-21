@@ -630,7 +630,7 @@
     checkbox.addEventListener("change", updateButton);
 
     // ÚNICO escuchador de sesión que gestiona la vista y el autorregistro de la inscripción
-    onAuthStateChanged(auth, async (user) => {
+   onAuthStateChanged(auth, async (user) => {
       currentUser = user;
       sessionChecked = true;
 
@@ -638,20 +638,30 @@
         emailElement.textContent = user.email || "Sesión iniciada";
         loginNotice.hidden = true;
 
-        // 1. Verificar si el usuario regresó con pago exitoso para crear el enrollment
         if (resultado === "exito" && productKey) {
           try {
+            // Mapeo de tus productos a los IDs de módulos que usa tu plataforma
+            const moduleMap = {
+              piel: "modulo-1",
+              rostro: "modulo-2",
+              ojos: "modulo-3",
+              labios: "modulo-4",
+              ejercicios: "modulo-5"
+            };
+
+            const isCompleto = productKey === "completo";
+
             await addDoc(collection(db, "enrollments"), {
               userId: user.uid,
-              email: user.email,
-              productKey: productKey,
+              courseId: "SS777MOfOK3VVX17JLKn",
+              moduleId: isCompleto ? "" : (moduleMap[productKey] || productKey),
+              purchaseType: isCompleto ? "course" : "module",
               status: "active",
               createdAt: serverTimestamp()
             });
 
-            console.log("¡Inscripción registrada con éxito en Firestore!");
+            console.log("¡Inscripción registrada con la estructura correcta!");
             
-            // Limpiar los parámetros de la URL para evitar duplicados al recargar
             window.history.replaceState({}, document.title, window.location.pathname);
             
             setStatus("¡Pago aprobado! Tu curso ha sido activado con éxito.", "success");
@@ -675,7 +685,6 @@
 
       updateButton();
     });
-
     // Acción del botón de pago
     payButton.addEventListener("click", async () => {
       if (!product || !currentUser || !checkbox.checked || submitting) {
