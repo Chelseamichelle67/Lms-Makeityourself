@@ -530,166 +530,160 @@
   </footer>
 
   <script type="module">
-    import { auth, db } from "./js/firebase-config.js";
-    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
-    import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+  import { auth, db } from "./js/firebase-config.js";
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+  import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
 
-    // URL de tu función Serverless en Vercel
-    const APPS_SCRIPT_URL = "https://makeityourself67.vercel.app/api/crear-pago";
+  // URL de tu función Serverless en Vercel
+  const APPS_SCRIPT_URL = "https://makeityourself67.vercel.app/api/crear-pago";
 
-    const products = {
-      completo: {
-        name: "Curso completo de automaquillaje",
-        description: "Accede a la experiencia completa: preparación de la piel, rostro, ojos, labios y ejercicios prácticos.",
-        type: "Curso completo",
-        price: 89000
-      },
-      piel: {
-        name: "Preparación de la piel",
-        description: "Aprende las bases para preparar la piel antes de comenzar tu maquillaje.",
-        type: "Módulo individual",
-        price: 17800
-      },
-      rostro: {
-        name: "Rostro impecable",
-        description: "Aprende técnicas de maquillaje para trabajar el rostro y crear un acabado uniforme.",
-        type: "Módulo individual",
-        price: 17800
-      },
-      ojos: {
-        name: "Maquillaje de ojos",
-        description: "Explora técnicas y recursos para crear distintos estilos de maquillaje de ojos.",
-        type: "Módulo individual",
-        price: 17800
-      },
-      labios: {
-        name: "Maquillaje de labios",
-        description: "Aprende técnicas para trabajar el color, el delineado y el acabado de los labios.",
-        type: "Módulo individual",
-        price: 17800
-      },
-      ejercicios: {
-        name: "Módulo de ejercicios",
-        description: "Refuerza lo aprendido mediante actividades y ejercicios prácticos.",
-        type: "Módulo individual",
-        price: 17800
-      }
-    };
+  const products = {
+    completo: {
+      name: "Curso completo de automaquillaje",
+      description: "Accede a la experiencia completa: preparación de la piel, rostro, ojos, labios y ejercicios prácticos.",
+      type: "Curso completo",
+      price: 89000
+    },
+    piel: {
+      name: "Preparación de la piel",
+      description: "Aprende las bases para preparar la piel antes de comenzar tu maquillaje.",
+      type: "Módulo individual",
+      price: 17800
+    },
+    rostro: {
+      name: "Rostro impecable",
+      description: "Aprende técnicas de maquillaje para trabajar el rostro y crear un acabado uniforme.",
+      type: "Módulo individual",
+      price: 17800
+    },
+    ojos: {
+      name: "Maquillaje de ojos",
+      description: "Explora técnicas y recursos para crear distintos estilos de maquillaje de ojos.",
+      type: "Módulo individual",
+      price: 17800
+    },
+    labios: {
+      name: "Maquillaje de labios",
+      description: "Aprende técnicas para trabajar el color, el delineado y el acabado de los labios.",
+      type: "Módulo individual",
+      price: 17800
+    },
+    ejercicios: {
+      name: "Módulo de ejercicios",
+      description: "Refuerza lo aprendido mediante actividades y ejercicios prácticos.",
+      type: "Módulo individual",
+      price: 17800
+    }
+  };
 
-    const params = new URLSearchParams(window.location.search);
-    const productKey = params.get("producto") || "";
-    const resultado = params.get("resultado");
-    const product = products[productKey];
+  const params = new URLSearchParams(window.location.search);
+  const productKey = params.get("producto") || "";
+  const resultado = params.get("resultado");
+  const product = products[productKey];
 
-    const titleElement = document.getElementById("productTitle");
-    const descriptionElement = document.getElementById("productDescription");
-    const typeElement = document.getElementById("productType");
-    const priceElement = document.getElementById("productPrice");
-    const emailElement = document.getElementById("userEmail");
-    const checkbox = document.getElementById("confirmCheckbox");
-    const payButton = document.getElementById("payButton");
-    const statusMessage = document.getElementById("statusMessage");
-    const loginNotice = document.getElementById("loginNotice");
+  const titleElement = document.getElementById("productTitle");
+  const descriptionElement = document.getElementById("productDescription");
+  const typeElement = document.getElementById("productType");
+  const priceElement = document.getElementById("productPrice");
+  const emailElement = document.getElementById("userEmail");
+  const checkbox = document.getElementById("confirmCheckbox");
+  const payButton = document.getElementById("payButton");
+  const statusMessage = document.getElementById("statusMessage");
+  const loginNotice = document.getElementById("loginNotice");
 
-    let currentUser = null;
-    let sessionChecked = false;
-    let submitting = false;
+  let currentUser = null;
+  let sessionChecked = false;
+  let submitting = false;
 
-    function setStatus(message, type = "") {
+  function setStatus(message, type = "") {
+    if (statusMessage) {
       statusMessage.textContent = message;
       statusMessage.className = "status " + type;
     }
+  }
 
-    function updateButton() {
-      payButton.disabled =
-        !product ||
-        !currentUser ||
-        !sessionChecked ||
-        !checkbox.checked ||
-        submitting;
+  function updateButton() {
+    if (payButton && checkbox) {
+      payButton.disabled = !product || !currentUser || !sessionChecked || !checkbox.checked || submitting;
     }
+  }
 
-    if (!product) {
-      titleElement.textContent = "Producto no válido";
-      descriptionElement.textContent = "No pudimos identificar el producto. Regresa a los cursos y selecciónalo nuevamente.";
-      typeElement.textContent = "No disponible";
-      priceElement.textContent = "—";
-      checkbox.disabled = true;
-      setStatus("Selecciona un producto válido desde la página de cursos.", "error");
-    } else {
-      titleElement.textContent = product.name;
-      descriptionElement.textContent = product.description;
-      typeElement.textContent = product.type;
-      priceElement.textContent = product.price.toLocaleString("es-CO", {
-        style: "currency",
-        currency: "COP",
-        maximumFractionDigits: 0
-      });
-    }
-
-    checkbox.addEventListener("change", updateButton);
-
-    // ÚNICO escuchador de sesión que gestiona la vista y el autorregistro de la inscripción
-   onAuthStateChanged(auth, async (user) => {
-      currentUser = user;
-      sessionChecked = true;
-
-      if (user) {
-        emailElement.textContent = user.email || "Sesión iniciada";
-        loginNotice.hidden = true;
-
-        if (resultado === "exito" && productKey) {
-          try {
-            // Mapeo de tus productos a los IDs de módulos que usa tu plataforma
-            const moduleMap = {
-              piel: "modulo-1",
-              rostro: "modulo-2",
-              ojos: "modulo-3",
-              labios: "modulo-4",
-              ejercicios: "modulo-5"
-            };
-
-            const isCompleto = productKey === "completo";
-
-            await addDoc(collection(db, "enrollments"), {
-              userId: user.uid,
-              courseId: "SS777MOfOK3VVX17JLKn",
-              moduleId: isCompleto ? "" : (moduleMap[productKey] || productKey),
-              purchaseType: isCompleto ? "course" : "module",
-              status: "active",
-              createdAt: serverTimestamp()
-            });
-
-            console.log("¡Inscripción registrada con la estructura correcta!");
-            
-            window.history.replaceState({}, document.title, window.location.pathname);
-            
-            setStatus("¡Pago aprobado! Tu curso ha sido activado con éxito.", "success");
-
-          } catch (error) {
-            console.error("Error al registrar la inscripción:", error);
-            setStatus("El pago fue exitoso, pero hubo un error al registrar tu inscripción.", "error");
-          }
-        } else if (product) {
-          setStatus("Sesión verificada. Revisa tu selección antes de pagar.");
-        }
-
-      } else {
-        emailElement.textContent = "Inicia sesión para comprar";
-        loginNotice.hidden = false;
-
-        if (product) {
-          setStatus("Debes iniciar sesión antes de continuar.", "error");
-        }
-      }
-
-      updateButton();
+  if (product) {
+    if (titleElement) titleElement.textContent = product.name;
+    if (descriptionElement) descriptionElement.textContent = product.description;
+    if (typeElement) typeElement.textContent = product.type;
+    if (priceElement) priceElement.textContent = product.price.toLocaleString("es-CO", {
+      style: "currency",
+      currency: "COP",
+      maximumFractionDigits: 0
     });
-    // Acción del botón de pago
-    payButton.addEventListener("click", async () => {
-      if (!product || !currentUser || !checkbox.checked || submitting) {
-        return;
+  } else {
+    if (titleElement) titleElement.textContent = "Producto no válido";
+    if (descriptionElement) descriptionElement.textContent = "No pudimos identificar el producto.";
+    if (checkbox) checkbox.disabled = true;
+    setStatus("Selecciona un producto válido.", "error");
+  }
+
+  if (checkbox) {
+    checkbox.addEventListener("change", updateButton);
+  }
+
+  // Único observador de sesión y registro automático de inscripción
+  onAuthStateChanged(auth, async (user) => {
+    currentUser = user;
+    sessionChecked = true;
+
+    if (user) {
+      if (emailElement) emailElement.textContent = user.email || "Sesión iniciada";
+      if (loginNotice) loginNotice.hidden = true;
+
+      // Si regresa con pago exitoso, registramos en Firestore
+      if (resultado === "exito" && productKey) {
+        try {
+          const moduleMap = {
+            piel: "modulo-1",
+            rostro: "modulo-2",
+            ojos: "modulo-3",
+            labios: "modulo-4",
+            ejercicios: "modulo-5"
+          };
+
+          const isCompleto = productKey === "completo";
+
+          await addDoc(collection(db, "enrollments"), {
+            userId: user.uid,
+            courseId: "SS777MOfOK3VVX17JLKn",
+            moduleId: isCompleto ? "" : (moduleMap[productKey] || productKey),
+            purchaseType: isCompleto ? "course" : "module",
+            status: "active",
+            createdAt: serverTimestamp()
+          });
+
+          console.log("¡Inscripción registrada con éxito!");
+          window.history.replaceState({}, document.title, window.location.pathname);
+          setStatus("¡Pago aprobado! Tu curso ha sido activado con éxito.", "success");
+
+        } catch (error) {
+          console.error("Error al registrar la inscripción:", error);
+          setStatus("Pago exitoso, pero ocurrió un error al registrar la inscripción.", "error");
+        }
+      } else if (product) {
+        setStatus("Sesión verificada. Revisa tu selección antes de pagar.");
       }
+
+    } else {
+      if (emailElement) emailElement.textContent = "Inicia sesión para comprar";
+      if (loginNotice) loginNotice.hidden = false;
+      if (product) setStatus("Debes iniciar sesión antes de continuar.", "error");
+    }
+
+    updateButton();
+  });
+
+  // Botón de pago hacia Vercel
+  if (payButton) {
+    payButton.addEventListener("click", async () => {
+      if (!product || !currentUser || !checkbox.checked || submitting) return;
 
       submitting = true;
       updateButton();
@@ -700,13 +694,8 @@
 
         const response = await fetch(APPS_SCRIPT_URL, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            producto: productKey,
-            idToken: idToken
-          })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ producto: productKey, idToken: idToken })
         });
 
         const data = await response.json();
@@ -725,12 +714,10 @@
         console.error("Error al iniciar el pago:", error);
         submitting = false;
         updateButton();
-        setStatus(
-          error.message || "No pudimos iniciar el pago. Inténtalo de nuevo.",
-          "error"
-        );
+        setStatus(error.message || "No pudimos iniciar el pago.", "error");
       }
     });
-  </script>
+  }
+</script>
 </body>
 </html>
