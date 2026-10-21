@@ -50,7 +50,7 @@ export default async function handler(req, res) {
     const purchaseId = "purchase_" + Date.now();
 
     // Crear preferencia en Mercado Pago
-    const mpToken = process.env.PASARELA_TOKEN;
+  // Dentro de preferenceData en api/crear-pago.js:
     const preferenceData = {
       items: [{
         id: producto,
@@ -60,6 +60,13 @@ export default async function handler(req, res) {
         unit_price: prodInfo.price
       }],
       external_reference: purchaseId,
+      metadata: {
+        user_id: userId,
+        user_email: userEmail,
+        product_key: producto,
+        course_id: "SS777MOfOK3VVX17JLKn",
+        module_id: prodInfo.moduleId || ""
+      },
       back_urls: {
         success: `${siteUrl}comprar.html?resultado=exito&producto=${encodeURIComponent(producto)}`,
         pending: `${siteUrl}comprar.html?resultado=pendiente&producto=${encodeURIComponent(producto)}`,
@@ -67,28 +74,3 @@ export default async function handler(req, res) {
       },
       auto_return: "approved"
     };
-
-    const mpResponse = await fetch("https://api.mercadopago.com/checkout/preferences", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${mpToken}`
-      },
-      body: JSON.stringify(preferenceData)
-    });
-
-    if (!mpResponse.ok) {
-      return res.status(500).json({ error: "Mercado Pago no pudo crear la preferencia." });
-    }
-
-    const mpResult = await mpResponse.json();
-
-    return res.status(200).json({
-      success: true,
-      init_point: mpResult.sandbox_init_point
-    });
-
-  } catch (error) {
-    return res.status(500).json({ error: error.message || "Error interno." });
-  }
-}
