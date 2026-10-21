@@ -3,8 +3,7 @@ import { auth } from "./firebase-config.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
 
 // URL de la aplicación web de Google Apps Script.
-const APPS_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbwwNjIXMz90h57Lz_pfY-DraB_qC1idQQED9UI9lQQwUPEb-WSOvfHUS0K0BHjpIoEB/exec";
+const APPS_SCRIPT_URL = "https://makeityourself67.vercel.app/api/crear-pago";
    
 // Productos permitidos y precios.
 const PRODUCTOS = {

@@ -534,9 +534,8 @@
     import { onAuthStateChanged } from
       "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
 
-    // IMPORTANTE: reemplaza este texto por la URL /exec
-    // de tu implementación web de Google Apps Script.
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx1Jjs_NJC7UuD9nUdBljjvISVtaV2fh0ofxh7ryjCfiUUkaTjtJpPAxzEs42fPxYzhOg/exec";
+    // URL de tu función Serverless en Vercel
+    const APPS_SCRIPT_URL = "https://makeityourself67.vercel.app/api/crear-pago";
 
     const products = {
       completo: {
@@ -664,17 +663,6 @@
         return;
       }
 
-      if (
-        !APPS_SCRIPT_URL.startsWith("https://script.google.com/") ||
-        !APPS_SCRIPT_URL.endsWith("/exec")
-      ) {
-        setStatus(
-          "Falta configurar la URL /exec de Google Apps Script.",
-          "error"
-        );
-        return;
-      }
-
       submitting = true;
       updateButton();
       setStatus("Preparando tu pago seguro...");
@@ -682,36 +670,37 @@
       try {
         const idToken = await currentUser.getIdToken(true);
 
-        // El navegador envía el identificador del producto y el token.
-        // Apps Script verifica el usuario y determina el precio real.
-        const form = document.createElement("form");
-        form.method = "POST";
-        form.action = APPS_SCRIPT_URL;
-        form.target = "_self";
-        form.style.display = "none";
-
-        const fields = {
-          action: "createPreference",
-          producto: productKey,
-          idToken: idToken
-        };
-
-        Object.entries(fields).forEach(([name, value]) => {
-          const input = document.createElement("input");
-          input.type = "hidden";
-          input.name = name;
-          input.value = value;
-          form.appendChild(input);
+        // Petición POST moderna en JSON hacia la función de Vercel
+        const response = await fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            producto: productKey,
+            idToken: idToken
+          })
         });
 
-        document.body.appendChild(form);
-        form.submit();
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "No se pudo iniciar el pago.");
+        }
+
+        // Redirigir al usuario al Checkout Pro (Sandbox) de Mercado Pago
+        if (data.init_point) {
+          window.location.href = data.init_point;
+        } else {
+          throw new Error("No se recibió el enlace de pago.");
+        }
+
       } catch (error) {
         console.error("Error al iniciar el pago:", error);
         submitting = false;
         updateButton();
         setStatus(
-          "No pudimos iniciar el pago. Comprueba tu conexión e inténtalo de nuevo.",
+          error.message || "No pudimos iniciar el pago. Inténtalo de nuevo.",
           "error"
         );
       }
