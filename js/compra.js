@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.0.0/fi
 
 // URL de la aplicación web de Google Apps Script.
 const APPS_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbw--mjJRXsIk6iiatFG3TeuzMZQpYwmzsUOoQElZUlvRsdDGspskyXuOoHFPPRhWeTapg/exec";
+  "https://script.google.com/macros/s/AKfycbxegT5H9UYW7RJVKMhPeCUzgOUsYBuokVmldoMvjw2wMtySCAh9numyxoxkjESITU5ogA/exec";
    
 // Productos permitidos y precios.
 const PRODUCTOS = {
