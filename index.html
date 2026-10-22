@@ -85,7 +85,8 @@
             </a>
             <!-- Enlaces de Navegación Conectados -->
             <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-700">
-                <a href="cursos.html" class="hover:text-wine-700 transition-colors">Módulos</a>
+                <!-- Se agregó el ID nav-modulos para ocultarlo/mostrarlo con JS -->
+                <a href="#modules-section" id="nav-modulos" class="hidden hover:text-wine-700 transition-colors">Módulos</a>
                 <a href="#clase-gratis" class="hover:text-wine-700 transition-colors flex items-center gap-1.5 text-wine-700 font-semibold">
                     <i class="fa-solid fa-play text-xs bg-wine-100 p-1 rounded-full"></i> ¡Probar Clase!
                 </a>
@@ -94,16 +95,15 @@
                 <a href="#testimonios" class="hover:text-wine-700 transition-colors">Testimonios</a>
                 <a href="#faq" class="hover:text-wine-700 transition-colors">Ayuda</a>
             </nav>
-          <!-- CTA Botón Inscribirme y Menú Móvil -->
+            <!-- CTA Botón Inscribirme / Menú de Usuario Dinámico -->
             <div class="flex items-center space-x-4">
-                <a href="registro.html" class="hidden sm:inline-flex items-center justify-center px-6 py-2.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transform hover:-translate-y-0.5 transition-all">
-                    Inscribirme
-                </a>
-                <button id="menu-btn" aria-label="Abrir menú de navegación" class="md:hidden text-wine-700 focus:outline-none p-2 rounded-lg hover:bg-wine-100 transition-colors">
-                    <i class="fa-solid fa-bars text-2xl"></i>
-                </button>
-            </div>
-                </a>
+                <div id="auth-container">
+                    <a href="registro.html" id="btn-inscribirme-nav" class="hidden sm:inline-flex items-center justify-center px-6 py-2.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transform hover:-translate-y-0.5 transition-all">
+                        Inscribirme
+                    </a>
+                </div>
+
+                <!-- Botón Menú Móvil -->
                 <button id="menu-btn" aria-label="Abrir menú de navegación" class="md:hidden text-wine-700 focus:outline-none p-2 rounded-lg hover:bg-wine-100 transition-colors">
                     <i class="fa-solid fa-bars text-2xl"></i>
                 </button>
@@ -111,7 +111,8 @@
         </div>
         <!-- Menú Desplegable Móvil -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-wine-100 px-6 py-4 space-y-3 shadow-lg">
-            <a href="cursos.html" class="block text-gray-700 font-medium py-1 hover:text-wine-700">Módulos</a>
+            <!-- Se agregó el ID mobile-nav-modulos para ocultarlo/mostrarlo en móviles -->
+            <a href="#modules-section" id="mobile-nav-modulos" class="hidden block text-gray-700 font-medium py-1 hover:text-wine-700">Módulos</a>
             <a href="#clase-gratis" class="block text-wine-700 font-semibold py-1">¡Probar Clase!</a>
             <a href="#nosotros" class="block text-gray-700 font-medium py-1 hover:text-wine-700">Nosotros</a>
             <a href="#galeria" class="block text-gray-700 font-medium py-1 hover:text-wine-700">Galería</a>
@@ -219,23 +220,23 @@
         </div>
     </div>
 
-    <!-- Sección de 5 Módulos de Maquillaje -->
-    <section id="modulos" class="py-24 bg-white relative">
+    <!-- Sección de 5 Módulos de Maquillaje (Oculta por defecto si no hay sesión) -->
+    <section id="modules-section" class="py-24 bg-white relative hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
            
             <div class="text-center max-w-3xl mx-auto mb-16">
                 <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest">Plan de Estudio Profesional</span>
                 <h2 class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font mt-2">Los 5 Módulos del Método Make It Yourself</h2>
-                <p class="text-gray-600 mt-3">Haz clic en cualquier módulo para ir a su clase explicativa.</p>
+                <p class="text-gray-600 mt-3">Acceso exclusivo a las lecciones en video de cada módulo.</p>
             </div>
-            <!-- Grid de Módulos (Conectados a curso.html) -->
+            <!-- Grid de Módulos (Convertidos a tarjetas estáticas sin enlace) -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                
                 <!-- Módulo 1 -->
-                <a href="curso.html?mod=1" class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm hover:shadow-xl hover:border-wine-300 transition-all group flex flex-col justify-between block">
+                <div class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm flex flex-col justify-between">
                     <div>
                         <div class="h-48 overflow-hidden relative">
-                            <img src="https://i.pinimg.com/736x/0c/ca/ef/0ccaef8a34d24ecf4cb8e95c198fe3cf.jpg" alt="Preparación de Piel y Skincare" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+1+Skincare'">
+                            <img src="https://i.pinimg.com/736x/0c/ca/ef/0ccaef8a34d24ecf4cb8e95c198fe3cf.jpg" alt="Preparación de Piel y Skincare" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+1+Skincare'">
                             <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full">Módulo 01</span>
                         </div>
                         <div class="p-6">
@@ -247,15 +248,15 @@
                     </div>
                     <div class="px-6 pb-6 pt-2 border-t border-wine-200/60 flex items-center justify-between text-xs font-semibold text-wine-700">
                         <span>Ver Lecciones en Video</span>
-                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        <i class="fa-solid fa-arrow-right"></i>
                     </div>
-                </a>
+                </div>
 
                 <!-- Módulo 2 -->
-                <a href="curso.html?mod=2" class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm hover:shadow-xl hover:border-wine-300 transition-all group flex flex-col justify-between block">
+                <div class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm flex flex-col justify-between">
                     <div>
                         <div class="h-48 overflow-hidden relative">
-                            <img src="https://i.pinimg.com/1200x/5d/7b/c6/5d7bc6405ebc0d2b3d83e5e3f54d0037.jpg" alt="Bases, Correctores y Contorno" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+2+Contorno'">
+                            <img src="https://i.pinimg.com/1200x/5d/7b/c6/5d7bc6405ebc0d2b3d83e5e3f54d0037.jpg" alt="Bases, Correctores y Contorno" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+2+Contorno'">
                             <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full">Módulo 02</span>
                         </div>
                         <div class="p-6">
@@ -267,15 +268,15 @@
                     </div>
                     <div class="px-6 pb-6 pt-2 border-t border-wine-200/60 flex items-center justify-between text-xs font-semibold text-wine-700">
                         <span>Ver Lecciones en Video</span>
-                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        <i class="fa-solid fa-arrow-right"></i>
                     </div>
-                </a>
+                </div>
 
                 <!-- Módulo 3 -->
-                <a href="curso.html?mod=3" class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm hover:shadow-xl hover:border-wine-300 transition-all group flex flex-col justify-between block">
+                <div class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm flex flex-col justify-between">
                     <div>
                         <div class="h-48 overflow-hidden relative">
-                            <img src="https://i.pinimg.com/1200x/10/f2/3e/10f23e1cfdf69aa2f2599b57670d3073.jpg" alt="Cejas y Ojos de Impacto" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+3+Ojos'">
+                            <img src="https://i.pinimg.com/1200x/10/f2/3e/10f23e1cfdf69aa2f2599b57670d3073.jpg" alt="Cejas y Ojos de Impacto" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+3+Ojos'">
                             <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full">Módulo 03</span>
                         </div>
                         <div class="p-6">
@@ -287,15 +288,15 @@
                     </div>
                     <div class="px-6 pb-6 pt-2 border-t border-wine-200/60 flex items-center justify-between text-xs font-semibold text-wine-700">
                         <span>Ver Lecciones en Video</span>
-                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        <i class="fa-solid fa-arrow-right"></i>
                     </div>
-                </a>
+                </div>
 
                 <!-- Módulo 4 -->
-                <a href="curso.html?mod=4" class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm hover:shadow-xl hover:border-wine-300 transition-all group flex flex-col justify-between block">
+                <div class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm flex flex-col justify-between">
                     <div>
                         <div class="h-48 overflow-hidden relative">
-                            <img src="https://i.pinimg.com/736x/c0/31/6f/c0316f3f1df9d9d7f7968b0c113fd51d.jpg" alt="Labios, Rubor y Glow" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+4+Labios'">
+                            <img src="https://i.pinimg.com/736x/c0/31/6f/c0316f3f1df9d9d7f7968b0c113fd51d.jpg" alt="Labios, Rubor y Glow" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+4+Labios'">
                             <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full">Módulo 04</span>
                         </div>
                         <div class="p-6">
@@ -307,15 +308,15 @@
                     </div>
                     <div class="px-6 pb-6 pt-2 border-t border-wine-200/60 flex items-center justify-between text-xs font-semibold text-wine-700">
                         <span>Ver Lecciones en Video</span>
-                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        <i class="fa-solid fa-arrow-right"></i>
                     </div>
-                </a>
+                </div>
 
                 <!-- Módulo 5 -->
-                <a href="curso.html?mod=5" class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm hover:shadow-xl hover:border-wine-300 transition-all group flex flex-col justify-between md:col-span-2 lg:col-span-1 block">
+                <div class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm flex flex-col justify-between md:col-span-2 lg:col-span-1">
                     <div>
                         <div class="h-48 overflow-hidden relative">
-                            <img src="https://i.pinimg.com/1200x/08/a2/00/08a20051645c8c8f801cb45ce3140ceb.jpg" alt="Maquillaje de Día a Noche" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+5+Noche'">
+                            <img src="https://i.pinimg.com/1200x/08/a2/00/08a20051645c8c8f801cb45ce3140ceb.jpg" alt="Maquillaje de Día a Noche" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+5+Noche'">
                             <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full">Módulo 05</span>
                         </div>
                         <div class="p-6">
@@ -327,9 +328,9 @@
                     </div>
                     <div class="px-6 pb-6 pt-2 border-t border-wine-200/60 flex items-center justify-between text-xs font-semibold text-wine-700">
                         <span>Ver Lecciones en Video</span>
-                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        <i class="fa-solid fa-arrow-right"></i>
                     </div>
-                </a>
+                </div>
 
                 <!-- Tarjeta Bono Destacado -->
                 <div class="custom-gradient rounded-3xl p-8 text-white shadow-xl flex flex-col justify-between md:col-span-2">
@@ -349,6 +350,20 @@
                 </div>
 
             </div>
+        </div>
+    </section>
+
+    <!-- Mensaje para cuando NO ha iniciado sesión -->
+    <section id="modules-locked-msg" class="py-20 bg-white text-center">
+        <div class="max-w-xl mx-auto px-4">
+            <div class="w-16 h-16 bg-wine-100 text-wine-700 rounded-full flex items-center justify-center mx-auto text-2xl mb-4 shadow-sm">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-wine-900 serif-font">Catálogo de Módulos Exclusivo</h3>
+            <p class="text-gray-600 text-sm mt-2 mb-6">Inicia sesión o regístrate para desbloquear la ruta completa de aprendizaje y ver las lecciones del método Make It Yourself.</p>
+            <a href="registro.html" class="inline-block px-8 py-3 rounded-full text-sm font-semibold text-white custom-gradient shadow-md">
+                Iniciar Sesión / Registrarme
+            </a>
         </div>
     </section>
 
@@ -824,9 +839,6 @@
             document.getElementById('video-modal').classList.add('hidden');
         }
 
-        // Validación del Formulario de Inscripción
-        
-
         // Newsletter Handler
         document.getElementById('newsletter-form').addEventListener('submit', (e) => {
             e.preventDefault();
@@ -836,7 +848,60 @@
                 alert('¡Gracias por suscribirte a nuestro boletín!');
             }
         });
+
+        // Lógica de Autenticación y Control de Visibilidad
+        document.addEventListener("DOMContentLoaded", () => {
+            // Variable de prueba (Cambiar a tu respuesta real de Firebase onAuthStateChanged)
+            const user = null; 
+            
+            const authContainer = document.getElementById('auth-container');
+            const modulesSection = document.getElementById('modules-section');
+            const modulesLockedMsg = document.getElementById('modules-locked-msg');
+            const navModulos = document.getElementById('nav-modulos');
+            const mobileNavModulos = document.getElementById('mobile-nav-modulos');
+
+            if (user) {
+                // --- SI HAY SESIÓN ACTIVA ---
+                if (modulesSection) modulesSection.classList.remove('hidden');
+                if (modulesLockedMsg) modulesLockedMsg.classList.add('hidden');
+                if (navModulos) navModulos.classList.remove('hidden');
+                if (mobileNavModulos) mobileNavModulos.classList.remove('hidden');
+
+                // Renderizar perfil y botón de cerrar sesión en el Header
+                authContainer.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="text-right hidden sm:block">
+                            <p class="text-xs font-bold text-wine-900">${user.displayName || 'Mi Cuenta'}</p>
+                            <p class="text-[10px] text-gray-500">Estudiante Activa</p>
+                        </div>
+                        <button id="logout-btn" title="Cerrar Sesión" class="w-10 h-10 rounded-full bg-wine-100 text-wine-700 flex items-center justify-center hover:bg-wine-200 transition-colors">
+                            <i class="fa-solid fa-arrow-right-from-bracket text-sm"></i>
+                        </button>
+                    </div>
+                `;
+
+                // Evento para cerrar sesión
+                document.getElementById('logout-btn').addEventListener('click', () => {
+                    alert("Sesión cerrada (Conéctalo con tu signOut de Firebase)");
+                });
+
+            } else {
+                // --- SI NO HAY SESIÓN ---
+                if (modulesSection) modulesSection.classList.add('hidden');
+                if (modulesLockedMsg) modulesLockedMsg.classList.remove('hidden');
+                if (navModulos) navModulos.classList.add('hidden');
+                if (mobileNavModulos) mobileNavModulos.classList.add('hidden');
+
+                // Botón por defecto de Inscribirme
+                authContainer.innerHTML = `
+                    <a href="registro.html" class="hidden sm:inline-flex items-center justify-center px-6 py-2.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transform hover:-translate-y-0.5 transition-all">
+                        Inscribirme
+                    </a>
+                `;
+            }
+        });
     </script>
+   
     <script type="module" src="js/leads.js"></script>
 </body>
 </html>
