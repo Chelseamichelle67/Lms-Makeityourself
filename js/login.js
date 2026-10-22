@@ -55,7 +55,7 @@ async function redirigirSegunRol(user) {
     if (datosUsuario.role === 'admin') {
         window.location.href = 'admin.html';
     } else {
-        window.location.href = 'mis-cursos.html';
+        window.location.href = 'index.html';
     }
 }
 
