@@ -4,135 +4,581 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Curso Completo de Automaquillaje | Make It Yourself</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        wine: { 50: '#fcf2f4', 100: '#f8e4e7', 200: '#f1c8ce', 300: '#e5a1ab', 500: '#a3283c', 700: '#721422', 900: '#520e18' },
-                        blush: { 100: '#fbe9eb', 200: '#f5d5d8', 500: '#e08a95' },
-                        gold: { 400: '#facc15', 500: '#eab308' }
-                    },
-                    fontFamily: { sans: ['Montserrat', 'sans-serif'], serif: ['Playfair Display', 'serif'] }
-                }
+    
+    <!-- Fuentes Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Playfair+Display:ital,wght@0,500..700;1,500..700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --wine: #64142a;
+            --dark: #260712;
+            --rose: #d38d9f;
+            --blush: #f1dce0;
+            --cream: #fbf6ef;
+            --ink: #25191d;
+            --paper: #fffdf9;
+            --pink-pastel: #f2c3cc;
+            --pink-light: #e9a8b6;
+            --footer-bg: #1b0710;
+            --border-light: #e7d7d8;
+            --border-alt: #e3d3d4;
+            --text-muted: #65585c;
+            --text-secondary: #74666a;
+            --text-subtle: #89787d;
+            --shadow-wine: rgba(54, 4, 19, 0.12);
+            --shadow-wine-strong: rgba(54, 4, 19, 0.22);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--cream);
+            color: var(--ink);
+            line-height: 1.75;
+            font-size: 16px;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .hidden { 
+            display: none !important; 
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            body {
+                cursor: none;
+            }
+            .cursor-dot {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 7px;
+                height: 7px;
+                background-color: var(--wine);
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 9999;
+                transition: transform 0.1s ease;
+            }
+            .cursor-ring {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 38px;
+                height: 38px;
+                border: 1px solid var(--wine);
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 9998;
+                transition: transform 0.22s ease-out, width 0.3s ease, height 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+            }
+            body.hover-link .cursor-ring {
+                transform: scale(1.5);
+                background-color: rgba(211, 141, 159, 0.15);
+            }
+            body.hover-input .cursor-ring {
+                opacity: 0;
+            }
+            .on-dark .cursor-ring, body.is-on-dark .cursor-ring {
+                border-color: var(--pink-pastel);
             }
         }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #fcf2f4; color: #2d1519; }
-        .serif-font { font-family: 'Playfair Display', serif; }
-        .custom-gradient { background: linear-gradient(135deg, #721422 0%, #a3283c 50%, #520e18 100%); }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            letter-spacing: -0.035em;
+            line-height: 1.08;
+            color: var(--dark);
+        }
+
+        h1 { font-size: clamp(46px, 6vw, 88px); }
+        h2 { font-size: clamp(38px, 4.8vw, 72px); }
+        h3 { font-size: clamp(26px, 3vw, 42px); }
+
+        em.highlight {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 500;
+            color: var(--wine);
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            font-size: 10.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.26em;
+            color: var(--wine);
+            margin-bottom: 12px;
+        }
+
+        .eyebrow::before {
+            content: '';
+            display: inline-block;
+            width: 34px;
+            height: 1px;
+            background-color: var(--wine);
+            margin-right: 12px;
+        }
+
+        .header-pad { padding-left: 5vw; padding-right: 5vw; }
+        .main-pad { padding-left: 7vw; padding-right: 7vw; }
+
+        .site-header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 84px;
+            background: rgba(251, 246, 239, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border-light);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .brand-logo { text-decoration: none; display: flex; flex-direction: column; }
+        .logo-sub { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.34em; color: var(--wine); line-height: 1; }
+        .logo-main { font-family: 'Playfair Display', serif; font-size: 25px; font-weight: 700; letter-spacing: 0.08em; color: var(--wine); line-height: 1.1; }
+
+        .nav-menu { display: flex; align-items: center; gap: 36px; }
+        .nav-link {
+            text-decoration: none; color: var(--ink); font-size: 14px; font-weight: 500;
+            position: relative; padding: 4px 0; transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 1px;
+            background-color: var(--wine); transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .nav-link.active { color: var(--wine); font-weight: 600; }
+
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 22px; color: var(--wine); cursor: pointer; padding: 8px; }
+        .mobile-nav-panel {
+            position: fixed; top: 84px; left: 0; right: 0;
+            background: var(--paper); border-bottom: 1px solid var(--border-light);
+            padding: 24px 7vw; display: flex; flex-direction: column; gap: 16px;
+            box-shadow: 0 10px 30px var(--shadow-wine); transform: translateY(-100%);
+            opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 999;
+        }
+        .mobile-nav-panel.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+
+        .pill {
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            background-color: var(--wine); color: #ffffff; font-size: 12.5px; font-weight: 600;
+            text-decoration: none; border-radius: 100px; padding: 0 28px; min-height: 52px;
+            border: none; cursor: pointer; box-shadow: 0 8px 20px rgba(100, 20, 42, 0.2);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .pill:hover { transform: translateY(-3px); box-shadow: 0 12px 26px rgba(100, 20, 42, 0.3); }
+        .pill svg, .pill i { transition: transform 0.3s ease; }
+        .pill:hover svg, .pill:hover i.fa-arrow-right { transform: translateX(4px); }
+        .pill.light { background-color: #f7e9e6; color: var(--wine); box-shadow: none; }
+        .pill.light:hover { background-color: var(--blush); }
+        .pill.block { display: flex; width: 100%; }
+        .pill-cta-checkout { background-color: #ffffff; color: var(--wine); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); }
+        .pill-cta-checkout:hover { background-color: var(--cream); color: var(--dark); }
+
+        .tag {
+            display: inline-flex; align-items: center; background-color: var(--blush); color: var(--wine);
+            font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em;
+            padding: 6px 14px; border-radius: 100px;
+        }
+        .tag.tag-dark { background-color: rgba(241, 220, 224, 0.15); color: var(--pink-pastel); border: 1px solid rgba(242, 195, 204, 0.2); }
+
+        .hero-section {
+            padding-top: 140px; padding-bottom: 70px; position: relative;
+            background: radial-gradient(circle at 70% 30%, rgba(241, 220, 224, 0.5) 0%, rgba(251, 246, 239, 0) 70%);
+        }
+        .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items: center; }
+        .hero-image-wrapper { position: relative; }
+        .hero-img {
+            width: 100%; height: 480px; object-fit: cover;
+            border-radius: 48% 48% 12px 12px; box-shadow: 0 20px 40px var(--shadow-wine);
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .hero-image-wrapper:hover .hero-img { transform: scale(1.02); }
+
+        .orb-filled {
+            position: absolute; top: -20px; right: -20px; width: 120px; height: 120px;
+            background: var(--pink-pastel); opacity: 0.4; border-radius: 50%; filter: blur(20px);
+            animation: drift 8s ease-in-out infinite alternate; z-index: -1;
+        }
+        .orb-bordered {
+            position: absolute; bottom: -30px; left: -30px; width: 160px; height: 160px;
+            border: 1px solid var(--rose); opacity: 0.3; border-radius: 50%;
+            animation: drift 11s ease-in-out infinite alternate-reverse; z-index: -1;
+        }
+        .sparkle-icon { position: absolute; top: 20px; left: -15px; color: var(--wine); font-size: 24px; animation: rotateSparkle 12s linear infinite; }
+
+        @keyframes drift { 0% { transform: translate(0, 0); } 100% { transform: translate(15px, -20px); } }
+        @keyframes rotateSparkle { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .meta-info { display: flex; align-items: center; gap: 28px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-light); }
+        .meta-item { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text-muted); font-weight: 500; }
+        .meta-item i { color: var(--wine); font-size: 16px; }
+
+        .marquee-container { background-color: var(--wine); color: var(--paper); padding: 14px 0; overflow: hidden; white-space: nowrap; display: flex; align-items: center; }
+        .marquee-track { display: flex; gap: 30px; animation: marquee 25s linear infinite; }
+        .marquee-item { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.25em; display: flex; align-items: center; gap: 30px; }
+        .marquee-item span.sparkle { color: var(--rose); }
+
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        .syllabus-section { padding: 90px 0; background-color: var(--paper); }
+        .card-asymmetric {
+            background-color: #ffffff; border-radius: 3px 44px 3px 3px; border: 1px solid var(--border-light);
+            padding: 48px; box-shadow: 0 12px 32px var(--shadow-wine); position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-asymmetric:hover { transform: translateY(-4px); box-shadow: 0 18px 40px var(--shadow-wine-strong); }
+
+        .accordion-wrapper { border: 1px solid var(--border-light); border-radius: 16px; overflow: hidden; background-color: #ffffff; margin-top: 28px; }
+        .accordion-btn {
+            width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 22px 28px;
+            background-color: var(--cream); border: none; font-family: 'Playfair Display', serif; font-size: 19px;
+            font-weight: 600; color: var(--dark); text-align: left; cursor: pointer; transition: background-color 0.3s ease;
+        }
+        .accordion-btn:hover { background-color: var(--blush); }
+        .accordion-btn i { color: var(--wine); font-size: 16px; transition: transform 0.3s ease; }
+        .accordion-btn i.rotate-180 { transform: rotate(180deg); }
+
+        .accordion-content { padding: 28px; background-color: #ffffff; display: flex; flex-direction: column; gap: 16px; border-top: 1px solid var(--border-light); }
+        .lesson-item { display: flex; align-items: flex-start; gap: 14px; font-size: 15px; color: var(--text-secondary); line-height: 1.6; }
+        .lesson-item i { color: var(--wine); margin-top: 5px; font-size: 14px; }
+
+        .checkout-section { padding: 90px 0 110px 0; background-color: var(--cream); }
+        .checkout-card {
+            background: linear-gradient(145deg, var(--dark) 0%, var(--wine) 100%);
+            border-radius: 3px 80px 3px 3px; padding: 60px 40px; color: #ffffff; text-align: center;
+            max-width: 760px; margin: 0 auto; box-shadow: 0 24px 50px rgba(38, 7, 18, 0.35);
+            position: relative; overflow: hidden;
+        }
+        .checkout-card::before { content: '✦'; position: absolute; top: 20px; right: 30px; font-size: 40px; color: rgba(255, 255, 255, 0.08); }
+
+        .price-container { margin: 28px 0; display: flex; align-items: center; justify-content: center; gap: 16px; }
+        .price-old { color: var(--rose); text-decoration: line-through; font-size: 22px; font-weight: 400; }
+        .price-current { font-size: clamp(36px, 5vw, 54px); font-weight: 700; font-family: 'DM Sans', sans-serif; color: #ffffff; letter-spacing: -0.02em; }
+        .guarantee-text { font-size: 12px; color: var(--pink-pastel); margin-top: 18px; letter-spacing: 0.05em; }
+
+        .site-footer { background-color: var(--footer-bg); color: #ffffff; padding: 60px 0 30px 0; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        .footer-content { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px; }
+        .footer-logo .logo-sub { color: var(--pink-pastel); }
+        .footer-logo .logo-main { color: #ffffff; }
+        .footer-contact { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; font-size: 13.5px; color: var(--pink-light); }
+        .footer-contact a { color: var(--pink-light); text-decoration: none; transition: color 0.3s ease; }
+        .footer-contact a:hover { color: #ffffff; }
+        .footer-copy { font-size: 12px; color: var(--text-subtle); margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); width: 100%; }
+
+        @media (max-width: 1100px) {
+            .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+            .hero-image-wrapper { max-width: 550px; margin: 0 auto; }
+        }
+        @media (max-width: 900px) {
+            .nav-menu { display: none; }
+            .mobile-menu-btn { display: block; }
+            .site-header { height: 76px; }
+            .mobile-nav-panel { top: 76px; }
+            .hero-section { padding-top: 110px; }
+            .card-asymmetric { padding: 32px 24px; }
+            .checkout-card { padding: 40px 24px; border-radius: 3px 50px 3px 3px; }
+        }
+        @media (max-width: 640px) {
+            .meta-info { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .price-container { flex-direction: column; gap: 4px; }
+            .pill { width: 100%; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
+            .cursor-dot, .cursor-ring { display: none !important; }
+        }
     </style>
 </head>
-<body class="bg-wine-50 antialiased">
-    <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-wine-100 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <a href="index.html" class="flex flex-col group text-left">
-                <span class="text-[10px] sm:text-xs font-semibold tracking-widest text-wine-500 uppercase">Make It</span>
-                <span class="text-xl sm:text-2xl font-bold tracking-tight text-wine-700 font-serif -mt-1 group-hover:text-wine-900 transition-colors">YOURSELF</span>
+<body>
+
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <header class="site-header header-pad">
+        <a href="index.html" class="brand-logo">
+            <span class="logo-sub">Make It</span>
+            <span class="logo-main">YOURSELF</span>
+        </a>
+
+        <nav class="nav-menu">
+            <a href="cursos.html" class="nav-link active">Módulos</a>
+            <a href="index.html#clase-gratis" class="nav-link">¡Probar Clase!</a>
+        </nav>
+
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <a href="#checkout" class="pill light" style="min-height: 44px; padding: 0 20px; font-size: 11.5px;">
+                Inscribirme
             </a>
-            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-700">
-                <a href="cursos.html" class="text-wine-700 font-semibold border-b-2 border-wine-700 pb-1">Módulos</a>
-                <a href="index.html#clase-gratis" class="hover:text-wine-700 transition-colors">¡Probar Clase!</a>
-                <a href="index.html#testimonios" class="hover:text-wine-700 transition-colors">Testimonios</a>
-            </nav>
-            <a href="#checkout" class="px-6 py-2.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-all">Inscribirme</a>
+            <button class="mobile-menu-btn" id="menuToggle" aria-label="Abrir Menú de Navegación" aria-expanded="false">
+                <i class="fa-solid fa-bars"></i>
+            </button>
         </div>
     </header>
 
-    <main class="pt-32 pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-            <div class="space-y-6">
-                <span class="bg-gold-500 text-wine-900 text-xs font-extrabold uppercase px-3 py-1 rounded-full shadow-sm">Curso Más Vendido • 5 Módulos</span>
-                <h1 class="text-4xl sm:text-5xl font-extrabold text-wine-900 serif-font">Curso Completo de Automaquillaje</h1>
-                <p class="text-gray-600 text-base leading-relaxed">Aprende a maquillarte desde cero de forma profesional. Incluye todos los módulos: Preparación de Piel, Rostro, Ojos, Labios y Ejercicios Prácticos.</p>
-                <div class="flex items-center gap-4 text-sm text-gray-500">
-                    <span><i class="fa-solid fa-clock text-wine-500 mr-2"></i>5 a 6 Horas</span>
-                    <span><i class="fa-solid fa-certificate text-wine-500 mr-2"></i>Certificado Oficial</span>
+    <div class="mobile-nav-panel" id="mobileNav">
+        <a href="cursos.html" class="nav-link active" style="font-size: 16px;">Módulos</a>
+        <a href="index.html#clase-gratis" class="nav-link" style="font-size: 16px;">¡Probar Clase!</a>
+        <a href="#checkout" class="pill block" style="margin-top: 10px;">Inscribirme</a>
+    </div>
+
+    <main>
+        <section class="hero-section main-pad">
+            <div class="hero-grid">
+                <div>
+                    <span class="eyebrow">CURSO MÁS VENDIDO • 5 MÓDULOS</span>
+                    <h1>Curso Completo de <em>Automaquillaje</em></h1>
+                    <p style="margin-top: 20px; color: var(--text-secondary); font-size: 17px; max-width: 540px;">
+                        Aprende a maquillarte desde cero de forma profesional. Incluye todos los módulos: Preparación de Piel, Rostro, Ojos, Labios y Ejercicios Prácticos.
+                    </p>
+                    
+                    <div class="meta-info">
+                        <div class="meta-item">
+                            <i class="fa-regular fa-clock"></i>
+                            <span>5 a 6 Horas de Duración</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fa-solid fa-certificate"></i>
+                            <span>Certificado Digital Incluido</span>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="hero-image-wrapper" id="heroParallax">
+                    <div class="orb-filled"></div>
+                    <div class="orb-bordered"></div>
+                    <span class="sparkle-icon">✦</span>
+                    <img src="https://i.pinimg.com/736x/56/42/d0/5642d09cb3e66daf9946083bcd2496fa.jpg" alt="Curso Completo de Automaquillaje" class="hero-img">
                 </div>
             </div>
-            <div class="rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=85" alt="Curso Completo" class="w-full h-96 object-cover hover:scale-105 transition-transform duration-500">
+        </section>
+
+        <div class="marquee-container">
+            <div class="marquee-track">
+                <div class="marquee-item">
+                    <span>Aprende a tu propio ritmo</span> <span class="sparkle">✦</span>
+                    <span>Acceso de por vida</span> <span class="sparkle">✦</span>
+                    <span>Técnicas 100% prácticas</span> <span class="sparkle">✦</span>
+                    <span>Tutoría personalizada</span> <span class="sparkle">✦</span>
+                </div>
+                <div class="marquee-item">
+                    <span>Aprende a tu propio ritmo</span> <span class="sparkle">✦</span>
+                    <span>Acceso de por vida</span> <span class="sparkle">✦</span>
+                    <span>Técnicas 100% prácticas</span> <span class="sparkle">✦</span>
+                    <span>Tutoría personalizada</span> <span class="sparkle">✦</span>
+                </div>
             </div>
         </div>
 
-        <section class="bg-white rounded-3xl p-8 sm:p-12 shadow-xl border border-wine-100 mb-16">
-            <h2 class="text-2xl font-bold text-wine-900 serif-font mb-6">Temario Completo (Todos los Módulos)</h2>
-            <div class="space-y-4">
-                <div class="border border-wine-100 rounded-2xl overflow-hidden">
-                    <button onclick="toggleAcordeon(this)" class="w-full flex justify-between items-center p-5 bg-wine-50/50 hover:bg-wine-100/50 font-bold text-wine-900 text-left">
-                        <span>Módulo 1: Preparación de Piel y Selección de Productos</span>
-                        <i class="fa-solid fa-chevron-down transition-transform duration-300"></i>
-                    </button>
-                    <div class="hidden p-5 bg-white space-y-2 text-gray-600 text-sm">
-                        <p>• Tipos de piel y herramientas esenciales.</p>
+        <section class="syllabus-section main-pad">
+            <div style="max-width: 860px; margin: 0 auto;">
+                <div class="card-asymmetric">
+                    <span class="eyebrow">Contenido Curricular</span>
+                    <h2>Temario del <em>Contenido</em></h2>
+                    
+                    <div class="accordion-wrapper" style="display: flex; flex-direction: column; gap: 12px; background: transparent; border: none;">
+                        
+                    <div style="border: 1px solid var(--border-light); border-radius: 16px; overflow: hidden; background: white;">
+                        <button onclick="toggleAcordeon(this)" class="accordion-btn">
+                            <span>Módulo 1: Preparación de Piel y Selección de Productos</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content hidden">
+                            <div class="lesson-item"><i class="fa-solid fa-check"></i><span>Identificación de tipo de piel y tono.</span></div>
+                            <div class="lesson-item"><i class="fa-solid fa-check"></i><span>Bases, correctores y polvos ideales.</span></div>
+                            <div class="lesson-item"><i class="fa-solid fa-check"></i><span>Uso de brochas y esponjas.</span></div>
+                        </div>
                     </div>
-                </div>
-                <div class="border border-wine-100 rounded-2xl overflow-hidden">
-                    <button onclick="toggleAcordeon(this)" class="w-full flex justify-between items-center p-5 bg-wine-50/50 hover:bg-wine-100/50 font-bold text-wine-900 text-left">
-                        <span>Módulo 2: Rostro Impecable Paso a Paso</span>
-                        <i class="fa-solid fa-chevron-down transition-transform duration-300"></i>
-                    </button>
-                    <div class="hidden p-5 bg-white space-y-2 text-gray-600 text-sm">
-                        <p>• Bases, contornos, iluminación y sellado profesional.</p>
+                    <div style="border: 1px solid var(--border-light); border-radius: 16px; overflow: hidden; background: white;">
+                        <button onclick="toggleAcordeon(this)" class="accordion-btn">
+                            <span>Módulo 2: Rostro Impecable Paso a Paso</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content hidden">
+                            <div class="lesson-item"><i class="fa-solid fa-check"></i><span>Bases fluidas y compactas.</span></div>
+                            <div class="lesson-item"><i class="fa-solid fa-check"></i><span>Iluminación y contornos en crema/polvo.</span></div>
+                            <div class="lesson-item"><i class="fa-solid fa-check"></i><span>Sellado de larga duración.</span></div>
+                        </div>
                     </div>
-                </div>
-                <div class="border border-wine-100 rounded-2xl overflow-hidden">
-                    <button onclick="toggleAcordeon(this)" class="w-full flex justify-between items-center p-5 bg-wine-50/50 hover:bg-wine-100/50 font-bold text-wine-900 text-left">
-                        <span>Módulo 3: Ojos y Mirada Impactante</span>
-                        <i class="fa-solid fa-chevron-down transition-transform duration-300"></i>
-                    </button>
-                    <div class="hidden p-5 bg-white space-y-2 text-gray-600 text-sm">
-                        <p>• Cejas, delineados y sombras para eventos.</p>
+                    <div style="border: 1px solid var(--border-light); border-radius: 16px; overflow: hidden; background: white;">
+                        <button onclick="toggleAcordeon(this)" class="accordion-btn">
+                            <span>Módulo 3: Técnicas de Ojos y Mirada</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content hidden">
+                            <div class="lesson-item"><i class="fa-solid fa-check"></i><span>Diseño y sombreado de cejas.</span></div>
+                            <div class="lesson-item"><i class="fa-solid fa-check"></i><span>Delineado según tu tipo de párpado.</span></div>
+                            <div class="lesson-item"><i class="fa-solid fa-check"></i><span>Sombras de día y noche.</span></div>
+                        </div>
                     </div>
-                </div>
-                <div class="border border-wine-100 rounded-2xl overflow-hidden">
-                    <button onclick="toggleAcordeon(this)" class="w-full flex justify-between items-center p-5 bg-wine-50/50 hover:bg-wine-100/50 font-bold text-wine-900 text-left">
-                        <span>Módulo 4: Acabados, Labios y Duración</span>
-                        <i class="fa-solid fa-chevron-down transition-transform duration-300"></i>
-                    </button>
-                    <div class="hidden p-5 bg-white space-y-2 text-gray-600 text-sm">
-                        <p>• Labiales de larga duración y rubor final.</p>
+                    <div style="border: 1px solid var(--border-light); border-radius: 16px; overflow: hidden; background: white;">
+                        <button onclick="toggleAcordeon(this)" class="accordion-btn">
+                            <span>Módulo 4: Acabados, Labios y Duración</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content hidden">
+                            <div class="lesson-item"><i class="fa-solid fa-check"></i><span>Labiales de larga duración.</span></div>
+                            <div class="lesson-item"><i class="fa-solid fa-check"></i><span>Rubor y sellado final perfecto.</span></div>
+                        </div>
                     </div>
-                </div>
-                <div class="border border-wine-100 rounded-2xl overflow-hidden">
-                    <button onclick="toggleAcordeon(this)" class="w-full flex justify-between items-center p-5 bg-wine-50/50 hover:bg-wine-100/50 font-bold text-wine-900 text-left">
-                        <span>Módulo 5: Ejercicios Prácticos</span>
-                        <i class="fa-solid fa-chevron-down transition-transform duration-300"></i>
-                    </button>
-                    <div class="hidden p-5 bg-white space-y-2 text-gray-600 text-sm">
-                        <p>• Prácticas guiadas en video y autoevaluación.</p>
+                    <div style="border: 1px solid var(--border-light); border-radius: 16px; overflow: hidden; background: white;">
+                        <button onclick="toggleAcordeon(this)" class="accordion-btn">
+                            <span>Módulo 5: Ejercicios Prácticos Guiados</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content hidden">
+                            <div class="lesson-item"><i class="fa-solid fa-check"></i><span>Prácticas guiadas paso a paso.</span></div>
+                            <div class="lesson-item"><i class="fa-solid fa-check"></i><span>Autoevaluación y resolución de dudas.</span></div>
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="checkout" class="bg-gradient-to-br from-wine-900 to-wine-700 rounded-3xl p-8 sm:p-12 text-white shadow-2xl text-center max-w-3xl mx-auto">
-            <span class="bg-gold-500 text-wine-900 text-xs font-bold uppercase px-3 py-1 rounded-full">Oferta de Lanzamiento Oficial</span>
-            <div class="my-6">
-                <span class="text-gray-300 line-through text-lg mr-3">$129.000 COP</span>
-                <span class="text-4xl sm:text-5xl font-extrabold text-white">$89.000 COP</span>
+        <section id="checkout" class="checkout-section main-pad on-dark">
+            <div class="checkout-card">
+                <span class="tag tag-dark">Oferta de Lanzamiento Oficial</span>
+                
+                <h3 style="color: #ffffff; margin-top: 16px;">
+                    ¡Comienza a transformar tu técnica hoy!
+                </h3>
+
+                <div class="price-container">
+                    <span class="price-old">$129.000 COP</span>
+                    <span class="price-current">$89.000 COP</span>
+                </div>
+
+                <a href="comprar.html?producto=completo" class="pill pill-cta-checkout block" style="min-height: 56px; font-size: 14px;">
+                    <span>¡Comprar Curso Completo!</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+                <p class="guarantee-text">
+                    <i class="fa-solid fa-lock" style="margin-right: 6px;"></i>
+                    Pago 100% seguro | Acceso digital inmediato
+                </p>
             </div>
-<a href="comprar.html?producto=completo"
-   class="block w-full py-4 rounded-xl bg-white text-wine-900 font-extrabold text-base shadow-lg hover:bg-wine-50 transition-all text-center">
-  ¡Comprar Curso Completo!
-</a>
-            <p class="text-xs text-wine-200">Pago 100% seguro | Acceso digital inmediato e ilimitado</p>
         </section>
     </main>
 
-    <footer class="bg-wine-900 text-white py-8 text-center text-xs text-gray-400 mt-20">
-        <p>&copy; 2026 Make It Yourself. Todos los derechos reservados.</p>
+    <footer class="site-footer header-pad">
+        <div class="footer-content">
+            <a href="index.html" class="brand-logo footer-logo">
+                <span class="logo-sub">Make It</span>
+                <span class="logo-main">YOURSELF</span>
+            </a>
+
+            <div class="footer-contact">
+                <a href="mailto:contacto@makeityourself.com"><i class="fa-regular fa-envelope" style="margin-right: 6px;"></i>contacto@makeityourself.com</a>
+                <a href="tel:+573001234567"><i class="fa-solid fa-phone" style="margin-right: 6px;"></i>+57 (300) 123-4567</a>
+            </div>
+
+            <div class="footer-copy">
+                <p>&copy; 2026 Make It Yourself. Todos los derechos reservados.</p>
+            </div>
+        </div>
     </footer>
+
     <script>
         function toggleAcordeon(btn) {
             const content = btn.nextElementSibling;
             const icon = btn.querySelector('.fa-chevron-down');
             content.classList.toggle('hidden');
             icon.classList.toggle('rotate-180');
+        }
+
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileNav = document.getElementById('mobileNav');
+
+        if (menuToggle && mobileNav) {
+            menuToggle.addEventListener('click', () => {
+                const isOpen = mobileNav.classList.contains('open');
+                if (isOpen) {
+                    mobileNav.classList.remove('open');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                    menuToggle.innerHTML = '<i class="fa-solid fa-bars"></i>';
+                } else {
+                    mobileNav.classList.add('open');
+                    menuToggle.setAttribute('aria-expanded', 'true');
+                    menuToggle.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+                }
+            });
+        }
+
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorRing = document.getElementById('cursorRing');
+
+        if (cursorDot && cursorRing && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+            let mouseX = 0, mouseY = 0;
+            let ringX = 0, ringY = 0;
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                cursorDot.style.transform = `translate3d(${mouseX - 3.5}px, ${mouseY - 3.5}px, 0)`;
+            });
+
+            function render() {
+                ringX += (mouseX - ringX) * 0.15;
+                ringY += (mouseY - ringY) * 0.15;
+                cursorRing.style.transform = `translate3d(${ringX - 19}px, ${ringY - 19}px, 0)`;
+                requestAnimationFrame(render);
+            }
+            render();
+
+            const hoverables = document.querySelectorAll('a, button, input, .accordion-btn');
+            hoverables.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        document.body.classList.add('hover-input');
+                    } else {
+                        document.body.classList.add('hover-link');
+                    }
+                });
+                el.addEventListener('mouseleave', () => {
+                    document.body.classList.remove('hover-link');
+                    document.body.classList.remove('hover-input');
+                });
+            });
+
+            const darkSections = document.querySelectorAll('.on-dark');
+            darkSections.forEach(sec => {
+                sec.addEventListener('mouseenter', () => document.body.classList.add('is-on-dark'));
+                sec.addEventListener('mouseleave', () => document.body.classList.remove('is-on-dark'));
+            });
+        }
+
+        const heroImgWrapper = document.getElementById('heroParallax');
+        if (heroImgWrapper && matchMedia('(hover: hover)').matches) {
+            window.addEventListener('mousemove', (e) => {
+                const moveX = (e.clientX - window.innerWidth / 2) * 0.012;
+                const moveY = (e.clientY - window.innerHeight / 2) * 0.012;
+                heroImgWrapper.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
+            });
         }
     </script>
 </body>

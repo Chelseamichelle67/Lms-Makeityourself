@@ -1,4 +1,3 @@
-
 import { db, auth } from './firebase-config.js';
 
 import {
@@ -51,7 +50,8 @@ function mostrarEstado(mensaje) {
 
 function mostrarError(mensaje, error) {
     console.error(mensaje, error);
-console.error('DETALLE DEL ERROR:', error);
+    console.error('DETALLE DEL ERROR:', error);
+
     if (error?.code === 'permission-denied') {
         mostrarEstado(
             'No tienes permiso para acceder a este contenido. ' +
@@ -145,12 +145,10 @@ function mostrarVideo(url) {
 
     if (!url) {
         contenedor.innerHTML = `
-            <div class="p-8 text-center">
-                <i class="fa-solid fa-video-slash text-4xl text-wine-500 mb-4"></i>
-                <p class="font-bold text-wine-900 mb-2">
-                    Video próximamente
-                </p>
-                <p class="text-sm text-gray-500">
+            <div class="video-empty">
+                <i class="fa-solid fa-video-slash"></i>
+                <p class="t">Video próximamente</p>
+                <p>
                     Esta lección todavía no tiene un video disponible.
                     Puedes continuar leyendo su contenido.
                 </p>
@@ -194,8 +192,10 @@ function mostrarVideo(url) {
 
         contenedor.appendChild(video);
     } catch {
-        contenedor.textContent =
+        const aviso = document.createElement('p');
+        aviso.textContent =
             'El enlace del video no es válido. Revisa la dirección en Firebase.';
+        contenedor.appendChild(aviso);
     }
 }
 
@@ -299,25 +299,21 @@ function dibujarListaLecciones() {
 
         const seleccionada = leccion.id === leccionActual.id;
 
-        boton.className =
-            'w-full flex items-start gap-3 text-left p-3 rounded-xl border transition ' +
-            (seleccionada
-                ? 'bg-wine-50 border-wine-300'
-                : 'bg-white border-transparent hover:bg-gray-50');
+        boton.className = 'lesson-item' + (seleccionada ? ' active' : '');
+
+        if (seleccionada) {
+            boton.setAttribute('aria-current', 'true');
+        }
 
         const icono = completada
-            ? '<i class="fa-solid fa-circle-check text-green-600"></i>'
-            : '<i class="fa-regular fa-circle text-gray-400"></i>';
+            ? '<i class="fa-solid fa-circle-check"></i>'
+            : '<i class="fa-regular fa-circle"></i>';
 
         boton.innerHTML = `
-            <span class="pt-1">${icono}</span>
-            <span class="min-w-0">
-                <span class="block text-xs text-gray-400 mb-1">
-                    Lección ${indice + 1}
-                </span>
-                <span class="block text-sm font-semibold text-wine-900">
-                    ${escaparHTML(leccion.title || `Lección ${indice + 1}`)}
-                </span>
+            <span class="ico${completada ? ' done' : ''}">${icono}</span>
+            <span class="txt">
+                <small>Lección ${indice + 1}</small>
+                <b>${escaparHTML(leccion.title || `Lección ${indice + 1}`)}</b>
             </span>
         `;
 
@@ -430,10 +426,11 @@ function mostrarLeccion() {
     const completada = leccionesCompletadas.has(leccionActual.id);
 
     boton.disabled = !usuarioActual || completada;
+    boton.classList.toggle('done', completada);
 
     boton.innerHTML = completada
-        ? '<i class="fa-solid fa-circle-check mr-2"></i> Lección completada'
-        : '<i class="fa-solid fa-check mr-2"></i> Marcar como completada';
+        ? '<i class="fa-solid fa-circle-check"></i> Lección completada'
+        : '<i class="fa-solid fa-check"></i> Marcar como completada';
 
     elemento('estadoProgreso').textContent = !usuarioActual
         ? 'Inicia sesión para guardar tu progreso.'
@@ -479,7 +476,6 @@ function abrirLeccion(id) {
 // --------------------------------------------------
 // MARCAR UNA LECCIÓN COMO COMPLETADA
 // --------------------------------------------------
-
 
 async function marcarCompletada() {
     if (!usuarioActual || !leccionActual) {

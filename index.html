@@ -1,821 +1,1032 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Make It Yourself - Academia de Maquillaje Profesional</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        wine: {
-                            50: '#fcf2f4',
-                            100: '#f8e4e7',
-                            200: '#f1c8ce',
-                            300: '#e5a1ab',
-                            500: '#a3283c',
-                            700: '#721422',
-                            900: '#520e18'
-                        },
-                        blush: {
-                            100: '#fbe9eb',
-                            200: '#f5d5d8',
-                            500: '#e08a95',
-                            600: '#cc6a77'
-                        },
-                        gold: {
-                            400: '#facc15',
-                            500: '#eab308',
-                            600: '#ca8a04'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif']
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Tipografías (referencia visual: Playfair Display + DM Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
+        :root {
+            --wine: #64142a;
+            --dark: #260712;
+            --rose: #d38d9f;
+            --blush: #f1dce0;
+            --cream: #fbf6ef;
+            --ink: #25191d;
+            --paper: #fffdf9;
+            --mx: 50vw; --my: 50vh; --px: 0px; --py: 0px;
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #fcf2f4;
-            color: #2d1519;
+            margin: 0;
+            background: var(--cream);
+            color: var(--ink);
+            font-family: 'DM Sans', sans-serif;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
-        .serif-font {
-            font-family: 'Playfair Display', serif;
+        img { display: block; max-width: 100%; }
+        a { color: inherit; }
+        ::selection { background: var(--wine); color: #fff; }
+        section[id], footer[id] { scroll-margin-top: 84px; }
+
+        /* Utilidad usada por JS (leads.js, sesión, modal) */
+        .hidden { display: none !important; }
+        .border-red-500 { border-color: #dc2626 !important; }
+
+        /* ===== Cursor personalizado ===== */
+        .has-cursor, .has-cursor a, .has-cursor button, .has-cursor label { cursor: none; }
+        .has-cursor input, .has-cursor textarea, .has-cursor select { cursor: text; }
+        .cursor, .cursor-glow {
+            position: fixed; left: 0; top: 0; z-index: 3000;
+            pointer-events: none; border-radius: 50%; opacity: 0;
+            transition: opacity .2s, width .25s, height .25s, margin .25s, background .25s, border-color .25s;
         }
-        @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
+        .cursor { width: 7px; height: 7px; margin: -3.5px; background: var(--wine); }
+        .cursor-glow { width: 38px; height: 38px; margin: -19px; border: 1px solid rgba(100, 20, 42, .35); }
+        .cursor-on .cursor, .cursor-on .cursor-glow { opacity: 1; }
+        .cursor-text .cursor, .cursor-text .cursor-glow { opacity: 0; }
+        .cursor-hover .cursor-glow { width: 64px; height: 64px; margin: -32px; background: rgba(211, 141, 159, .2); border-color: rgba(100, 20, 42, .5); }
+        .cursor-down .cursor-glow { width: 26px; height: 26px; margin: -13px; }
+        .cursor-dark .cursor { background: #f2c3cc; }
+        .cursor-dark .cursor-glow { border-color: rgba(255, 255, 255, .5); }
+        .cursor-dark.cursor-hover .cursor-glow { background: rgba(242, 195, 204, .18); }
+
+        /* ===== Header ===== */
+        header.site {
+            position: fixed; inset: 0 0 auto; z-index: 50; height: 84px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 5vw;
+            background: rgba(251, 246, 239, .84);
+            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(100, 20, 42, .12);
         }
-        .animate-marquee {
-            display: flex;
-            width: 200%;
-            animation: marquee 25s linear infinite;
+        .brand { display: flex; flex-direction: column; text-decoration: none; color: var(--wine); line-height: 1; }
+        .brand small { font-size: 10px; font-weight: 600; letter-spacing: .34em; text-transform: uppercase; }
+        .brand strong { font-family: 'Playfair Display', serif; font-size: 25px; letter-spacing: .08em; margin-top: 4px; transition: color .3s; }
+        .brand:hover strong { color: var(--dark); }
+        .brand.inverse { color: #fff; }
+        .brand.inverse small { color: var(--rose); }
+        .brand.inverse strong { font-size: 32px; }
+
+        nav.main { display: flex; align-items: center; gap: 30px; margin-left: auto; margin-right: 36px; }
+        nav.main a, #mobile-menu a.m-link {
+            position: relative; text-decoration: none; color: var(--ink);
+            font-size: 12.5px; font-weight: 600; letter-spacing: .04em;
         }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(163, 40, 60, 0.15);
+        nav.main > a::after {
+            content: ""; position: absolute; left: 0; right: 100%; bottom: -8px; height: 1px;
+            background: var(--wine); transition: right .3s;
         }
-        .custom-gradient {
-            background: linear-gradient(135deg, #721422 0%, #a3283c 50%, #520e18 100%);
+        nav.main > a:hover::after { right: 0; }
+        nav.main a.accent { color: var(--wine); display: inline-flex; align-items: center; gap: 8px; }
+        nav.main a.accent i { font-size: 8px; width: 22px; height: 22px; border-radius: 50%; background: var(--blush); display: inline-grid; place-items: center; }
+
+        #nav-logged-in {
+            display: flex; align-items: center; gap: 4px; padding: 4px;
+            background: var(--blush); border: 1px solid rgba(100, 20, 42, .15); border-radius: 100px;
+        }
+        #nav-logged-in a {
+            display: inline-flex; align-items: center; gap: 7px; padding: 8px 16px; border-radius: 100px;
+            font-size: 11.5px; font-weight: 700; color: var(--dark); transition: background .25s;
+        }
+        #nav-logged-in a:hover { background: #fff; }
+        #nav-logged-in a i { color: var(--wine); }
+
+        .header-actions { display: flex; align-items: center; gap: 16px; }
+
+        .pill {
+            display: inline-flex; justify-content: center; align-items: center; gap: 22px;
+            min-height: 54px; padding: 0 28px; border: 0; border-radius: 100px;
+            background: var(--wine); color: #fff; text-decoration: none;
+            font: 600 12.5px/1 'DM Sans', sans-serif; letter-spacing: .025em;
+            box-shadow: 0 12px 30px rgba(100, 20, 42, .2);
+            transition: transform .3s, box-shadow .3s;
+        }
+        .pill:hover { transform: translateY(-3px); box-shadow: 0 18px 38px rgba(100, 20, 42, .28); }
+        .pill.small { min-height: 42px; padding: 0 22px; gap: 14px; }
+        .pill.light { background: #f7e9e6; color: var(--wine); }
+        .pill.block { width: 100%; }
+        .arr { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; flex: none; }
+
+        .user-card {
+            display: flex; align-items: center; gap: 12px; padding: 5px 6px 5px 6px;
+            background: var(--blush); border: 1px solid rgba(100, 20, 42, .15); border-radius: 100px;
+        }
+        .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 12px; }
+        .user-meta p { margin: 0; line-height: 1.25; }
+        .user-name { font-size: 12px; font-weight: 700; color: var(--dark); }
+        .user-status { font-size: 10px; color: #8a777c; }
+        #logout-btn {
+            width: 34px; height: 34px; margin-left: 4px; border: 0; border-radius: 50%;
+            background: #fff; color: var(--wine); font-size: 12px; transition: background .25s, color .25s;
+        }
+        #logout-btn:hover { background: var(--wine); color: #fff; }
+
+        .menu-btn { display: none; width: 44px; height: 44px; border: 0; background: transparent; color: var(--wine); font-size: 22px; }
+        #mobile-menu {
+            position: fixed; top: 84px; left: 0; right: 0; z-index: 49;
+            display: flex; flex-direction: column; gap: 4px; padding: 20px 5vw 26px;
+            background: var(--cream); box-shadow: 0 24px 30px rgba(30, 0, 10, .12);
+            border-bottom: 1px solid rgba(100, 20, 42, .12);
+        }
+        #mobile-menu a.m-link { padding: 11px 0; font-size: 14px; border-bottom: 1px solid rgba(100, 20, 42, .08); }
+        #mobile-menu a.m-link.accent { color: var(--wine); }
+        #mobile-nav-logged-in { display: flex; flex-direction: column; gap: 8px; padding-bottom: 12px; margin-bottom: 4px; border-bottom: 1px solid rgba(100, 20, 42, .12); }
+        #mobile-nav-logged-in a {
+            display: block; text-align: center; padding: 11px; border-radius: 14px; text-decoration: none;
+            background: var(--blush); border: 1px solid rgba(100, 20, 42, .15); color: var(--dark); font-size: 12.5px; font-weight: 700;
+        }
+        #mobile-nav-logged-in a i { color: var(--wine); margin-right: 6px; }
+        #mobile-auth-btn { padding-top: 14px; }
+
+        /* ===== Tipografía de títulos ===== */
+        h1, h2, h3, h4 { margin: 0; color: var(--dark); font-family: 'Playfair Display', serif; font-weight: 600; }
+        h1, h2 { letter-spacing: -.035em; line-height: .98; }
+        h1 { font-size: clamp(46px, 6.2vw, 96px); }
+        h2 { font-size: clamp(40px, 4.8vw, 72px); }
+        h1 em, h2 em { color: var(--wine); font-weight: 500; }
+        .eyebrow {
+            margin: 0 0 24px; color: var(--wine); font-size: 10.5px; font-weight: 600;
+            letter-spacing: .26em; text-transform: uppercase;
+        }
+        .eyebrow::before { content: ""; display: inline-block; width: 34px; height: 1px; margin: 0 12px 3px 0; background: currentColor; }
+
+        /* ===== Hero ===== */
+        .hero {
+            position: relative; overflow: hidden; min-height: 900px;
+            display: grid; grid-template-columns: 52% 48%; align-items: center;
+            padding: 150px 7vw 90px;
+            background: radial-gradient(circle at 15% 75%, #f7e9e8 0, transparent 32%), var(--cream);
+        }
+        .hero-copy { position: relative; z-index: 3; max-width: 700px; }
+        .lead { max-width: 540px; margin: 30px 0; color: #65585c; font-size: 17px; line-height: 1.75; }
+        .hero-actions { display: flex; align-items: center; gap: 30px; }
+        .text-link { display: inline-flex; align-items: center; color: var(--wine); font-size: 12.5px; font-weight: 600; text-decoration: none; }
+        .text-link span { display: inline-grid; place-items: center; width: 36px; height: 36px; margin-right: 10px; border: 1px solid #cbaab2; border-radius: 50%; font-size: 9px; transition: background .3s, color .3s; }
+        .text-link:hover span { background: var(--wine); border-color: var(--wine); color: #fff; }
+        .stats { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 38px; max-width: 520px; margin-top: 54px; padding-top: 26px; border-top: 1px solid rgba(100, 20, 42, .18); }
+        .stats b { display: block; font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 600; color: var(--wine); line-height: 1; }
+        .stats span { display: block; margin-top: 8px; color: #89787d; font-size: 11.5px; line-height: 1.4; }
+
+        .hero-visual {
+            position: relative; height: 680px; display: grid; place-items: center;
+            transform: translate(var(--px), var(--py)); transition: transform .35s ease-out;
+        }
+        .frame-wrap { position: relative; width: min(35vw, 460px); z-index: 2; }
+        .image-frame { height: 610px; overflow: hidden; border-radius: 48% 48% 12px 12px; box-shadow: 0 35px 90px rgba(54, 4, 19, .22); background: var(--blush); }
+        .image-frame img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s; }
+        .image-frame:hover img { transform: scale(1.04); }
+        .outline-word {
+            position: absolute; top: 47%; left: -12%; z-index: 1; transform: rotate(-90deg);
+            font-family: 'Playfair Display', serif; font-size: 9vw; color: transparent; -webkit-text-stroke: 1px rgba(100, 20, 42, .15);
+            pointer-events: none;
+        }
+        .review-badge {
+            position: absolute; top: 46px; left: -54px; z-index: 4; display: flex; align-items: center; gap: 12px;
+            padding: 12px 18px 12px 12px; background: rgba(255, 255, 255, .94); backdrop-filter: blur(10px);
+            border-radius: 100px; box-shadow: 0 15px 40px rgba(100, 20, 42, .15); animation: float 5s ease-in-out infinite;
+        }
+        .review-badge i { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: #f6e7c8; color: #b5801f; font-size: 14px; }
+        .review-badge p { margin: 0; line-height: 1.3; }
+        .review-badge small { display: block; font-size: 10px; color: #89787d; }
+        .review-badge b { font-size: 12.5px; color: var(--dark); }
+        .floating-note {
+            position: absolute; left: -40px; bottom: 140px; z-index: 4; width: 132px; height: 132px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; gap: 8px; background: #f2c3cc;
+            box-shadow: 0 15px 40px rgba(100, 20, 42, .15); animation: float 4s ease-in-out infinite;
+        }
+        .floating-note span { font-family: 'Playfair Display', serif; font-size: 44px; color: var(--wine); }
+        .floating-note p { margin: 0; font-size: 9.5px; line-height: 1.5; letter-spacing: .08em; text-transform: uppercase; }
+        .price-card {
+            position: absolute; right: -52px; bottom: -22px; z-index: 5; width: 250px; padding: 22px;
+            background: rgba(255, 255, 255, .96); backdrop-filter: blur(10px);
+            border-radius: 3px 44px 3px 3px; box-shadow: 0 30px 70px rgba(54, 4, 19, .22);
+        }
+        .price-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+        .tag { padding: 4px 10px; border-radius: 100px; background: var(--blush); color: var(--wine); font-size: 9.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+        .price-top s { font-size: 11px; color: #a39397; }
+        .price-card > small { display: block; font-size: 11px; color: #89787d; }
+        .price { margin: 4px 0 14px; font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 600; color: var(--dark); line-height: 1.1; }
+        .price span { font: 500 13px 'DM Sans', sans-serif; color: #78686d; }
+        .price-card .pill { min-height: 40px; font-size: 11.5px; }
+        .spark { position: absolute; top: 4px; right: -4%; z-index: 3; font-size: 54px; color: var(--rose); animation: spin 14s linear infinite; }
+        .scroll { position: absolute; left: 5vw; bottom: 30px; writing-mode: vertical-rl; color: var(--wine); font-size: 8.5px; letter-spacing: .22em; text-decoration: none; }
+        .scroll span { display: inline-block; margin-top: 12px; font-size: 18px; }
+
+        .orb { position: absolute; border-radius: 50%; pointer-events: none; filter: blur(2px); }
+        .orb-one { top: 100px; right: 2%; width: 260px; height: 260px; background: rgba(216, 150, 165, .24); animation: drift 12s ease-in-out infinite alternate; }
+        .orb-two { bottom: 30px; left: 43%; width: 160px; height: 160px; border: 1px solid rgba(100, 20, 42, .13); animation: drift 9s ease-in-out infinite alternate-reverse; }
+
+        .marquee { overflow: hidden; padding: 17px 0; background: var(--wine); color: #fff; white-space: nowrap; font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; }
+        .marquee div { width: max-content; animation: marquee 32s linear infinite; }
+        .marquee i { margin: 0 26px; color: #e4a2b2; font-style: normal; }
+
+        /* ===== Módulos ===== */
+        .program { padding: 130px 7vw; background: var(--paper); }
+        .section-head { display: grid; grid-template-columns: 1fr 1fr; align-items: end; margin-bottom: 80px; }
+        .section-head > p { justify-self: end; max-width: 440px; margin: 0; color: #73666a; font-size: 15px; line-height: 1.8; }
+        .module {
+            position: relative; overflow: hidden; display: grid; grid-template-columns: 70px 100px 1fr 54px; align-items: center; gap: 28px;
+            min-height: 132px; border-top: 1px solid #ddcece; transition: padding .3s, background .3s;
+        }
+        .module:last-of-type { border-bottom: 1px solid #ddcece; }
+        .m-num { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--wine); line-height: 1; }
+        .m-num small { display: block; margin-bottom: 6px; font: 600 9px 'DM Sans', sans-serif; letter-spacing: .16em; text-transform: uppercase; color: #9a8489; }
+        .module-img { width: 88px; height: 88px; overflow: hidden; border-radius: 50%; background: var(--blush); transform: scale(.75); transition: transform .4s; }
+        .module-img img { width: 100%; height: 100%; object-fit: cover; }
+        .module h3 { margin-bottom: 6px; font-size: 28px; line-height: 1.15; }
+        .module p { max-width: 620px; margin: 0; color: #7d6e72; font-size: 13.5px; line-height: 1.65; }
+        .m-mark { width: 48px; height: 48px; display: grid; place-items: center; border: 1px solid #d8bdc3; border-radius: 50%; color: var(--wine); font-style: normal; font-size: 14px; transition: background .3s, color .3s, transform .4s; }
+        .watermark { position: absolute; right: 110px; font-family: 'Playfair Display', serif; font-size: 100px; color: rgba(100, 20, 42, .035); pointer-events: none; }
+        .module:hover { background: #fcf5f4; padding-left: 16px; }
+        .module:hover .module-img { transform: scale(1); }
+        .module:hover .m-mark { background: var(--wine); color: #fff; transform: rotate(90deg); }
+
+        .bonus {
+            display: flex; flex-direction: column; justify-content: space-between; gap: 36px; margin-top: 70px; padding: 54px;
+            background: var(--wine); color: #fff; border-radius: 3px 110px 3px 3px; position: relative; overflow: hidden;
+        }
+        .bonus::before { content: ""; position: absolute; top: -180px; right: -140px; width: 440px; height: 440px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .12); box-shadow: 0 0 0 60px rgba(255, 255, 255, .03), 0 0 0 120px rgba(255, 255, 255, .02); pointer-events: none; }
+        .bonus .tag { align-self: flex-start; background: #f2c3cc; }
+        .bonus h3 { margin: 18px 0 14px; color: #fff; font-size: clamp(28px, 3vw, 40px); }
+        .bonus p { max-width: 620px; margin: 0; color: #e2c8ce; font-size: 15px; line-height: 1.75; }
+        .bonus-foot { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding-top: 26px; border-top: 1px solid rgba(255, 255, 255, .2); }
+        .bonus-foot span { color: #f2c3cc; font-size: 13px; font-weight: 500; }
+
+        /* ===== Clase gratuita ===== */
+        .free-class { display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: 9vw; min-height: 720px; padding: 100px 9vw; background: var(--dark); color: #fff; }
+        .video-card { position: relative; display: block; width: 100%; height: 500px; padding: 0; overflow: hidden; border: 0; border-radius: 3px 110px 3px 3px; background: var(--wine); text-align: left; color: #fff; font: inherit; }
+        .video-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(#0000 55%, rgba(25, 2, 10, .85)); }
+        .video-card img { width: 100%; height: 100%; object-fit: cover; opacity: .76; transition: transform .8s; }
+        .video-card:hover img { transform: scale(1.04); }
+        .video-card .cap { position: absolute; left: 28px; bottom: 22px; z-index: 2; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; }
+        .play {
+            position: absolute; top: 50%; left: 50%; z-index: 3; width: 88px; height: 88px; border-radius: 50%;
+            display: grid; place-items: center; background: rgba(255, 255, 255, .92); color: var(--wine); font-size: 22px;
+            transform: translate(-50%, -50%); box-shadow: 0 0 0 18px rgba(255, 255, 255, .13); transition: transform .3s;
+        }
+        .play i { margin-left: 4px; }
+        .video-card:hover .play { transform: translate(-50%, -50%) scale(1.1); }
+        .free-copy .eyebrow { color: #e9a8b6; }
+        .free-copy h2, .free-copy h2 em { color: #fff; }
+        .free-copy h2 em { color: #e9a8b6; }
+        .free-copy > p:not(.eyebrow) { max-width: 460px; margin: 28px 0 26px; color: #c8b9bd; line-height: 1.8; }
+        .checks { margin: 0 0 36px; padding: 0; list-style: none; display: grid; gap: 14px; }
+        .checks li { display: flex; align-items: center; gap: 14px; color: #e6d9dc; font-size: 14px; }
+        .checks i { width: 24px; height: 24px; flex: none; display: grid; place-items: center; border-radius: 50%; background: rgba(233, 168, 182, .18); color: #e9a8b6; font-size: 10px; }
+
+        /* ===== Ahorro ===== */
+        .savings { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 8vw; padding: 140px 9vw; background: var(--cream); }
+        .savings > div:first-child > p:not(.eyebrow) { max-width: 520px; margin: 28px 0 40px; color: #706267; line-height: 1.85; }
+        .benefit { display: flex; align-items: flex-start; gap: 18px; padding: 20px 0; border-top: 1px solid #e3d3d4; }
+        .benefit:last-child { border-bottom: 1px solid #e3d3d4; }
+        .benefit > i { width: 44px; height: 44px; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--blush); color: var(--wine); font-size: 15px; }
+        .benefit h4 { margin-bottom: 6px; font-size: 20px; font-weight: 500; }
+        .benefit p { margin: 0; color: #74676b; font-size: 13.5px; line-height: 1.7; }
+        .photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .photo-grid > div { display: grid; gap: 16px; align-content: start; }
+        .photo-grid > div:last-child { padding-top: 56px; }
+        .photo-grid img { width: 100%; object-fit: cover; border-radius: 6px; box-shadow: 0 20px 50px rgba(54, 4, 19, .12); }
+        .photo-grid .tall { height: 290px; }
+        .photo-grid .short { height: 210px; }
+        .photo-grid > div:first-child img:first-child { border-radius: 130px 130px 6px 6px; }
+        .photo-grid > div:last-child img:last-child { border-radius: 6px 6px 130px 130px; }
+
+        /* ===== Nosotros ===== */
+        .about { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 10vw; padding: 150px 9vw; background: var(--paper); }
+        .about-collage { position: relative; height: 650px; }
+        .teacher { width: 73%; height: 590px; object-fit: cover; border-radius: 170px 170px 8px 8px; }
+        .brushes { position: absolute; right: 0; bottom: 0; width: 43%; height: 240px; object-fit: cover; border: 12px solid var(--paper); }
+        .seal { position: absolute; top: 9%; right: 1%; width: 110px; height: 110px; display: grid; place-items: center; border-radius: 50%; background: var(--wine); color: #fff; text-align: center; font-family: 'Playfair Display', serif; font-size: 12px; line-height: 1.45; transform: rotate(9deg); }
+        .about-copy > p:not(.eyebrow) { max-width: 540px; margin: 26px 0 0; color: #706267; line-height: 1.9; }
+        .about blockquote { margin: 34px 0; padding-left: 24px; border-left: 1px solid var(--rose); color: var(--wine); font-family: 'Playfair Display', serif; font-size: 19px; font-style: italic; line-height: 1.5; max-width: 520px; }
+        .about-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 540px; }
+        .about-cards div { padding: 22px; border: 1px solid #e3d3d4; border-radius: 3px 28px 3px 3px; background: #fff; }
+        .about-cards i { display: block; margin-bottom: 12px; color: var(--wine); font-size: 22px; }
+        .about-cards h4 { margin-bottom: 6px; font-size: 17px; font-weight: 500; }
+        .about-cards p { margin: 0; color: #84757a; font-size: 12.5px; line-height: 1.6; }
+
+        /* ===== Galería ===== */
+        .results { padding: 120px 5vw 150px; text-align: center; background: #ead4d7; overflow: hidden; }
+        .results .eyebrow::before { display: none; }
+        .results h2 { margin-bottom: 20px; }
+        .results .sub { max-width: 480px; margin: 0 auto 70px; color: #7a6469; font-size: 15px; line-height: 1.7; }
+        .gallery { display: grid; grid-template-columns: repeat(4, 1fr); align-items: start; gap: 16px; }
+        .gallery figure { position: relative; margin: 0; overflow: hidden; }
+        .gallery figure.lower { margin-top: 50px; }
+        .gallery figure::after { content: ""; position: absolute; inset: 55% 0 0; background: linear-gradient(#0000, rgba(38, 7, 18, .72)); pointer-events: none; }
+        .gallery img { width: 100%; aspect-ratio: .76; object-fit: cover; filter: saturate(.85); transition: transform .5s, filter .5s; }
+        .gallery figure:hover img { filter: saturate(1.1); transform: scale(1.05); }
+        .gallery figcaption { position: absolute; left: 16px; bottom: 16px; right: 16px; z-index: 2; color: #fff; text-align: left; font-size: 12px; font-weight: 600; letter-spacing: .04em; }
+
+        /* ===== Testimonios ===== */
+        .testimonials { padding: 130px 7vw; background: var(--cream); }
+        .testimonials .head { max-width: 760px; margin: 0 auto 70px; text-align: center; }
+        .testimonials .head .eyebrow::before { display: none; }
+        .testimonials .head p:last-child { margin: 18px 0 0; color: #74666a; font-size: 15px; }
+        .t-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+        .t-card { display: flex; flex-direction: column; justify-content: space-between; padding: 38px 34px; background: var(--paper); border: 1px solid #e7d7d8; border-radius: 3px 70px 3px 3px; transition: transform .4s, box-shadow .4s; }
+        .t-card:hover { transform: translateY(-6px); box-shadow: 0 26px 60px rgba(54, 4, 19, .1); }
+        .stars { margin-bottom: 18px; color: #c9983a; font-size: 12px; letter-spacing: 3px; }
+        .t-card blockquote { margin: 0; color: var(--dark); font-family: 'Playfair Display', serif; font-size: 19px; font-style: italic; line-height: 1.55; }
+        .t-who { display: flex; align-items: center; gap: 14px; margin-top: 30px; padding-top: 24px; border-top: 1px solid #ecdedf; }
+        .t-who .av { width: 46px; height: 46px; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--wine); color: #fff; font-size: 13px; font-weight: 700; }
+        .t-who h4 { font: 700 14px 'DM Sans', sans-serif; color: var(--dark); }
+        .t-who p { margin: 2px 0 0; color: #8a797e; font-size: 12px; }
+
+        /* ===== FAQ ===== */
+        .faq { display: grid; grid-template-columns: .8fr 1.2fr; gap: 10vw; padding: 130px 9vw; background: var(--paper); }
+        .aside { margin-top: 50px; color: #76686c; font-size: 13.5px; }
+        .aside a { color: var(--wine); }
+        .faq-item { border-bottom: 1px solid #d9c9ca; }
+        .faq-toggle { width: 100%; display: grid; grid-template-columns: 50px 1fr 30px; align-items: center; padding: 26px 0; border: 0; background: transparent; text-align: left; color: var(--ink); font: inherit; }
+        .faq-toggle .n { font-family: 'Playfair Display', serif; font-size: 12.5px; color: var(--wine); }
+        .faq-toggle b { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 500; line-height: 1.3; }
+        .faq-toggle i { color: var(--wine); font-size: 26px; font-style: normal; text-align: center; transition: transform .3s; }
+        .faq-item.active .faq-toggle i { transform: rotate(45deg); }
+        .faq-content { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
+        .faq-content p { margin: 0; padding: 0 50px 26px; color: #74676b; font-size: 14px; line-height: 1.75; }
+
+        /* ===== Inscripción + Footer ===== */
+        footer.site-foot { background: #1b0710; color: #bbaab0; }
+        .reg { position: relative; overflow: hidden; padding: 120px 7vw; background: var(--wine); color: #fff; }
+        .orb-three { position: absolute; top: -240px; left: -250px; width: 600px; height: 600px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .1); box-shadow: 0 0 0 80px rgba(255, 255, 255, .025), 0 0 0 160px rgba(255, 255, 255, .02); animation: drift 10s infinite alternate; pointer-events: none; }
+        .reg-grid { position: relative; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 8vw; }
+        .reg .eyebrow { color: #e9a8b6; }
+        .reg h2 { color: #fff; }
+        .reg h2 em { color: #e9a8b6; }
+        .reg-copy > p:not(.eyebrow) { max-width: 440px; margin: 28px 0; color: #e2c8ce; line-height: 1.8; font-size: 15px; }
+        .contact { display: grid; gap: 14px; margin: 0 0 30px; padding: 0; list-style: none; font-size: 14px; color: #ecd7dc; }
+        .contact li { display: flex; align-items: center; gap: 14px; }
+        .contact i { width: 20px; color: #e9a8b6; text-align: center; }
+        .social { display: flex; gap: 12px; }
+        .social a { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; background: rgba(255, 255, 255, .1); color: #fff; text-decoration: none; font-size: 17px; transition: background .3s, transform .3s; }
+        .social a:hover { background: var(--rose); transform: translateY(-3px); }
+        .form-card { padding: 46px 42px; background: var(--paper); color: var(--ink); border-radius: 3px 70px 3px 3px; box-shadow: 0 40px 90px rgba(0, 0, 0, .28); }
+        .form-head { margin-bottom: 26px; text-align: center; }
+        .form-head h3 { margin: 12px 0 6px; font-size: 30px; }
+        .form-head p { margin: 0; color: #84757a; font-size: 12.5px; }
+        .field { margin-bottom: 16px; }
+        .field label { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 600; color: #4a3a3f; }
+        .field input[type="text"], .field input[type="email"], .field input[type="tel"] {
+            width: 100%; padding: 14px 16px; border: 1px solid #d9c9ca; border-radius: 12px; background: #fff; color: var(--ink);
+            font: 400 14px 'DM Sans', sans-serif; transition: border-color .2s, box-shadow .2s;
+        }
+        .field input:focus { outline: none; border-color: var(--wine); box-shadow: 0 0 0 3px rgba(100, 20, 42, .12); }
+        .error { margin: 6px 0 0; color: #b42318; font-size: 12px; }
+        .consent { display: flex; align-items: flex-start; gap: 10px; margin: 6px 0 18px; color: #6e6064; font-size: 12px; line-height: 1.55; }
+        .consent input { margin-top: 3px; accent-color: var(--wine); }
+        .firebase-error { margin: 0 0 14px; color: #b42318; font-size: 13px; }
+        #success-msg { text-align: center; padding: 30px 0; }
+        #success-msg .ok { width: 64px; height: 64px; margin: 0 auto 16px; display: grid; place-items: center; border-radius: 50%; background: #dcf3e4; color: #1f8a4c; font-size: 24px; }
+        #success-msg h4 { margin-bottom: 8px; font-size: 26px; }
+        #success-msg p { margin: 0; color: #6e6064; font-size: 14px; }
+        .foot-bottom { padding: 50px 7vw 34px; }
+        .news { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 30px; padding-bottom: 34px; border-bottom: 1px solid rgba(255, 255, 255, .1); }
+        .news h4 { margin-bottom: 4px; color: #fff; font: 700 15px 'DM Sans', sans-serif; }
+        .news p { margin: 0; font-size: 12.5px; color: #a89aa0; }
+        .news form { display: flex; gap: 10px; }
+        .news input { width: 100%; padding: 13px 16px; border: 1px solid rgba(255, 255, 255, .2); border-radius: 12px; background: rgba(255, 255, 255, .08); color: #fff; font: 400 13px 'DM Sans', sans-serif; }
+        .news input::placeholder { color: #a89aa0; }
+        .news input:focus { outline: none; border-color: var(--rose); }
+        .news button { padding: 0 22px; border: 0; border-radius: 12px; background: var(--rose); color: var(--dark); font: 700 12.5px 'DM Sans', sans-serif; white-space: nowrap; transition: background .25s; }
+        .news button:hover { background: #e4a2b2; }
+        .legal { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 26px; font-size: 11.5px; }
+        .legal div { display: flex; gap: 26px; }
+        .legal a { color: #bbaab0; text-decoration: none; transition: color .25s; }
+        .legal a:hover { color: #fff; }
+
+        /* ===== Modal de video ===== */
+        .modal { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(20, 2, 8, .82); backdrop-filter: blur(8px); }
+        .modal-box { position: relative; width: 100%; max-width: 680px; padding: 28px; background: var(--paper); border-radius: 3px 60px 3px 3px; box-shadow: 0 40px 90px rgba(0, 0, 0, .4); }
+        .modal-box h3 { margin-bottom: 18px; padding-right: 48px; font-size: 26px; }
+        .modal-close { position: absolute; top: 18px; right: 18px; width: 40px; height: 40px; border: 0; border-radius: 50%; background: var(--blush); color: var(--wine); font-size: 16px; transition: background .25s, color .25s; }
+        .modal-close:hover { background: var(--wine); color: #fff; }
+        .screen { aspect-ratio: 16 / 9; display: grid; place-items: center; padding: 24px; border-radius: 3px 40px 3px 3px; background: var(--dark); color: #fff; text-align: center; }
+        .screen i { margin-bottom: 14px; font-size: 52px; color: #e9a8b6; animation: pulse 2s ease-in-out infinite; }
+        .screen p { margin: 0 0 6px; font-weight: 600; font-size: 17px; }
+        .screen small { color: #b8a7ac; font-size: 12.5px; }
+
+        /* ===== Animaciones ===== */
+        @keyframes float { 50% { transform: translateY(-15px) rotate(3deg); } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes drift { to { transform: translate(70px, 40px) scale(1.12); } }
+        @keyframes marquee { to { transform: translateX(-50%); } }
+        @keyframes pulse { 50% { opacity: .55; transform: scale(.94); } }
+
+        /* ===== Responsive ===== */
+        @media (min-width: 901px) {
+            #mobile-menu { display: none !important; }
+        }
+        @media (max-width: 900px) {
+            .cursor, .cursor-glow { display: none; }
+            header.site { height: 76px; padding: 0 20px; }
+            #mobile-menu { top: 76px; }
+            nav.main { display: none; }
+            .menu-btn { display: block; }
+            #auth-container .pill { display: none; }
+            .user-meta { display: none; }
+            .hero { display: flex; flex-direction: column; align-items: stretch; min-height: auto; padding: 125px 24px 80px; }
+            .hero-copy { width: 100%; }
+            .lead { font-size: 15.5px; }
+            .hero-actions { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .stats { gap: 22px; margin-top: 38px; }
+            .hero-visual { width: 100%; height: auto; margin-top: 50px; padding-bottom: 40px; transform: none; }
+            .frame-wrap { width: min(82vw, 420px); }
+            .image-frame { height: 500px; }
+            .review-badge { left: -8px; top: 24px; }
+            .floating-note { left: -10px; bottom: 150px; width: 104px; height: 104px; }
+            .floating-note span { font-size: 34px; }
+            .price-card { right: -10px; bottom: -34px; width: 224px; }
+            .outline-word, .scroll { display: none; }
+            .program, .about, .results, .faq, .testimonials { padding: 90px 24px; }
+            .section-head, .free-class, .savings, .about, .faq, .reg-grid, .news { grid-template-columns: 1fr; }
+            .section-head { gap: 28px; margin-bottom: 45px; }
+            .section-head > p { justify-self: start; }
+            .module { grid-template-columns: 54px 62px 1fr; gap: 12px; min-height: 100px; padding: 14px 0; }
+            .module-img { width: 58px; height: 58px; transform: scale(1); }
+            .module h3 { font-size: 20px; }
+            .module p { font-size: 12.5px; }
+            .m-mark, .watermark { display: none; }
+            .m-num { font-size: 18px; }
+            .bonus { padding: 36px 26px; border-radius: 3px 70px 3px 3px; }
+            .free-class { gap: 55px; padding: 80px 24px; }
+            .video-card { height: 360px; border-radius: 3px 70px 3px 3px; }
+            .savings { gap: 60px; padding: 90px 24px; }
+            .about { gap: 60px; }
+            .about-collage { height: 510px; }
+            .teacher { height: 470px; }
+            .brushes { height: 180px; }
+            .gallery { grid-template-columns: 1fr 1fr; }
+            .gallery figure.lower { margin-top: 25px; }
+            .t-grid { grid-template-columns: 1fr; }
+            .faq { gap: 50px; }
+            .reg { padding: 90px 24px; }
+            .reg-grid { gap: 60px; }
+            .form-card { padding: 34px 24px; border-radius: 3px 50px 3px 3px; }
+            .foot-bottom { padding: 40px 24px 30px; }
+        }
+        @media (max-width: 520px) {
+            h1 { font-size: 46px; }
+            h2 { font-size: 40px; }
+            .stats { grid-template-columns: repeat(3, 1fr); }
+            .stats b { font-size: 26px; }
+            .image-frame { height: 440px; }
+            .video-card { height: 300px; }
+            .play { width: 70px; height: 70px; font-size: 18px; }
+            .about-collage { height: 430px; }
+            .teacher { height: 400px; }
+            .brushes { height: 145px; }
+            .about-cards { grid-template-columns: 1fr; }
+            .gallery { gap: 8px; }
+            .faq-toggle { grid-template-columns: 36px 1fr 24px; }
+            .faq-toggle b { font-size: 17px; }
+            .faq-content p { padding: 0 24px 22px 36px; }
+            .news form { flex-direction: column; }
+            .news button { padding: 13px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after { animation: none !important; transition: none !important; }
         }
     </style>
 </head>
-<body class="bg-wine-50 antialiased selection:bg-wine-500 selection:text-white">
-    <!-- Header / Navbar Superior Horizontal -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-wine-100 shadow-sm transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-           
-            <!-- Logo Marca Exacto -->
-            <a href="index.html" class="flex flex-col group text-left">
-                <span class="text-[10px] sm:text-xs font-semibold tracking-widest text-wine-500 uppercase font-sans">Make It</span>
-                <span class="text-xl sm:text-2xl font-bold tracking-tight text-wine-700 font-serif -mt-1 group-hover:text-wine-900 transition-colors">YOURSELF</span>
-            </a>
-            <!-- Enlaces de Navegación Conectados -->
-            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-700">
-                <!-- Selector/Navegación para Usuarios Conectados -->
-                <div id="nav-logged-in" class="hidden flex items-center gap-2 bg-wine-50 p-1 rounded-full border border-wine-200">
-                    <a href="mis-cursos.html" class="px-4 py-1.5 rounded-full text-xs font-bold text-wine-900 hover:bg-white hover:shadow-sm transition-all flex items-center gap-1.5">
-                        <i class="fa-solid fa-graduation-cap text-wine-700"></i> Mis Cursos
-                    </a>
-                    <a href="admin.html" class="px-4 py-1.5 rounded-full text-xs font-bold text-wine-900 hover:bg-white hover:shadow-sm transition-all flex items-center gap-1.5">
-                        <i class="fa-solid fa-user-shield text-wine-700"></i> Admin
-                    </a>
-                </div>
+<body>
+    <!-- Cursor personalizado -->
+    <div class="cursor" aria-hidden="true"></div>
+    <div class="cursor-glow" aria-hidden="true"></div>
 
-                <!-- Enlaces Informativos (Visibles solo para visitantes sin sesión) -->
-                <a href="#clase-gratis" class="nav-public hover:text-wine-700 transition-colors flex items-center gap-1.5 text-wine-700 font-semibold">
-                    <i class="fa-solid fa-play text-xs bg-wine-100 p-1 rounded-full"></i> ¡Probar Clase!
-                </a>
-                <a href="#nosotros" class="nav-public hover:text-wine-700 transition-colors">Nosotros</a>
-                <a href="#galeria" class="nav-public hover:text-wine-700 transition-colors">Galería</a>
-                <a href="#testimonios" class="nav-public hover:text-wine-700 transition-colors">Testimonios</a>
-                <a href="#faq" class="hover:text-wine-700 transition-colors">Ayuda</a>
-            </nav>
-            <!-- CTA Botón Iniciar Sesión / Menú de Usuario Dinámico -->
-            <div class="flex items-center space-x-4">
-                <div id="auth-container">
-                    <a href="auth.html" id="btn-inscribirme-nav" class="hidden sm:inline-flex items-center justify-center px-6 py-2.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transform hover:-translate-y-0.5 transition-all">
-                        Iniciar Sesión
-                    </a>
-                </div>
+    <!-- Icono de flecha reutilizable -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="arr" viewBox="0 0 24 24"><path d="M5 12h14M14 6l6 6-6 6"/></symbol>
+    </svg>
 
-                <!-- Botón Menú Móvil -->
-                <button id="menu-btn" aria-label="Abrir menú de navegación" class="md:hidden text-wine-700 focus:outline-none p-2 rounded-lg hover:bg-wine-100 transition-colors">
-                    <i class="fa-solid fa-bars text-2xl"></i>
-                </button>
-            </div>
-        </div>
-        <!-- Menú Desplegable Móvil -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-wine-100 px-6 py-4 space-y-3 shadow-lg">
-            <!-- Opciones para usuario conectado en móvil -->
-            <div id="mobile-nav-logged-in" class="hidden space-y-2 pb-2 border-b border-wine-100">
-                <a href="miscursos.html" class="block w-full text-center py-2 rounded-xl text-xs font-bold text-wine-900 bg-wine-50 border border-wine-200">
-                    <i class="fa-solid fa-graduation-cap text-wine-700 mr-1"></i> Ir a Mis Cursos
-                </a>
-                <a href="admin.html" class="block w-full text-center py-2 rounded-xl text-xs font-bold text-wine-900 bg-wine-50 border border-wine-200">
-                    <i class="fa-solid fa-user-shield text-wine-700 mr-1"></i> Panel Administrador
-                </a>
-            </div>
+    <!-- Header / Navbar -->
+    <header class="site">
+        <a href="index.html" class="brand" aria-label="Make It Yourself, inicio">
+            <small>Make It</small>
+            <strong>YOURSELF</strong>
+        </a>
 
-            <!-- Opciones públicas en móvil -->
-            <a href="#clase-gratis" class="mobile-nav-public block text-wine-700 font-semibold py-1">¡Probar Clase!</a>
-            <a href="#nosotros" class="mobile-nav-public block text-gray-700 font-medium py-1 hover:text-wine-700">Nosotros</a>
-            <a href="#galeria" class="mobile-nav-public block text-gray-700 font-medium py-1 hover:text-wine-700">Galería</a>
-            <a href="#testimonios" class="mobile-nav-public block text-gray-700 font-medium py-1 hover:text-wine-700">Testimonios</a>
-            <a href="#faq" class="block text-gray-700 font-medium py-1 hover:text-wine-700">Ayuda</a>
-            <div id="mobile-auth-btn" class="pt-2 border-t border-gray-100">
-                <a href="auth.html" class="block w-full text-center py-2.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md">
-                    Iniciar Sesión
-                </a>
+        <nav class="main" aria-label="Navegación principal">
+            <!-- Selector para usuarios conectados -->
+            <div id="nav-logged-in" class="hidden">
+                <a href="mis-cursos.html"><i class="fa-solid fa-graduation-cap"></i> Mis Cursos</a>
+                <a href="admin.html"><i class="fa-solid fa-user-shield"></i> Admin</a>
             </div>
+            <!-- Enlaces públicos (se ocultan con sesión activa) -->
+            <a href="#clase-gratis" class="nav-public accent"><i class="fa-solid fa-play"></i> ¡Probar Clase!</a>
+            <a href="#nosotros" class="nav-public">Nosotros</a>
+            <a href="#galeria" class="nav-public">Galería</a>
+            <a href="#testimonios" class="nav-public">Testimonios</a>
+            <a href="#faq">Ayuda</a>
+        </nav>
+
+        <div class="header-actions">
+            <!-- Botón Iniciar Sesión / tarjeta de usuario (lo reemplaza el script de Firebase) -->
+            <div id="auth-container">
+                <a href="auth.html" id="btn-inscribirme-nav" class="pill small">Iniciar Sesión</a>
+            </div>
+            <button id="menu-btn" class="menu-btn" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="mobile-menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden bg-gradient-to-b from-wine-100/60 via-wine-50 to-white">
-        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-blush-200/40 blur-3xl pointer-events-none"></div>
-        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 rounded-full bg-wine-500/10 blur-3xl pointer-events-none"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-               
-                <!-- Columna de Texto Principal -->
-                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-                    <div class="inline-flex items-center gap-2 bg-white px-4 py-1.5 rounded-full shadow-sm border border-wine-200 text-xs sm:text-sm font-medium text-wine-700">
-                        <i class="fa-solid fa-wand-magic-sparkles text-gold-500"></i>
-                        <span>Método Profesional de Maquillaje Autodidacta</span>
-                    </div>
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-wine-900 serif-font tracking-tight leading-tight">
-                        Domina el arte de maquillarte <span class="text-wine-500 italic">como una experta</span>
-                    </h1>
-                    <p class="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto lg:mx-0">
-                        Aprende técnicas profesionales adaptadas a tu tipo de rostro, ahorra dinero en productos innecesarios y resalta tu belleza natural en tiempo récord con lecciones prácticas guiadas paso a paso.
-                    </p>
-                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-                        <a href="auth.html" class="w-full sm:w-auto px-8 py-4 rounded-full text-base font-semibold text-white custom-gradient shadow-xl hover:shadow-wine-500/30 transform hover:-translate-y-1 transition-all text-center">
-                            ¡Comenzar Ahora!
-                        </a>
-                        <a href="#clase-gratis" class="w-full sm:w-auto px-8 py-4 rounded-full text-base font-semibold text-wine-700 bg-white border-2 border-wine-300 hover:bg-wine-50 shadow-sm transition-all text-center flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-play text-wine-500"></i> Ver Clase de Prueba
-                        </a>
-                    </div>
-                    <!-- Estadísticas Rápidas -->
-                    <div class="grid grid-cols-3 gap-4 pt-8 border-t border-wine-200 max-w-lg mx-auto lg:mx-0">
-                        <div>
-                            <p class="text-2xl sm:text-3xl font-bold text-wine-900 serif-font">+5.000</p>
-                            <p class="text-xs text-gray-500 font-medium">Alumnas Graduadas</p>
-                        </div>
-                        <div>
-                            <p class="text-2xl sm:text-3xl font-bold text-wine-900 serif-font">4.9/5</p>
-                            <p class="text-xs text-gray-500 font-medium">Calificación Promedio</p>
-                        </div>
-                        <div>
-                            <p class="text-2xl sm:text-3xl font-bold text-wine-900 serif-font">100%</p>
-                            <p class="text-xs text-gray-500 font-medium">Práctico y Garantizado</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Imagen Hero & Tarjeta de Precio Flotante -->
-                <div class="lg:col-span-5 relative flex justify-center">
-                    <div class="relative w-full max-w-md">
-                       
-                        <!-- IMAGEN HERO PRINCIPAL -->
-                        <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-wine-200 aspect-[4/5]">
-                            <img src="https://i.pinimg.com/736x/24/25/35/242535a6c1b8c6f682a3874b3cec805e.jpg" alt="Modelo de maquillaje profesional Make It Yourself" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700" onerror="this.src='https://placehold.co/600x750/721422/ffffff?text=Maquillaje+Profesional'">
-                            <div class="absolute inset-0 bg-gradient-to-t from-wine-900/60 via-transparent to-transparent"></div>
-                        </div>
-                        <!-- Insignia Flotante -->
-                        <div class="absolute -top-6 -left-6 bg-white/95 backdrop-blur-md px-4 py-3 rounded-2xl shadow-xl border border-wine-100 flex items-center space-x-3 animate-bounce duration-1000">
-                            <div class="w-10 h-10 rounded-full bg-gold-400/20 flex items-center justify-center text-gold-600 font-bold">
-                                <i class="fa-solid fa-star"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-500 font-medium">Reseña Verificada</p>
-                                <p class="text-sm font-bold text-wine-900">"¡El mejor curso online!"</p>
-                            </div>
-                        </div>
-                        <!-- Tarjeta de Precio Flotante -->
-                        <div class="absolute -bottom-8 -right-4 sm:-right-8 bg-white/95 backdrop-blur-md p-5 rounded-3xl shadow-2xl border border-wine-200 max-w-[240px]">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="bg-wine-100 text-wine-700 text-[10px] uppercase font-bold px-2.5 py-0.5 rounded-full">Acceso Inmediato</span>
-                                <span class="text-xs text-gray-400 line-through">190.000 COP</span>
-                            </div>
-                            <p class="text-xs text-gray-500 font-medium">Inversión Única</p>
-                            <p class="text-2xl sm:text-3xl font-extrabold text-wine-900 font-serif my-1">89.000 <span class="text-sm font-sans font-normal text-gray-600">COP</span></p>
-                            <a href="auth.html" class="block w-full text-center py-2 px-4 rounded-xl text-xs font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-opacity">
-                                Asegurar Mi Cupo
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- Menú móvil -->
+    <div id="mobile-menu" class="hidden">
+        <div id="mobile-nav-logged-in" class="hidden">
+            <a href="mis-cursos.html"><i class="fa-solid fa-graduation-cap"></i> Ir a Mis Cursos</a>
+            <a href="admin.html"><i class="fa-solid fa-user-shield"></i> Panel Administrador</a>
         </div>
-    </section>
-
-    <!-- Marquee Infinito -->
-    <div class="bg-wine-700 py-4 overflow-hidden text-white shadow-inner">
-        <div class="animate-marquee whitespace-nowrap flex items-center space-x-12 text-sm sm:text-base font-semibold tracking-wider uppercase">
-            <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-gold-400 text-xs"></i> Piel Radiante sin Excesos</span>
-            <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-gold-400 text-xs"></i> Técnicas de Visagismo</span>
-            <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-gold-400 text-xs"></i> Ojos de Alta Definición</span>
-            <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-gold-400 text-xs"></i> Cuidado y Selección de Insumos</span>
-            <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-gold-400 text-xs"></i> Piel Radiante sin Excesos</span>
-            <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-gold-400 text-xs"></i> Técnicas de Visagismo</span>
-            <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-gold-400 text-xs"></i> Ojos de Alta Definición</span>
-            <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-gold-400 text-xs"></i> Cuidado y Selección de Insumos</span>
+        <a href="#clase-gratis" class="mobile-nav-public m-link accent">¡Probar Clase!</a>
+        <a href="#nosotros" class="mobile-nav-public m-link">Nosotros</a>
+        <a href="#galeria" class="mobile-nav-public m-link">Galería</a>
+        <a href="#testimonios" class="mobile-nav-public m-link">Testimonios</a>
+        <a href="#faq" class="m-link">Ayuda</a>
+        <div id="mobile-auth-btn">
+            <a href="auth.html" class="pill block">Iniciar Sesión</a>
         </div>
     </div>
 
-    <!-- Sección de 5 Módulos de Maquillaje -->
-    <section id="modules-section" class="py-24 bg-white relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest">Plan de Estudio Profesional</span>
-                <h2 class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font mt-2">Los 5 Módulos del Método Make It Yourself</h2>
-                <p class="text-gray-600 mt-3">Aprende paso a paso la estructura completa de nuestro programa.</p>
+    <main>
+        <!-- Hero -->
+        <section class="hero" id="inicio">
+            <div class="orb orb-one"></div>
+            <div class="orb orb-two"></div>
+
+            <div class="hero-copy">
+                <p class="eyebrow">Método profesional de maquillaje autodidacta</p>
+                <h1>Domina el arte de maquillarte <em>como una experta</em></h1>
+                <p class="lead">Aprende técnicas profesionales adaptadas a tu tipo de rostro, ahorra dinero en productos innecesarios y resalta tu belleza natural en tiempo récord con lecciones prácticas guiadas paso a paso.</p>
+                <div class="hero-actions">
+                    <a href="auth.html" class="pill">¡Comenzar Ahora! <svg class="arr"><use href="#arr"/></svg></a>
+                    <a href="#clase-gratis" class="text-link"><span>▶</span> Ver clase de prueba</a>
+                </div>
+                <div class="stats">
+                    <div><b>+5.000</b><span>Alumnas graduadas</span></div>
+                    <div><b>4.9/5</b><span>Calificación promedio</span></div>
+                    <div><b>100%</b><span>Práctico y garantizado</span></div>
+                </div>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Módulo 1 -->
-                <div class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="h-48 overflow-hidden relative">
-                            <img src="https://i.pinimg.com/736x/0c/ca/ef/0ccaef8a34d24ecf4cb8e95c198fe3cf.jpg" alt="Preparación de Piel y Skincare" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+1+Skincare'">
-                            <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full">Módulo 01</span>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-wine-900 mb-2 serif-font">Preparación de Piel y Skincare</h3>
-                            <p class="text-gray-600 text-sm leading-relaxed">
-                                Identifica tu tipo de piel, prepara la barrera cutánea con productos adecuados y logra un lienzo suave para un maquillaje de larga duración.
-                            </p>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Módulo 2 -->
-                <div class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="h-48 overflow-hidden relative">
-                            <img src="https://i.pinimg.com/1200x/5d/7b/c6/5d7bc6405ebc0d2b3d83e5e3f54d0037.jpg" alt="Bases, Correctores y Contorno" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+2+Contorno'">
-                            <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full">Módulo 02</span>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-wine-900 mb-2 serif-font">Bases, Correctores y Contorno</h3>
-                            <p class="text-gray-600 text-sm leading-relaxed">
-                                Descubre tu subtono exacto de piel, aprende la técnica de corrección de imperfecciones y domina el perfilado según tu tipo de rostro.
-                            </p>
-                        </div>
+            <div class="hero-visual">
+                <div class="outline-word" aria-hidden="true">BEAUTY</div>
+                <div class="frame-wrap">
+                    <div class="image-frame">
+                        <img src="https://i.pinimg.com/736x/24/25/35/242535a6c1b8c6f682a3874b3cec805e.jpg" alt="Modelo de maquillaje profesional Make It Yourself" onerror="this.style.display='none'">
                     </div>
+                    <div class="review-badge">
+                        <i class="fa-solid fa-star"></i>
+                        <p><small>Reseña verificada</small><b>“¡El mejor curso online!”</b></p>
+                    </div>
+                    <div class="floating-note"><span>5</span><p>módulos<br>paso a paso</p></div>
+                    <div class="price-card">
+                        <div class="price-top"><span class="tag">Acceso inmediato</span><s>190.000 COP</s></div>
+                        <small>Inversión única</small>
+                        <p class="price">89.000 <span>COP</span></p>
+                        <a href="auth.html" class="pill small block">Asegurar mi cupo</a>
+                    </div>
+                    <div class="spark" aria-hidden="true">✦</div>
                 </div>
+            </div>
 
-                <!-- Módulo 3 -->
-                <div class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="h-48 overflow-hidden relative">
-                            <img src="https://i.pinimg.com/1200x/10/f2/3e/10f23e1cfdf69aa2f2599b57670d3073.jpg" alt="Cejas y Ojos de Impacto" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+3+Ojos'">
-                            <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full">Módulo 03</span>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-wine-900 mb-2 serif-font">Cejas Perfectas y Ojos de Impacto</h3>
-                            <p class="text-gray-600 text-sm leading-relaxed">
-                                Domina el diseño de cejas pelo a pelo, difuminados de sombras con efecto degradado, delineados asimétricos y postura de pestañas.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+            <a class="scroll" href="#modules-section">DESCUBRE MÁS <span>↓</span></a>
+        </section>
 
-                <!-- Módulo 4 -->
-                <div class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="h-48 overflow-hidden relative">
-                            <img src="https://i.pinimg.com/736x/c0/31/6f/c0316f3f1df9d9d7f7968b0c113fd51d.jpg" alt="Labios, Rubor y Glow" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+4+Labios'">
-                            <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full">Módulo 04</span>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-wine-900 mb-2 serif-font">Labios, Rubor y Iluminación Glow</h3>
-                            <p class="text-gray-600 text-sm leading-relaxed">
-                                Consigue labios carnosos con perfilado de larga duración, rubor jugoso en crema e iluminador para un acabado glow natural.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Módulo 5 -->
-                <div class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm flex flex-col justify-between md:col-span-2 lg:col-span-1">
-                    <div>
-                        <div class="h-48 overflow-hidden relative">
-                            <img src="https://i.pinimg.com/1200x/08/a2/00/08a20051645c8c8f801cb45ce3140ceb.jpg" alt="Maquillaje de Día a Noche" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/721422/ffffff?text=Modulo+5+Noche'">
-                            <span class="absolute top-4 left-4 bg-wine-700 text-white text-xs font-bold px-3 py-1 rounded-full">Módulo 05</span>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-wine-900 mb-2 serif-font">Transición de Día a Noche</h3>
-                            <p class="text-gray-600 text-sm leading-relaxed">
-                                Adapta un look fresco de oficina a un maquillaje de gala deslumbrante en menos de 5 minutos utilizando técnicas de capas inteligentes.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tarjeta Bono Destacado -->
-                <div class="custom-gradient rounded-3xl p-8 text-white shadow-xl flex flex-col justify-between md:col-span-2">
-                    <div>
-                        <span class="bg-gold-500 text-wine-900 font-bold text-[10px] uppercase px-3 py-1 rounded-full mb-4 inline-block">Bono Especial Incluido</span>
-                        <h3 class="text-2xl font-bold mb-3 serif-font">Guía de Compra Inteligente e Insumos</h3>
-                        <p class="text-white/90 text-sm leading-relaxed max-w-xl">
-                            Deja de gastar dinero en productos que no necesitas. Te entregamos nuestra lista secreta de marcas económicas con calidad profesional y qué herramientas vale la pena comprar.
-                        </p>
-                    </div>
-                    <div class="mt-8 pt-4 border-t border-white/20 flex flex-wrap items-center justify-between gap-4">
-                        <span class="text-xs font-medium text-gold-400">Valorizado en 150.000 COP (¡Gratis hoy!)</span>
-                        <a href="auth.html" class="bg-white text-wine-700 px-6 py-2.5 rounded-full text-xs font-bold hover:bg-wine-50 transition-colors shadow-md">
-                            Reclamar Bono Gratis
-                        </a>
-                    </div>
-                </div>
-
+        <!-- Marquee infinito -->
+        <div class="marquee on-dark" aria-hidden="true">
+            <div>
+                PIEL RADIANTE SIN EXCESOS <i>✦</i> TÉCNICAS DE VISAGISMO <i>✦</i> OJOS DE ALTA DEFINICIÓN <i>✦</i> CUIDADO Y SELECCIÓN DE INSUMOS <i>✦</i>
+                PIEL RADIANTE SIN EXCESOS <i>✦</i> TÉCNICAS DE VISAGISMO <i>✦</i> OJOS DE ALTA DEFINICIÓN <i>✦</i> CUIDADO Y SELECCIÓN DE INSUMOS <i>✦</i>
+                PIEL RADIANTE SIN EXCESOS <i>✦</i> TÉCNICAS DE VISAGISMO <i>✦</i> OJOS DE ALTA DEFINICIÓN <i>✦</i> CUIDADO Y SELECCIÓN DE INSUMOS <i>✦</i>
+                PIEL RADIANTE SIN EXCESOS <i>✦</i> TÉCNICAS DE VISAGISMO <i>✦</i> OJOS DE ALTA DEFINICIÓN <i>✦</i> CUIDADO Y SELECCIÓN DE INSUMOS <i>✦</i>
             </div>
         </div>
-    </section>
 
-    <!-- Sección de Clase Gratuita -->
-    <section id="clase-gratis" class="py-20 bg-wine-50 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="bg-white rounded-3xl p-8 sm:p-12 border border-wine-200 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-               
-                <div class="lg:col-span-6 space-y-6">
-                    <span class="bg-wine-100 text-wine-700 font-bold text-xs uppercase px-3 py-1 rounded-full">¡Empieza Sin Costo!</span>
-                    <h2 class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font">Mira una clase de muestra gratis</h2>
-                    <p class="text-gray-600 text-sm sm:text-base leading-relaxed">
-                        Comprueba la claridad de nuestras lecciones antes de tomar una decisión. Accede inmediatamente a nuestra miniclase donde revelamos cómo corregir ojeras y unificar el tono de piel sin recargar.
-                    </p>
-                    <ul class="space-y-3 text-sm text-gray-700">
-                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-wine-700 bg-wine-100 p-1 rounded-full"></i> Sin tarjeta de crédito ni compromisos</li>
-                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-wine-700 bg-wine-100 p-1 rounded-full"></i> Duración: 15 minutos explicados al detalle</li>
-                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-wine-700 bg-wine-100 p-1 rounded-full"></i> Acceso online inmediato desde cualquier lugar</li>
+        <!-- Los 5 módulos (informativos: no redirigen a ninguna página) -->
+        <section class="program" id="modules-section">
+            <div class="section-head">
+                <div>
+                    <p class="eyebrow">Plan de estudio profesional</p>
+                    <h2>Los 5 módulos del <em>Método Make It Yourself</em></h2>
+                </div>
+                <p>Aprende paso a paso la estructura completa de nuestro programa.</p>
+            </div>
+
+            <div class="module-list">
+                <article class="module">
+                    <span class="m-num"><small>Módulo</small>01</span>
+                    <div class="module-img"><img src="https://i.pinimg.com/736x/0c/ca/ef/0ccaef8a34d24ecf4cb8e95c198fe3cf.jpg" alt="Preparación de piel y skincare" onerror="this.style.display='none'"></div>
+                    <div>
+                        <h3>Preparación de Piel y Skincare</h3>
+                        <p>Identifica tu tipo de piel, prepara la barrera cutánea con productos adecuados y logra un lienzo suave para un maquillaje de larga duración.</p>
+                    </div>
+                    <i class="m-mark" aria-hidden="true">✦</i>
+                    <b class="watermark" aria-hidden="true">01</b>
+                </article>
+                <article class="module">
+                    <span class="m-num"><small>Módulo</small>02</span>
+                    <div class="module-img"><img src="https://i.pinimg.com/1200x/5d/7b/c6/5d7bc6405ebc0d2b3d83e5e3f54d0037.jpg" alt="Bases, correctores y contorno" onerror="this.style.display='none'"></div>
+                    <div>
+                        <h3>Bases, Correctores y Contorno</h3>
+                        <p>Descubre tu subtono exacto de piel, aprende la técnica de corrección de imperfecciones y domina el perfilado según tu tipo de rostro.</p>
+                    </div>
+                    <i class="m-mark" aria-hidden="true">✦</i>
+                    <b class="watermark" aria-hidden="true">02</b>
+                </article>
+                <article class="module">
+                    <span class="m-num"><small>Módulo</small>03</span>
+                    <div class="module-img"><img src="https://i.pinimg.com/1200x/10/f2/3e/10f23e1cfdf69aa2f2599b57670d3073.jpg" alt="Cejas y ojos de impacto" onerror="this.style.display='none'"></div>
+                    <div>
+                        <h3>Cejas Perfectas y Ojos de Impacto</h3>
+                        <p>Domina el diseño de cejas pelo a pelo, difuminados de sombras con efecto degradado, delineados asimétricos y postura de pestañas.</p>
+                    </div>
+                    <i class="m-mark" aria-hidden="true">✦</i>
+                    <b class="watermark" aria-hidden="true">03</b>
+                </article>
+                <article class="module">
+                    <span class="m-num"><small>Módulo</small>04</span>
+                    <div class="module-img"><img src="https://i.pinimg.com/736x/c0/31/6f/c0316f3f1df9d9d7f7968b0c113fd51d.jpg" alt="Labios, rubor y glow" onerror="this.style.display='none'"></div>
+                    <div>
+                        <h3>Labios, Rubor y Iluminación Glow</h3>
+                        <p>Consigue labios carnosos con perfilado de larga duración, rubor jugoso en crema e iluminador para un acabado glow natural.</p>
+                    </div>
+                    <i class="m-mark" aria-hidden="true">✦</i>
+                    <b class="watermark" aria-hidden="true">04</b>
+                </article>
+                <article class="module">
+                    <span class="m-num"><small>Módulo</small>05</span>
+                    <div class="module-img"><img src="https://i.pinimg.com/1200x/08/a2/00/08a20051645c8c8f801cb45ce3140ceb.jpg" alt="Maquillaje de día a noche" onerror="this.style.display='none'"></div>
+                    <div>
+                        <h3>Transición de Día a Noche</h3>
+                        <p>Adapta un look fresco de oficina a un maquillaje de gala deslumbrante en menos de 5 minutos utilizando técnicas de capas inteligentes.</p>
+                    </div>
+                    <i class="m-mark" aria-hidden="true">✦</i>
+                    <b class="watermark" aria-hidden="true">05</b>
+                </article>
+            </div>
+
+            <!-- Bono destacado -->
+            <div class="bonus on-dark">
+                <div style="position:relative">
+                    <span class="tag">Bono especial incluido</span>
+                    <h3>Guía de Compra Inteligente e Insumos</h3>
+                    <p>Deja de gastar dinero en productos que no necesitas. Te entregamos nuestra lista secreta de marcas económicas con calidad profesional y qué herramientas vale la pena comprar.</p>
+                </div>
+                <div class="bonus-foot">
+                    <span>Valorizado en 150.000 COP (¡Gratis hoy!)</span>
+                    <a href="auth.html" class="pill light">Reclamar Bono Gratis <svg class="arr"><use href="#arr"/></svg></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Clase gratuita -->
+        <section class="free-class on-dark" id="clase-gratis">
+            <button type="button" class="video-card" onclick="openVideoModal()" aria-label="Reproducir clase de prueba gratuita">
+                <img src="https://i.pinimg.com/1200x/41/43/5e/41435e184a17b7efc5b1422e13bf9bc0.jpg" alt="Vista previa de la clase de prueba" onerror="this.style.display='none'">
+                <span class="play"><i class="fa-solid fa-play"></i></span>
+                <span class="cap">Reproducir clase de prueba · 15 min</span>
+            </button>
+            <div class="free-copy">
+                <p class="eyebrow">¡Empieza sin costo!</p>
+                <h2>Mira una clase de muestra <em>gratis</em></h2>
+                <p>Comprueba la claridad de nuestras lecciones antes de tomar una decisión. Accede inmediatamente a nuestra miniclase donde revelamos cómo corregir ojeras y unificar el tono de piel sin recargar.</p>
+                <ul class="checks">
+                    <li><i class="fa-solid fa-check"></i> Sin tarjeta de crédito ni compromisos</li>
+                    <li><i class="fa-solid fa-check"></i> Duración: 15 minutos explicados al detalle</li>
+                    <li><i class="fa-solid fa-check"></i> Acceso online inmediato desde cualquier lugar</li>
+                </ul>
+                <button type="button" class="pill light" onclick="openVideoModal()"><i class="fa-solid fa-play"></i> Reproducir clase gratuita ahora</button>
+            </div>
+        </section>
+
+        <!-- Ahorro / beneficios -->
+        <section class="savings">
+            <div>
+                <p class="eyebrow">Economía inteligente</p>
+                <h2>Ahorra dinero en cosméticos que <em>no te favorecen</em></h2>
+                <p>Aprende a realizar compras estratégicas. Te enseñamos qué tonos, texturas y brochas realmente aportan valor a tu kit de maquillaje, evitando acumular productos innecesarios.</p>
+                <div>
+                    <div class="benefit">
+                        <i class="fa-solid fa-piggy-bank"></i>
+                        <div>
+                            <h4>Ahorro comprobado de hasta un 60%</h4>
+                            <p>Descubre productos alternativos económicos (dupes) con la misma fijación y pigmentación que las marcas de lujo.</p>
+                        </div>
+                    </div>
+                    <div class="benefit">
+                        <i class="fa-solid fa-briefcase"></i>
+                        <div>
+                            <h4>Kit funcional esencial</h4>
+                            <p>Arma un cosmetiquero práctico de solo 7 elementos clave para lograr cualquier look de día o de noche.</p>
+                        </div>
+                    </div>
+                    <div class="benefit">
+                        <i class="fa-solid fa-clock"></i>
+                        <div>
+                            <h4>Rutinas exprés de 10 minutos</h4>
+                            <p>Aprende la secuencia de pasos optimizada para arreglarte rápidamente cada mañana sin complicaciones.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="photo-grid">
+                <div>
+                    <img class="tall" src="https://i.pinimg.com/736x/23/27/bc/2327bc8299d3a28727e1fcac3de7961d.jpg" alt="Cosméticos ordenados" onerror="this.style.display='none'">
+                    <img class="short" src="https://i.pinimg.com/736x/d9/b2/0a/d9b20a057b59d803eb197e79c4586c90.jpg" alt="Juego de brochas" onerror="this.style.display='none'">
+                </div>
+                <div>
+                    <img class="short" src="https://i.pinimg.com/736x/a9/b0/08/a9b008db0d64ae32e63d21b45d5b8b52.jpg" alt="Paleta de tonos" onerror="this.style.display='none'">
+                    <img class="tall" src="https://i.pinimg.com/736x/cd/e9/7c/cde97c7ef6df52de5c008060b041559d.jpg" alt="Labiales en barra" onerror="this.style.display='none'">
+                </div>
+            </div>
+        </section>
+
+        <!-- Nosotros -->
+        <section class="about" id="nosotros">
+            <div class="about-collage">
+                <img class="teacher" src="https://i.pinimg.com/1200x/36/1c/9f/361c9f688d1f1b7aeffe4051e5d754bd.jpg" alt="Instructora principal Make It Yourself" onerror="this.style.display='none'">
+                <img class="brushes" src="https://i.pinimg.com/736x/d9/b2/0a/d9b20a057b59d803eb197e79c4586c90.jpg" alt="Juego de brochas" onerror="this.style.display='none'">
+                <span class="seal" aria-hidden="true">MAKEUP<br>IS ART<br>✦</span>
+            </div>
+            <div class="about-copy">
+                <p class="eyebrow">Nuestra historia</p>
+                <h2>Detrás de <em>Make It Yourself</em></h2>
+                <p>Nacimos con la visión de democratizar la educación en maquillaje profesional. Creemos que cada persona merece tener las herramientas necesarias para realzar su propia belleza de forma autónoma, sin depender de citas eternas ni de productos sobrevalorados.</p>
+                <p>A través de una metodología práctica y clara, hemos capacitado a miles de mujeres para que ganen seguridad frente al espejo y adopten hábitos de belleza duraderos y personalizados.</p>
+                <blockquote>“El maquillaje no crea belleza. Te ayuda a reconocer la que siempre estuvo ahí.”</blockquote>
+                <div class="about-cards">
+                    <div>
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <h4>Metodología comprobada</h4>
+                        <p>Paso a paso estructurado para todos los niveles.</p>
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-heart"></i>
+                        <h4>Comunidad de apoyo</h4>
+                        <p>Acompañamiento continuo y resolución de dudas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Galería -->
+        <section class="results" id="galeria">
+            <p class="eyebrow">Resultados reales</p>
+            <h2>Galería de nuestras <em>estudiantes</em></h2>
+            <p class="sub">Mira los cambios y acabados de maquillaje logrados por alumnas que iniciaron desde cero.</p>
+            <div class="gallery">
+                <figure>
+                    <img src="https://i.pinimg.com/736x/eb/5a/9a/eb5a9aa8e28656f7d9db9d84393bb52f.jpg" alt="Estudiante Make It Yourself 1" onerror="this.style.display='none'">
+                    <figcaption>Look de Día · Mariana G.</figcaption>
+                </figure>
+                <figure class="lower">
+                    <img src="https://i.pinimg.com/736x/64/d2/51/64d251b6e70008270a9a546c71f9a79f.jpg" alt="Estudiante Make It Yourself 2" onerror="this.style.display='none'">
+                    <figcaption>Delineado Felino · Sofía R.</figcaption>
+                </figure>
+                <figure>
+                    <img src="https://i.pinimg.com/736x/a8/fb/d5/a8fbd53bef2970c73c2c1664cbb8d3d1.jpg" alt="Estudiante Make It Yourself 3" onerror="this.style.display='none'">
+                    <figcaption>Glow Natural · Camila V.</figcaption>
+                </figure>
+                <figure class="lower">
+                    <img src="https://i.pinimg.com/736x/d2/20/f4/d220f4e3e3d52de513c0818a4ec398da.jpg" alt="Estudiante Make It Yourself 4" onerror="this.style.display='none'">
+                    <figcaption>Maquillaje de Noche · Laura P.</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- Testimonios -->
+        <section class="testimonials" id="testimonios">
+            <div class="head">
+                <p class="eyebrow">Casos de éxito</p>
+                <h2>Lo que dicen nuestras <em>estudiantes</em></h2>
+                <p>Experiencias reales de alumnas que transformaron su rutina diaria.</p>
+            </div>
+            <div class="t-grid">
+                <article class="t-card">
+                    <div>
+                        <div class="stars" aria-label="5 de 5 estrellas"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        <blockquote>“Antes tardaba más de una hora maquillándome y nunca lograba el acabado que quería. Con el método aprendí a arreglarme en 10 minutos con un aspecto radiante.”</blockquote>
+                    </div>
+                    <div class="t-who"><span class="av">CM</span><div><h4>Carolina Mendoza</h4><p>Bogotá, Colombia</p></div></div>
+                </article>
+                <article class="t-card">
+                    <div>
+                        <div class="stars" aria-label="5 de 5 estrellas"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        <blockquote>“La guía de insumos me ahorró muchísimo dinero. Dejé de comprar cosas caras que no se adaptaban a mi tono y ahora uso alternativas económicas excelentes.”</blockquote>
+                    </div>
+                    <div class="t-who"><span class="av">AR</span><div><h4>Alejandra Rueda</h4><p>Medellín, Colombia</p></div></div>
+                </article>
+                <article class="t-card">
+                    <div>
+                        <div class="stars" aria-label="5 de 5 estrellas"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        <blockquote>“Las lecciones de delineado y contorno son increíbles. Explicadas al detalle y sin complicaciones. Siento mucha más seguridad al arreglarme para eventos.”</blockquote>
+                    </div>
+                    <div class="t-who"><span class="av">VS</span><div><h4>Valeria Soto</h4><p>Cali, Colombia</p></div></div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Preguntas frecuentes -->
+        <section class="faq" id="faq">
+            <div>
+                <p class="eyebrow">Resuelve tus dudas</p>
+                <h2>Preguntas <em>frecuentes</em></h2>
+                <p class="aside">¿Aún tienes dudas? <a href="mailto:contacto@makeityourself.com">Hablemos</a></p>
+            </div>
+            <div class="questions">
+                <div class="faq-item">
+                    <button type="button" class="faq-toggle" aria-expanded="false">
+                        <span class="n">01</span><b>¿Necesito conocimientos previos de maquillaje?</b><i aria-hidden="true">+</i>
+                    </button>
+                    <div class="faq-content"><p>No necesitas ninguna experiencia previa. El programa está diseñado paso a paso desde el nivel principiante hasta técnicas avanzadas.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button type="button" class="faq-toggle" aria-expanded="false">
+                        <span class="n">02</span><b>¿Por cuánto tiempo tendré acceso al curso?</b><i aria-hidden="true">+</i>
+                    </button>
+                    <div class="faq-content"><p>El acceso es vitalicio. Podrás revisar el contenido y las lecciones las veces que quieras desde celular, tablet o computador.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button type="button" class="faq-toggle" aria-expanded="false">
+                        <span class="n">03</span><b>¿Cuáles son los medios de pago disponibles?</b><i aria-hidden="true">+</i>
+                    </button>
+                    <div class="faq-content"><p>Aceptamos tarjetas de crédito, PSE, Nequi, Daviplata y pagos en efectivo a través de Efecty con un valor único de 89.000 COP.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button type="button" class="faq-toggle" aria-expanded="false">
+                        <span class="n">04</span><b>¿El curso entrega certificado al finalizar?</b><i aria-hidden="true">+</i>
+                    </button>
+                    <div class="faq-content"><p>Sí, al completar la totalidad de los módulos podrás descargar tu certificado digital nominativo avalado por Make It Yourself.</p></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Inscripción + Footer -->
+    <footer class="site-foot" id="inscripcion">
+        <div class="reg on-dark">
+            <div class="orb-three" aria-hidden="true"></div>
+            <div class="reg-grid">
+                <div class="reg-copy">
+                    <a href="index.html" class="brand inverse" style="margin-bottom:34px" aria-label="Make It Yourself, inicio">
+                        <small>Make It</small>
+                        <strong>YOURSELF</strong>
+                    </a>
+                    <h2>Haz de tu rutina <em>un ritual.</em></h2>
+                    <p>La academia líder en maquillaje profesional autodidacta. Potencia tu imagen, gana seguridad y aprende de forma práctica y guiada.</p>
+                    <ul class="contact">
+                        <li><i class="fa-solid fa-envelope"></i> contacto@makeityourself.com</li>
+                        <li><i class="fa-solid fa-phone"></i> +57 (300) 123-4567</li>
+                        <li><i class="fa-solid fa-location-dot"></i> Colombia / Atención Online Global</li>
                     </ul>
-                    <button onclick="openVideoModal()" class="px-8 py-3.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-opacity inline-flex items-center gap-2">
-                        <i class="fa-solid fa-play"></i> Reproducir Clase Gratuita Ahora
-                    </button>
-                </div>
-                <div class="lg:col-span-6">
-                    <div class="relative rounded-2xl overflow-hidden shadow-lg aspect-video bg-wine-900 flex items-center justify-center group cursor-pointer" onclick="openVideoModal()">
-                        <img src="https://i.pinimg.com/1200x/41/43/5e/41435e184a17b7efc5b1422e13bf9bc0.jpg" alt="Vista previa video de prueba" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/800x450/721422/ffffff?text=Ver+Clase+Gratis'">
-                        <div class="absolute inset-0 bg-wine-900/30 flex items-center justify-center">
-                            <div class="w-16 h-16 rounded-full bg-white text-wine-700 flex items-center justify-center text-xl shadow-2xl transform group-hover:scale-110 transition-transform">
-                                <i class="fa-solid fa-play ml-1"></i>
-                            </div>
-                        </div>
-                        <div class="absolute bottom-4 left-4 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-lg text-white text-xs font-medium">
-                            ▶ Reproducir Clase de Prueba (15 min)
-                        </div>
+                    <div class="social">
+                        <a href="#" aria-label="Instagram de Make It Yourself"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" aria-label="TikTok de Make It Yourself"><i class="fa-brands fa-tiktok"></i></a>
+                        <a href="#" aria-label="YouTube de Make It Yourself"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" aria-label="WhatsApp de Make It Yourself"><i class="fa-brands fa-whatsapp"></i></a>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Sección de Beneficios Prácticos y Ahorro -->
-    <section class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-               
-                <div class="lg:col-span-6 space-y-6">
-                    <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest">Economía Inteligente</span>
-                    <h2 class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font">Ahorra dinero en cosméticos que no te favorecen</h2>
-                    <p class="text-gray-600 leading-relaxed">
-                        Aprende a realizar compras estratégicas. Te enseñamos qué tonos, texturas y brochas realmente aportan valor a tu kit de maquillaje, evitando acumular productos innecesarios.
-                    </p>
-                    <div class="space-y-4 pt-2">
-                        <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-xl bg-wine-100 text-wine-700 flex items-center justify-center flex-shrink-0 font-bold mt-1">
-                                <i class="fa-solid fa-piggy-bank"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-wine-900">Ahorro comprobado de hasta un 60%</h4>
-                                <p class="text-sm text-gray-600">Descubre productos alternativos económicos (dupes) con la misma fijación y pigmentación que las marcas de lujo.</p>
-                            </div>
+                <!-- Formulario de inscripción validado (los id los usa js/leads.js) -->
+                <div class="form-card">
+                    <div class="form-head">
+                        <span class="tag">Make it yourself</span>
+                        <h3>¿Quieres saber más?</h3>
+                        <p>Ingresa tus datos para recibir información adicional.</p>
+                    </div>
+                    <form id="enrollment-form" novalidate>
+                        <div class="field">
+                            <label for="nombre">Nombre completo</label>
+                            <input type="text" id="nombre" name="nombre" placeholder="Ej. Ana María Gómez" autocomplete="name">
+                            <p id="error-nombre" class="error hidden">Por favor ingresa tu nombre completo.</p>
                         </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-xl bg-wine-100 text-wine-700 flex items-center justify-center flex-shrink-0 font-bold mt-1">
-                                <i class="fa-solid fa-briefcase"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-wine-900">Kit Funcional Esencial</h4>
-                                <p class="text-sm text-gray-600">Arma un cosmetiquero práctico de solo 7 elementos clave para lograr cualquier look de día o de noche.</p>
-                            </div>
+                        <div class="field">
+                            <label for="email">Correo electrónico</label>
+                            <input type="email" id="email" name="email" placeholder="tucorreo@email.com" autocomplete="email">
+                            <p id="error-email" class="error hidden">Por favor ingresa un correo válido.</p>
                         </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-xl bg-wine-100 text-wine-700 flex items-center justify-center flex-shrink-0 font-bold mt-1">
-                                <i class="fa-solid fa-clock"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-wine-900">Rutinas exprés de 10 minutos</h4>
-                                <p class="text-sm text-gray-600">Aprende la secuencia de pasos optimizada para arreglarte rápidamente cada mañana sin complicaciones.</p>
-                            </div>
+                        <div class="field">
+                            <label for="telefono">Teléfono / WhatsApp</label>
+                            <input type="tel" id="telefono" name="telefono" placeholder="Ej. 300 123 4567" autocomplete="tel">
+                            <p id="error-telefono" class="error hidden">Por favor ingresa un número válido.</p>
                         </div>
-                    </div>
-                </div>
-                <!-- Grid de Fotos de Apoyo -->
-                <div class="lg:col-span-6 relative">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="space-y-4">
-                            <img src="https://i.pinimg.com/736x/23/27/bc/2327bc8299d3a28727e1fcac3de7961d.jpg" alt="Cosméticos ordenados" class="rounded-3xl shadow-lg w-full h-48 object-cover" onerror="this.src='https://placehold.co/400x300/721422/ffffff?text=Cosmeticos'">
-                            <img src="https://i.pinimg.com/736x/d9/b2/0a/d9b20a057b59d803eb197e79c4586c90.jpg" alt="Juego de brochas" class="rounded-3xl shadow-lg w-full h-64 object-cover" onerror="this.src='https://placehold.co/400x400/721422/ffffff?text=Brochas'">
+                        <div class="consent">
+                            <input type="checkbox" id="consent" name="consent" required>
+                            <label for="consent">Autorizo el uso de mis datos de contacto para recibir información sobre los cursos de Make It Yourself.</label>
                         </div>
-                        <div class="space-y-4 pt-8">
-                            <img src="https://i.pinimg.com/736x/a9/b0/08/a9b008db0d64ae32e63d21b45d5b8b52.jpg" alt="Paleta de tonos" class="rounded-3xl shadow-lg w-full h-64 object-cover" onerror="this.src='https://placehold.co/400x400/721422/ffffff?text=Paleta'">
-                            <img src="https://i.pinimg.com/736x/cd/e9/7c/cde97c7ef6df52de5c008060b041559d.jpg" alt="Labiales en barra" class="rounded-3xl shadow-lg w-full h-48 object-cover" onerror="this.src='https://placehold.co/400x300/721422/ffffff?text=Labiales'">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sección Sobre Nosotros -->
-    <section id="nosotros" class="py-20 bg-wine-50/60 border-y border-wine-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-               
-                <div class="lg:col-span-5 relative">
-                    <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-wine-200 aspect-[4/5]">
-                        <img src="https://i.pinimg.com/1200x/36/1c/9f/361c9f688d1f1b7aeffe4051e5d754bd.jpg" alt="Instructora Principal Make It Yourself" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x750/721422/ffffff?text=Instructora+Principal'">
-                    </div>
-                </div>
-                <div class="lg:col-span-7 space-y-6">
-                    <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest">Nuestra Historia</span>
-                    <h2 class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font">Detrás de Make It Yourself</h2>
-                    <p class="text-gray-600 leading-relaxed">
-                        Nacimos con la visión de democratizar la educación en maquillaje profesional. Creemos que cada persona merece tener las herramientas necesarias para realzar su propia belleza de forma autónoma, sin depender de citas eternas ni de productos sobrevalorados.
-                    </p>
-                    <p class="text-gray-600 leading-relaxed">
-                        A través de una metodología práctica y clara, hemos capacitado a miles de mujeres para que ganen seguridad frente al espejo y adopten hábitos de belleza duraderos y personalizados.
-                    </p>
-                    <div class="pt-4 grid grid-cols-2 gap-4">
-                        <div class="bg-white p-4 rounded-2xl border border-wine-200">
-                            <i class="fa-solid fa-graduation-cap text-wine-700 text-2xl mb-2"></i>
-                            <h4 class="font-bold text-wine-900 text-sm">Metodología Comprobada</h4>
-                            <p class="text-xs text-gray-500">Paso a paso estructurado para todos los niveles.</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-2xl border border-wine-200">
-                            <i class="fa-solid fa-heart text-wine-700 text-2xl mb-2"></i>
-                            <h4 class="font-bold text-wine-900 text-sm">Comunidad de Apoyo</h4>
-                            <p class="text-xs text-gray-500">Acompañamiento continuo y resolución de dudas.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sección Galería de Estudiantes -->
-    <section id="galeria" class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest">Resultados Reales</span>
-                <h2 class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font mt-2">Galería de Nuestras Estudiantes</h2>
-                <p class="text-gray-600 mt-3">Mira los cambios y acabados de maquillaje logrados por alumnas que iniciaron desde cero.</p>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                <div class="relative group rounded-2xl overflow-hidden shadow-md aspect-square bg-wine-100">
-                    <img src="https://i.pinimg.com/736x/eb/5a/9a/eb5a9aa8e28656f7d9db9d84393bb52f.jpg" alt="Estudiante Make It Yourself 1" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/400x400/721422/ffffff?text=Estudiante+1'">
-                    <div class="absolute inset-0 bg-wine-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                        <span class="text-white text-xs font-semibold">Look de Día - Mariana G.</span>
-                    </div>
-                </div>
-                <div class="relative group rounded-2xl overflow-hidden shadow-md aspect-square bg-wine-100">
-                    <img src="https://i.pinimg.com/736x/64/d2/51/64d251b6e70008270a9a546c71f9a79f.jpg" alt="Estudiante Make It Yourself 2" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/400x400/721422/ffffff?text=Estudiante+2'">
-                    <div class="absolute inset-0 bg-wine-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                        <span class="text-white text-xs font-semibold">Delineado Felino - Sofía R.</span>
-                    </div>
-                </div>
-                <div class="relative group rounded-2xl overflow-hidden shadow-md aspect-square bg-wine-100">
-                    <img src="https://i.pinimg.com/736x/a8/fb/d5/a8fbd53bef2970c73c2c1664cbb8d3d1.jpg" alt="Estudiante Make It Yourself 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/400x400/721422/ffffff?text=Estudiante+3'">
-                    <div class="absolute inset-0 bg-wine-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                        <span class="text-white text-xs font-semibold">Glow Natural - Camila V.</span>
-                    </div>
-                </div>
-                <div class="relative group rounded-2xl overflow-hidden shadow-md aspect-square bg-wine-100">
-                    <img src="https://i.pinimg.com/736x/d2/20/f4/d220f4e3e3d52de513c0818a4ec398da.jpg" alt="Estudiante Make It Yourself 4" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/400x400/721422/ffffff?text=Estudiante+4'">
-                    <div class="absolute inset-0 bg-wine-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                        <span class="text-white text-xs font-semibold">Maquillaje de Noche - Laura P.</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sección de Testimonios -->
-    <section id="testimonios" class="py-24 bg-wine-50/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest">Casos de Éxito</span>
-                <h2 class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font mt-2">Lo que dicen nuestras estudiantes</h2>
-                <p class="text-gray-600 mt-3">Experiencias reales de alumnas que transformaron su rutina diaria.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-               
-                <!-- Testimonio 1 -->
-                <div class="bg-white rounded-3xl p-8 border border-wine-100 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center space-x-1 text-gold-500 mb-4 text-sm">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </div>
-                        <p class="text-gray-700 text-sm leading-relaxed italic">
-                            "Antes tardaba más de una hora maquillándome y nunca lograba el acabado que quería. Con el método aprendí a arreglarme en 10 minutos con un aspecto radiante."
-                        </p>
-                    </div>
-                    <div class="mt-6 pt-6 border-t border-wine-100 flex items-center space-x-4">
-                        <div class="w-12 h-12 rounded-full bg-wine-700 text-white font-bold flex items-center justify-center text-sm">
-                            CM
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-wine-900 text-sm">Carolina Mendoza</h4>
-                            <p class="text-xs text-gray-500">Bogotá, Colombia</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Testimonio 2 -->
-                <div class="bg-white rounded-3xl p-8 border border-wine-100 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center space-x-1 text-gold-500 mb-4 text-sm">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </div>
-                        <p class="text-gray-700 text-sm leading-relaxed italic">
-                            "La guía de insumos me ahorró muchísimo dinero. Dejé de comprar cosas caras que no se adaptaban a mi tono y ahora uso alternativas económicas excelentes."
-                        </p>
-                    </div>
-                    <div class="mt-6 pt-6 border-t border-wine-100 flex items-center space-x-4">
-                        <div class="w-12 h-12 rounded-full bg-wine-700 text-white font-bold flex items-center justify-center text-sm">
-                            AR
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-wine-900 text-sm">Alejandra Rueda</h4>
-                            <p class="text-xs text-gray-500">Medellín, Colombia</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Testimonio 3 -->
-                <div class="bg-white rounded-3xl p-8 border border-wine-100 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center space-x-1 text-gold-500 mb-4 text-sm">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </div>
-                        <p class="text-gray-700 text-sm leading-relaxed italic">
-                            "Las lecciones de delineado y contorno son increíbles. Explicadas al detalle y sin complicaciones. Siento mucha más seguridad al arreglarme para eventos."
-                        </p>
-                    </div>
-                    <div class="mt-6 pt-6 border-t border-wine-100 flex items-center space-x-4">
-                        <div class="w-12 h-12 rounded-full bg-wine-700 text-white font-bold flex items-center justify-center text-sm">
-                            VS
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-wine-900 text-sm">Valeria Soto</h4>
-                            <p class="text-xs text-gray-500">Cali, Colombia</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Preguntas Frecuentes (FAQ) Interactivas -->
-    <section id="faq" class="py-24 bg-white">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest">Resuelve tus Dudas</span>
-                <h2 class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font mt-2">Preguntas Frecuentes</h2>
-            </div>
-            <div class="space-y-4">
-               
-                <!-- FAQ 1 -->
-                <div class="bg-wine-50/50 rounded-2xl border border-wine-200 overflow-hidden shadow-sm transition-all">
-                    <button class="faq-toggle w-full px-6 py-5 text-left font-bold text-wine-900 flex justify-between items-center focus:outline-none">
-                        <span>¿Necesito conocimientos previos de maquillaje?</span>
-                        <i class="fa-solid fa-chevron-down text-wine-700 transition-transform duration-300"></i>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-5 text-sm text-gray-600 leading-relaxed border-t border-wine-100 pt-3">
-                        No necesitas ninguna experiencia previa. El programa está diseñado paso a paso desde el nivel principiante hasta técnicas avanzadas.
-                    </div>
-                </div>
-                <!-- FAQ 2 -->
-                <div class="bg-wine-50/50 rounded-2xl border border-wine-200 overflow-hidden shadow-sm transition-all">
-                    <button class="faq-toggle w-full px-6 py-5 text-left font-bold text-wine-900 flex justify-between items-center focus:outline-none">
-                        <span>¿Por cuánto tiempo tendré acceso al curso?</span>
-                        <i class="fa-solid fa-chevron-down text-wine-700 transition-transform duration-300"></i>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-5 text-sm text-gray-600 leading-relaxed border-t border-wine-100 pt-3">
-                        El acceso es vitalicio. Podrás revisar el contenido y las lecciones las veces que quieras desde celular, tablet o computador.
-                    </div>
-                </div>
-                <!-- FAQ 3 -->
-                <div class="bg-wine-50/50 rounded-2xl border border-wine-200 overflow-hidden shadow-sm transition-all">
-                    <button class="faq-toggle w-full px-6 py-5 text-left font-bold text-wine-900 flex justify-between items-center focus:outline-none">
-                        <span>¿Cuáles son los medios de pago disponibles?</span>
-                        <i class="fa-solid fa-chevron-down text-wine-700 transition-transform duration-300"></i>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-5 text-sm text-gray-600 leading-relaxed border-t border-wine-100 pt-3">
-                        Aceptamos tarjetas de crédito, PSE, Nequi, Daviplata y pagos en efectivo a través de Efecty con un valor único de 89.000 COP.
-                    </div>
-                </div>
-                <!-- FAQ 4 -->
-                <div class="bg-wine-50/50 rounded-2xl border border-wine-200 overflow-hidden shadow-sm transition-all">
-                    <button class="faq-toggle w-full px-6 py-5 text-left font-bold text-wine-900 flex justify-between items-center focus:outline-none">
-                        <span>¿El curso entrega certificado al finalizar?</span>
-                        <i class="fa-solid fa-chevron-down text-wine-700 transition-transform duration-300"></i>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-5 text-sm text-gray-600 leading-relaxed border-t border-wine-100 pt-3">
-                        Sí, al completar la totalidad de los módulos podrás descargar tu certificado digital nominativo avalado por Make It Yourself.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer y Sección de Inscripción -->
-    <footer id="inscripcion" class="bg-wine-900 text-white pt-20 pb-12 relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#e08a95_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
-               
-                <!-- Detalles de Contacto e Información -->
-                <div class="lg:col-span-6 space-y-6">
-                    <div class="flex flex-col text-left">
-                        <span class="text-xs font-semibold tracking-widest text-blush-500 uppercase">Make It</span>
-                        <span class="text-3xl font-bold tracking-tight text-white font-serif -mt-1">YOURSELF</span>
-                    </div>
-                    <p class="text-gray-300 text-sm leading-relaxed max-w-md">
-                        La academia líder en maquillaje profesional autodidacta. Potencia tu imagen, gana seguridad y aprende de forma práctica y guiada.
-                    </p>
-                    <div class="space-y-3 text-sm text-gray-300 pt-2">
-                        <p class="flex items-center gap-3"><i class="fa-solid fa-envelope text-blush-500"></i> contacto@makeityourself.com</p>
-                        <p class="flex items-center gap-3"><i class="fa-solid fa-phone text-blush-500"></i> +57 (300) 123-4567</p>
-                        <p class="flex items-center gap-3"><i class="fa-solid fa-location-dot text-blush-500"></i> Colombia / Atención Online Global</p>
-                    </div>
-                    <!-- Redes Sociales -->
-                    <div class="flex items-center space-x-4 text-xl pt-2">
-                        <a href="#" aria-label="Instagram de Make It Yourself" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-wine-500 transition-colors"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" aria-label="TikTok de Make It Yourself" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-wine-500 transition-colors"><i class="fa-brands fa-tiktok"></i></a>
-                        <a href="#" aria-label="YouTube de Make It Yourself" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-wine-500 transition-colors"><i class="fa-brands fa-youtube"></i></a>
-                        <a href="#" aria-label="WhatsApp de Make It Yourself" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-wine-500 transition-colors"><i class="fa-brands fa-whatsapp"></i></a>
-                    </div>
-                </div>
-                <!-- Formulario de Inscripción Validado -->
-                <div class="lg:col-span-6 bg-white rounded-3xl p-8 sm:p-10 text-gray-900 shadow-2xl border border-wine-500/20">
-                    <div class="text-center mb-6">
-                        <span class="bg-wine-100 text-wine-700 text-xs font-bold uppercase px-3 py-1 rounded-full">Make it yourself</span>
-                        <h3 class="text-2xl font-bold text-wine-900 serif-font mt-2">¿Quieres saber mas?</h3>
-                        <p class="text-xs text-gray-500 mt-1">Ingresa tus datos para recibir información adicional.</p>
-                    </div>
-                    <form id="enrollment-form" class="space-y-4" novalidate>
-                        <div>
-                            <label for="nombre" class="block text-xs font-semibold text-gray-700 mb-1">Nombre Completo</label>
-                            <input type="text" id="nombre" name="nombre" placeholder="Ej. Ana María Gómez" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-wine-700 focus:ring-1 focus:ring-wine-700 transition-all">
-                            <p id="error-nombre" class="text-xs text-red-500 mt-1 hidden">Por favor ingresa tu nombre completo.</p>
-                        </div>
-                        <div>
-                            <label for="email" class="block text-xs font-semibold text-gray-700 mb-1">Correo Electrónico</label>
-                            <input type="email" id="email" name="email" placeholder="tucorreo@email.com" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-wine-700 focus:ring-1 focus:ring-wine-700 transition-all">
-                            <p id="error-email" class="text-xs text-red-500 mt-1 hidden">Por favor ingresa un correo válido.</p>
-                        </div>
-                        <div>
-                            <label for="telefono" class="block text-xs font-semibold text-gray-700 mb-1">Teléfono / WhatsApp</label>
-                            <input type="tel" id="telefono" name="telefono" placeholder="Ej. 300 123 4567" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-wine-700 focus:ring-1 focus:ring-wine-700 transition-all">
-                            <p id="error-telefono" class="text-xs text-red-500 mt-1 hidden">Por favor ingresa un número válido.</p>
-                        </div>
-                        <div class="flex items-start gap-2 text-xs text-gray-600">
-                            <input type="checkbox" id="consent" name="consent" required class="mt-1 accent-wine-700">
-                            <label for="consent">
-                                Autorizo el uso de mis datos de contacto para recibir información sobre los cursos de Make It Yourself.
-                            </label>
-                        </div>
-
-                        <p id="firebase-error" class="hidden text-sm text-red-600" role="alert"></p>
-                        <button type="submit" class="w-full py-4 rounded-xl text-white font-bold text-sm custom-gradient shadow-lg hover:opacity-95 transform hover:-translate-y-0.5 transition-all">
-                            ¡Quiero recibir más información!
-                        </button>
+                        <p id="firebase-error" class="firebase-error hidden" role="alert"></p>
+                        <button type="submit" class="pill block">¡Quiero recibir más información!</button>
                     </form>
                     <!-- Mensaje de confirmación -->
-                    <div id="success-msg" class="hidden text-center py-8 space-y-3">
-                        <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <h4 class="text-xl font-bold text-wine-900 serif-font">¡Inscripción Recibida!</h4>
-                        <p class="text-sm text-gray-600">Te enviamos los detalles a tu correo electrónico. ¡Bienvenida!</p>
+                    <div id="success-msg" class="hidden">
+                        <div class="ok"><i class="fa-solid fa-check"></i></div>
+                        <h4>¡Inscripción recibida!</h4>
+                        <p>Te enviamos los detalles a tu correo electrónico. ¡Bienvenida!</p>
                     </div>
                 </div>
             </div>
-            <!-- Registro a Boletín / Newsletter -->
-            <div class="py-8 border-t border-b border-white/10 mb-8">
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                    <div class="md:col-span-6">
-                        <h4 class="text-sm font-bold text-white">Suscríbete a nuestro boletín de tips</h4>
-                        <p class="text-xs text-gray-400">Recibe consejos semanales de maquillaje y ofertas exclusivas.</p>
-                    </div>
-                    <div class="md:col-span-6">
-                        <form id="newsletter-form" class="flex gap-2">
-                            <input type="email" id="newsletter-email" placeholder="Tu correo electrónico" class="w-full px-4 py-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 text-xs focus:outline-none focus:border-blush-500">
-                            <button type="submit" class="px-5 py-2.5 rounded-xl bg-blush-500 text-wine-900 text-xs font-bold hover:bg-blush-600 transition-colors whitespace-nowrap">
-                                Suscribirme
-                            </button>
-                        </form>
-                    </div>
+        </div>
+
+        <div class="foot-bottom on-dark">
+            <!-- Boletín -->
+            <div class="news">
+                <div>
+                    <h4>Suscríbete a nuestro boletín de tips</h4>
+                    <p>Recibe consejos semanales de maquillaje y ofertas exclusivas.</p>
                 </div>
+                <form id="newsletter-form">
+                    <input type="email" id="newsletter-email" placeholder="Tu correo electrónico" aria-label="Correo para el boletín">
+                    <button type="submit">Suscribirme</button>
+                </form>
             </div>
-            <!-- Derechos de Autor -->
-            <div class="flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400">
-                <p>&copy; 2026 Make It Yourself. Todos los derechos reservados.</p>
-                <div class="flex space-x-6 mt-4 sm:mt-0">
-                    <a href="#" class="hover:text-white transition-colors">Términos y Condiciones</a>
-                    <a href="#" class="hover:text-white transition-colors">Política de Privacidad</a>
+            <div class="legal">
+                <p style="margin:0">&copy; 2026 Make It Yourself. Todos los derechos reservados.</p>
+                <div>
+                    <a href="#">Términos y Condiciones</a>
+                    <a href="#">Política de Privacidad</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Modal de Video para Clase Gratuita -->
-    <div id="video-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 relative shadow-2xl">
-            <button onclick="closeVideoModal()" aria-label="Cerrar modal de video" class="absolute top-4 right-4 text-gray-500 hover:text-gray-900 text-xl font-bold w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <h3 class="text-xl font-bold text-wine-900 serif-font mb-4">Masterclass Gratuita de Muestra</h3>
-            <div class="aspect-video bg-gray-900 rounded-2xl overflow-hidden flex items-center justify-center text-white">
-                <div class="text-center p-6 space-y-3">
-                    <i class="fa-solid fa-circle-play text-5xl text-gold-500 animate-pulse"></i>
-                    <p class="font-semibold text-lg">Reproduciendo lección de muestra...</p>
-                    <p class="text-xs text-gray-400">Aprende la técnica de corrección de ojeras e iluminación en 3 sencillos pasos.</p>
+    <!-- Modal de video para la clase gratuita -->
+    <div id="video-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="video-modal-title">
+        <div class="modal-box">
+            <button type="button" class="modal-close" onclick="closeVideoModal()" aria-label="Cerrar modal de video"><i class="fa-solid fa-xmark"></i></button>
+            <h3 id="video-modal-title">Masterclass gratuita de muestra</h3>
+            <div class="screen">
+                <div>
+                    <i class="fa-solid fa-circle-play"></i>
+                    <p>Reproduciendo lección de muestra...</p>
+                    <small>Aprende la técnica de corrección de ojeras e iluminación en 3 sencillos pasos.</small>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Scripts Interactivos JS -->
+    <!-- Scripts interactivos -->
     <script>
-        // Menú Móvil Toggle
+        // Menú móvil
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+            const isHidden = mobileMenu.classList.toggle('hidden');
+            menuBtn.setAttribute('aria-expanded', String(!isHidden));
         });
         mobileMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.add('hidden');
+                menuBtn.setAttribute('aria-expanded', 'false');
             });
         });
 
-        // FAQ Acordeón
-        const faqToggles = document.querySelectorAll('.faq-toggle');
-        faqToggles.forEach(toggle => {
+        // FAQ acordeón
+        document.querySelectorAll('.faq-toggle').forEach(toggle => {
             toggle.addEventListener('click', () => {
-                const content = toggle.nextElementSibling;
-                const icon = toggle.querySelector('i');
-               
-                faqToggles.forEach(otherToggle => {
-                    if (otherToggle !== toggle) {
-                        otherToggle.nextElementSibling.classList.add('hidden');
-                        otherToggle.querySelector('i').classList.remove('rotate-180');
-                    }
+                const item = toggle.parentElement;
+                const wasOpen = item.classList.contains('active');
+                document.querySelectorAll('.faq-item.active').forEach(other => {
+                    other.classList.remove('active');
+                    other.querySelector('.faq-toggle').setAttribute('aria-expanded', 'false');
+                    other.querySelector('.faq-content').style.maxHeight = null;
                 });
-                content.classList.toggle('hidden');
-                icon.classList.toggle('rotate-180');
+                if (!wasOpen) {
+                    const panel = item.querySelector('.faq-content');
+                    item.classList.add('active');
+                    toggle.setAttribute('aria-expanded', 'true');
+                    panel.style.maxHeight = panel.scrollHeight + 'px';
+                }
             });
         });
 
-        // Modal de Video
+        // Modal de video
         function openVideoModal() {
-            document.getElementById('video-modal').classList.remove('hidden');
+            const modal = document.getElementById('video-modal');
+            modal.classList.remove('hidden');
+            modal.querySelector('.modal-close').focus();
         }
         function closeVideoModal() {
             document.getElementById('video-modal').classList.add('hidden');
         }
+        document.getElementById('video-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'video-modal') closeVideoModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeVideoModal();
+        });
 
-        // Newsletter Handler
+        // Boletín
         document.getElementById('newsletter-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const input = document.getElementById('newsletter-email');
@@ -826,10 +1037,55 @@
         });
     </script>
 
-    <!-- Script de Leads -->
+    <!-- Cursor personalizado + parallax del hero -->
+    <script>
+        (function () {
+            if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+            const root = document.documentElement;
+            const dot = document.querySelector('.cursor');
+            const ring = document.querySelector('.cursor-glow');
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            root.classList.add('has-cursor');
+
+            let x = innerWidth / 2, y = innerHeight / 2, rx = x, ry = y, raf = null;
+
+            function frame() {
+                rx += (x - rx) * (reduce ? 1 : 0.2);
+                ry += (y - ry) * (reduce ? 1 : 0.2);
+                ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px)';
+                raf = (Math.abs(x - rx) > 0.1 || Math.abs(y - ry) > 0.1) ? requestAnimationFrame(frame) : null;
+            }
+
+            window.addEventListener('pointermove', (e) => {
+                if (e.pointerType === 'touch') return;
+                x = e.clientX; y = e.clientY;
+                root.classList.add('cursor-on');
+                dot.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+                root.style.setProperty('--mx', x + 'px');
+                root.style.setProperty('--my', y + 'px');
+                root.style.setProperty('--px', ((x / innerWidth - 0.5) * 24) + 'px');
+                root.style.setProperty('--py', ((y / innerHeight - 0.5) * 24) + 'px');
+                if (!raf) raf = requestAnimationFrame(frame);
+
+                const t = e.target;
+                if (!t || !t.closest) return;
+                const isText = !!t.closest('input, textarea, select');
+                root.classList.toggle('cursor-text', isText);
+                root.classList.toggle('cursor-hover', !isText && !!t.closest('a, button, label, [data-hover]'));
+                root.classList.toggle('cursor-dark', !!t.closest('.on-dark'));
+            }, { passive: true });
+
+            document.addEventListener('mouseleave', () => root.classList.remove('cursor-on'));
+            document.addEventListener('mouseenter', () => root.classList.add('cursor-on'));
+            window.addEventListener('pointerdown', () => root.classList.add('cursor-down'));
+            window.addEventListener('pointerup', () => root.classList.remove('cursor-down'));
+        })();
+    </script>
+
+    <!-- Script de leads (valida y envía el formulario de inscripción) -->
     <script type="module" src="js/leads.js"></script>
 
-    <!-- Script de Autenticación de Firebase (Conmuta visibilidad del menú según inicio de sesión) -->
+    <!-- Autenticación de Firebase: conmuta menú y botón según el inicio de sesión -->
     <script type="module">
         import { auth } from './js/firebase-config.js';
         import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
@@ -844,35 +1100,29 @@
 
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
-                    // --- SI HAY SESIÓN ACTIVA ---
-                    // 1. Mostrar selector "Mis Cursos / Admin"
+                    // --- HAY SESIÓN ACTIVA ---
                     if (navLoggedIn) navLoggedIn.classList.remove('hidden');
                     if (mobileNavLoggedIn) mobileNavLoggedIn.classList.remove('hidden');
-
-                    // 2. Ocultar enlaces públicos ("Nosotros", "Galería", "Testimonios", etc.)
                     navPublicLinks.forEach(link => link.classList.add('hidden'));
                     mobileNavPublicLinks.forEach(link => link.classList.add('hidden'));
                     if (mobileAuthBtn) mobileAuthBtn.classList.add('hidden');
 
-                    let nombreUsuario = user.displayName || 'Mi Cuenta';
+                    const nombreUsuario = user.displayName || 'Mi Cuenta';
 
-                    // 3. Renderizar tarjeta de usuario con icono y salir
                     authContainer.innerHTML = `
-                        <div class="flex items-center gap-3 bg-wine-50 px-3 py-1.5 rounded-full border border-wine-200">
-                            <div class="w-8 h-8 rounded-full bg-wine-700 text-white flex items-center justify-center text-xs font-bold">
-                                <i class="fa-solid fa-user"></i>
+                        <div class="user-card">
+                            <span class="user-avatar"><i class="fa-solid fa-user"></i></span>
+                            <div class="user-meta">
+                                <p class="user-name"></p>
+                                <p class="user-status">Sesión activa</p>
                             </div>
-                            <div class="text-left hidden sm:block">
-                                <p class="text-xs font-bold text-wine-900">${nombreUsuario}</p>
-                                <p class="text-[10px] text-gray-500">Sesión Activa</p>
-                            </div>
-                            <button id="logout-btn" title="Cerrar Sesión" class="w-8 h-8 rounded-full bg-white text-wine-700 flex items-center justify-center hover:bg-wine-100 transition-colors shadow-sm ml-1">
-                                <i class="fa-solid fa-arrow-right-from-bracket text-xs"></i>
+                            <button type="button" id="logout-btn" title="Cerrar Sesión" aria-label="Cerrar sesión">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
                             </button>
                         </div>
                     `;
+                    authContainer.querySelector('.user-name').textContent = nombreUsuario;
 
-                    // Evento para cerrar sesión
                     document.getElementById('logout-btn').addEventListener('click', async () => {
                         try {
                             await signOut(auth);
@@ -881,22 +1131,16 @@
                             console.error("Error al cerrar sesión", error);
                         }
                     });
-
                 } else {
-                    // --- SI NO HAY SESIÓN ---
-                    // 1. Ocultar opciones de usuario logueado
+                    // --- NO HAY SESIÓN ---
                     if (navLoggedIn) navLoggedIn.classList.add('hidden');
                     if (mobileNavLoggedIn) mobileNavLoggedIn.classList.add('hidden');
-
-                    // 2. Mostrar enlaces públicos
                     navPublicLinks.forEach(link => link.classList.remove('hidden'));
                     mobileNavPublicLinks.forEach(link => link.classList.remove('hidden'));
                     if (mobileAuthBtn) mobileAuthBtn.classList.remove('hidden');
 
                     authContainer.innerHTML = `
-                        <a href="auth.html" class="hidden sm:inline-flex items-center justify-center px-6 py-2.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transform hover:-translate-y-0.5 transition-all">
-                            Iniciar Sesión
-                        </a>
+                        <a href="auth.html" id="btn-inscribirme-nav" class="pill small">Iniciar Sesión</a>
                     `;
                 }
             });

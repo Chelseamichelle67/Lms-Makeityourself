@@ -1,139 +1,331 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso - Make It Yourself</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        wine: {
-                            50: '#fcf2f4',
-                            100: '#f8e4e7',
-                            200: '#f1c8ce',
-                            300: '#e5a1ab',
-                            500: '#a3283c',
-                            700: '#721422',
-                            900: '#520e18'
-                        },
-                        blush: {
-                            100: '#fbe9eb',
-                            200: '#f5d5d8',
-                            500: '#e08a95',
-                            600: '#cc6a77'
-                        },
-                        gold: {
-                            400: '#facc15',
-                            500: '#eab308'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Montserrat', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif']
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <!-- Tipografías (mismas del index: Playfair Display + DM Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #fcf2f4;
-            color: #2d1519;
-            overflow-x: hidden;
+        :root {
+            --wine: #64142a;
+            --dark: #260712;
+            --rose: #d38d9f;
+            --blush: #f1dce0;
+            --cream: #fbf6ef;
+            --ink: #25191d;
+            --paper: #fffdf9;
         }
-        .custom-gradient {
-            background: linear-gradient(135deg, #721422 0%, #a3283c 50%, #520e18 100%);
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0; min-height: 100vh; display: flex; flex-direction: column;
+            background: var(--cream); color: var(--ink);
+            font-family: 'DM Sans', sans-serif;
+            overflow-x: hidden; -webkit-font-smoothing: antialiased;
+        }
+        a { color: inherit; }
+        ::selection { background: var(--wine); color: #fff; }
+
+        /* Utilidad usada por auth.js */
+        .hidden { display: none !important; }
+
+        /* ===== Cursor personalizado ===== */
+        .has-cursor, .has-cursor a, .has-cursor button, .has-cursor label { cursor: none; }
+        .has-cursor input { cursor: text; }
+        .cursor, .cursor-glow {
+            position: fixed; left: 0; top: 0; z-index: 3000;
+            pointer-events: none; border-radius: 50%; opacity: 0;
+            transition: opacity .2s, width .25s, height .25s, margin .25s, background .25s, border-color .25s;
+        }
+        .cursor { width: 7px; height: 7px; margin: -3.5px; background: var(--wine); }
+        .cursor-glow { width: 38px; height: 38px; margin: -19px; border: 1px solid rgba(100, 20, 42, .35); }
+        .cursor-on .cursor, .cursor-on .cursor-glow { opacity: 1; }
+        .cursor-text .cursor, .cursor-text .cursor-glow { opacity: 0; }
+        .cursor-hover .cursor-glow { width: 64px; height: 64px; margin: -32px; background: rgba(211, 141, 159, .2); border-color: rgba(100, 20, 42, .5); }
+        .cursor-down .cursor-glow { width: 26px; height: 26px; margin: -13px; }
+
+        /* ===== Header ===== */
+        header.site {
+            position: relative; z-index: 50; height: 84px; flex: none;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 5vw;
+            background: rgba(251, 246, 239, .84);
+            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(100, 20, 42, .12);
+        }
+        .brand { display: flex; flex-direction: column; text-decoration: none; color: var(--wine); line-height: 1; }
+        .brand small { font-size: 10px; font-weight: 600; letter-spacing: .34em; text-transform: uppercase; }
+        .brand strong { font-family: 'Playfair Display', serif; font-size: 25px; letter-spacing: .08em; margin-top: 4px; transition: color .3s; }
+        .brand:hover strong { color: var(--dark); }
+        .back-link {
+            display: inline-flex; align-items: center; gap: 10px;
+            color: var(--wine); font-size: 12.5px; font-weight: 600; text-decoration: none; letter-spacing: .02em;
+        }
+        .back-link span {
+            display: inline-grid; place-items: center; width: 36px; height: 36px;
+            border: 1px solid #cbaab2; border-radius: 50%; font-size: 10px;
+            transition: background .3s, color .3s, border-color .3s;
+        }
+        .back-link:hover span { background: var(--wine); border-color: var(--wine); color: #fff; }
+
+        /* ===== Principal ===== */
+        main {
+            position: relative; flex: 1; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            padding: 64px 5vw 80px;
+            background: radial-gradient(circle at 12% 80%, #f7e9e8 0, transparent 34%), var(--cream);
+        }
+        .orb { position: absolute; border-radius: 50%; pointer-events: none; filter: blur(2px); }
+        .orb-one { top: 40px; right: 4%; width: 240px; height: 240px; background: rgba(216, 150, 165, .24); animation: drift 12s ease-in-out infinite alternate; }
+        .orb-two { bottom: 30px; left: 6%; width: 150px; height: 150px; border: 1px solid rgba(100, 20, 42, .13); animation: drift 9s ease-in-out infinite alternate-reverse; }
+        .spark { position: absolute; top: 14%; left: 10%; font-size: 44px; color: var(--rose); animation: spin 14s linear infinite; pointer-events: none; }
+
+        .auth-wrap { position: relative; z-index: 2; width: 100%; max-width: 470px; }
+        .auth-intro { margin-bottom: 30px; text-align: center; }
+        .eyebrow {
+            margin: 0 0 18px; color: var(--wine); font-size: 10.5px; font-weight: 600;
+            letter-spacing: .26em; text-transform: uppercase;
+        }
+        .eyebrow::before { content: ""; display: inline-block; width: 34px; height: 1px; margin: 0 12px 3px 0; background: currentColor; }
+        h1 {
+            margin: 0; color: var(--dark); font-family: 'Playfair Display', serif; font-weight: 600;
+            font-size: clamp(38px, 5vw, 52px); letter-spacing: -.035em; line-height: 1;
+        }
+        h1 em { color: var(--wine); font-weight: 500; }
+        .auth-intro p:last-child { max-width: 380px; margin: 16px auto 0; color: #74666a; font-size: 14.5px; line-height: 1.7; }
+
+        .auth-card {
+            position: relative; padding: 42px 40px;
+            background: var(--paper); border: 1px solid #ecdedf;
+            border-radius: 3px 70px 3px 3px; box-shadow: 0 40px 90px rgba(54, 4, 19, .14);
+        }
+
+        /* Pestañas Login / Registro.
+           auth.js reemplaza el className completo; por eso el estado activo
+           se detecta con la clase .bg-white que el script le asigna. */
+        .tabs {
+            display: flex; gap: 4px; padding: 4px; margin-bottom: 28px;
+            background: var(--blush); border: 1px solid rgba(100, 20, 42, .15); border-radius: 100px;
+        }
+        .tabs button {
+            flex: 1; padding: 12px 10px; border: 0; border-radius: 100px;
+            background: transparent; color: #8a6b73;
+            font: 700 12px/1 'DM Sans', sans-serif; letter-spacing: .02em;
+            transition: background .25s, color .25s, box-shadow .25s;
+        }
+        .tabs button:hover { color: var(--wine); }
+        .tabs button.bg-white { background: #fff; color: var(--wine); box-shadow: 0 6px 16px rgba(100, 20, 42, .12); }
+        .tabs button:focus-visible, .pill:focus-visible, .btn-google:focus-visible, .back-link:focus-visible, .brand:focus-visible {
+            outline: 2px solid var(--wine); outline-offset: 3px;
+        }
+
+        #error-alert {
+            margin-bottom: 20px; padding: 14px 16px;
+            background: #fdf0ee; border: 1px solid #f1c5bf; border-radius: 14px;
+            color: #b42318; font-size: 13px; font-weight: 500; line-height: 1.5;
+        }
+
+        .field { margin-bottom: 16px; }
+        .field label { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 600; color: #4a3a3f; }
+        .field input {
+            width: 100%; padding: 14px 16px; border: 1px solid #d9c9ca; border-radius: 12px;
+            background: #fff; color: var(--ink);
+            font: 400 14px 'DM Sans', sans-serif; transition: border-color .2s, box-shadow .2s;
+        }
+        .field input::placeholder { color: #b3a4a8; }
+        .field input:focus { outline: none; border-color: var(--wine); box-shadow: 0 0 0 3px rgba(100, 20, 42, .12); }
+
+        .pill {
+            display: inline-flex; justify-content: center; align-items: center; gap: 12px;
+            width: 100%; min-height: 54px; margin-top: 8px; padding: 0 28px; border: 0; border-radius: 100px;
+            background: var(--wine); color: #fff;
+            font: 600 13px/1 'DM Sans', sans-serif; letter-spacing: .025em;
+            box-shadow: 0 12px 30px rgba(100, 20, 42, .2);
+            transition: transform .3s, box-shadow .3s, opacity .2s;
+        }
+        .pill:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 18px 38px rgba(100, 20, 42, .28); }
+        .pill:disabled { opacity: .7; }
+
+        .divider { display: flex; align-items: center; gap: 14px; margin: 22px 0; color: #a39397; font-size: 11.5px; }
+        .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #e3d3d4; }
+
+        .btn-google {
+            width: 100%; min-height: 52px; padding: 0 20px;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            border: 1px solid #d9c9ca; border-radius: 100px; background: #fff; color: var(--dark);
+            font: 600 13px/1 'DM Sans', sans-serif;
+            transition: background .25s, border-color .25s, transform .3s;
+        }
+        .btn-google:hover { background: var(--blush); border-color: #cbaab2; transform: translateY(-2px); }
+        .btn-google i { color: #db4437; font-size: 15px; }
+
+        /* ===== Footer ===== */
+        footer.site-foot {
+            flex: none; padding: 26px 5vw; text-align: center;
+            background: #1b0710; color: #bbaab0; font-size: 11.5px;
+        }
+        footer.site-foot p { margin: 0; }
+
+        /* ===== Animaciones ===== */
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes drift { to { transform: translate(50px, 30px) scale(1.1); } }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 900px) {
+            .cursor, .cursor-glow { display: none; }
+            header.site { height: 76px; padding: 0 20px; }
+            main { padding: 44px 20px 60px; }
+            .spark { display: none; }
+        }
+        @media (max-width: 520px) {
+            .auth-card { padding: 32px 22px; border-radius: 3px 50px 3px 3px; }
+            .back-link .txt { display: none; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after { animation: none !important; transition: none !important; }
         }
     </style>
 </head>
-<body class="bg-wine-50 min-h-screen flex flex-col justify-between selection:bg-wine-500 selection:text-white">
+<body>
+    <!-- Cursor personalizado -->
+    <div class="cursor" aria-hidden="true"></div>
+    <div class="cursor-glow" aria-hidden="true"></div>
 
-    <!-- Header / Navbar simplificado -->
-    <header class="w-full bg-white/90 backdrop-blur-md border-b border-wine-100 shadow-sm py-4 px-6 sm:px-12 flex items-center justify-between">
-        <a href="index.html" class="flex flex-col group text-left">
-            <span class="text-[10px] sm:text-xs font-semibold tracking-widest text-wine-500 uppercase">Make It</span>
-            <span class="text-xl sm:text-2xl font-bold tracking-tight text-wine-700 font-serif -mt-1 group-hover:text-wine-900 transition-colors">YOURSELF</span>
+    <!-- Header simplificado -->
+    <header class="site">
+        <a href="index.html" class="brand" aria-label="Make It Yourself, inicio">
+            <small>Make It</small>
+            <strong>YOURSELF</strong>
         </a>
-        <a href="index.html" class="text-sm font-semibold text-wine-700 hover:text-wine-900 flex items-center gap-2 transition-colors">
-            <i class="fa-solid fa-arrow-left text-xs"></i> Volver al Inicio
+        <a href="index.html" class="back-link">
+            <span><i class="fa-solid fa-arrow-left"></i></span>
+            <b class="txt" style="font-weight:600">Volver al inicio</b>
         </a>
     </header>
 
-    <!-- Contenido Principal -->
-    <main class="flex-grow flex items-center justify-center px-4 sm:px-6 py-12">
-        <div class="max-w-md w-full bg-white rounded-3xl p-8 sm:p-10 shadow-xl border border-wine-100 relative">
-            
-            <!-- Botones de Opción para Cambiar de Método -->
-            <div class="flex bg-wine-50 p-1 rounded-2xl mb-8 border border-wine-100">
-                <button id="tab-login" type="button" class="flex-1 py-2.5 text-xs sm:text-sm font-bold rounded-xl transition-all bg-white text-wine-900 shadow-sm">
-                    Iniciar Sesión
-                </button>
-                <button id="tab-registro" type="button" class="flex-1 py-2.5 text-xs sm:text-sm font-bold rounded-xl transition-all text-gray-500 hover:text-wine-900">
-                    Crear Cuenta
-                </button>
+    <!-- Contenido principal -->
+    <main>
+        <div class="orb orb-one" aria-hidden="true"></div>
+        <div class="orb orb-two" aria-hidden="true"></div>
+        <div class="spark" aria-hidden="true">✦</div>
+
+        <div class="auth-wrap">
+            <div class="auth-intro">
+                <p class="eyebrow">Acceso para alumnas</p>
+                <h1>Tu ritual de belleza <em>empieza aquí</em></h1>
+                <p>Ingresa a tu cuenta o crea una nueva para acceder a tus cursos.</p>
             </div>
 
-            <!-- Alerta de Error Global -->
-            <div id="error-alert" class="hidden mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-xs sm:text-sm font-medium"></div>
-
-            <!-- Formulario Único -->
-            <form id="auth-form" class="space-y-4" novalidate>
-                <!-- Campo Nombre (Solo visible en Registro) -->
-                <div id="group-nombre" class="hidden">
-                    <label for="nombre" class="block text-xs font-semibold text-gray-700 mb-1">Nombre Completo</label>
-                    <input type="text" id="nombre" name="nombre" placeholder="Ej. Ana María Gómez" 
-                           class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-wine-700 focus:ring-1 focus:ring-wine-700 transition-all">
+            <div class="auth-card">
+                <!-- Pestañas para cambiar de método -->
+                <div class="tabs">
+                    <button id="tab-login" type="button" class="flex-1 py-2.5 text-xs sm:text-sm font-bold rounded-xl transition-all bg-white text-wine-900 shadow-sm">
+                        Iniciar sesión
+                    </button>
+                    <button id="tab-registro" type="button" class="flex-1 py-2.5 text-xs sm:text-sm font-bold rounded-xl transition-all text-gray-500 hover:text-wine-900">
+                        Crear cuenta
+                    </button>
                 </div>
 
-                <div>
-                    <label for="email" class="block text-xs font-semibold text-gray-700 mb-1">Correo Electrónico</label>
-                    <input type="email" id="email" name="email" placeholder="tucorreo@email.com" required 
-                           class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-wine-700 focus:ring-1 focus:ring-wine-700 transition-all">
+                <!-- Alerta de error global -->
+                <div id="error-alert" class="hidden" role="alert"></div>
+
+                <!-- Formulario único -->
+                <form id="auth-form" novalidate>
+                    <!-- Nombre (solo visible en registro) -->
+                    <div id="group-nombre" class="field hidden">
+                        <label for="nombre">Nombre completo</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Ej. Ana María Gómez" autocomplete="name">
+                    </div>
+
+                    <div class="field">
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" id="email" name="email" placeholder="tucorreo@email.com" required autocomplete="email">
+                    </div>
+
+                    <div class="field">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+                    </div>
+
+                    <!-- Confirmar contraseña (solo visible en registro) -->
+                    <div id="group-confirm" class="field hidden">
+                        <label for="confirm-password">Confirmar contraseña</label>
+                        <input type="password" id="confirm-password" name="confirm-password" placeholder="••••••••" autocomplete="new-password">
+                    </div>
+
+                    <button type="submit" id="btn-submit" class="pill">
+                        <span id="btn-text">Ingresar</span>
+                        <i id="btn-spinner" class="fa-solid fa-spinner fa-spin hidden"></i>
+                    </button>
+                </form>
+
+                <div class="divider">o</div>
+
+                <!-- Acceso con Google (disponible en ambos modos) -->
+                <div id="google-container">
+                    <button type="button" id="btn-google" class="btn-google">
+                        <i class="fa-brands fa-google"></i> Continuar con Google
+                    </button>
                 </div>
-
-                <div>
-                    <label for="password" class="block text-xs font-semibold text-gray-700 mb-1">Contraseña</label>
-                    <input type="password" id="password" name="password" placeholder="••••••••" required 
-                           class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-wine-700 focus:ring-1 focus:ring-wine-700 transition-all">
-                </div>
-
-                <!-- Confirmar Contraseña (Solo visible en Registro) -->
-                <div id="group-confirm" class="hidden">
-                    <label for="confirm-password" class="block text-xs font-semibold text-gray-700 mb-1">Confirmar Contraseña</label>
-                    <input type="password" id="confirm-password" name="confirm-password" placeholder="••••••••" 
-                           class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-wine-700 focus:ring-1 focus:ring-wine-700 transition-all">
-                </div>
-
-                <button type="submit" id="btn-submit" class="w-full py-3.5 rounded-xl text-white font-bold text-sm custom-gradient shadow-lg hover:opacity-95 transform hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
-                    <span id="btn-text">Ingresar</span>
-                    <i id="btn-spinner" class="fa-solid fa-spinner fa-spin hidden"></i>
-                </button>
-            </form>
-
-            <!-- Botón de acceso con Google (Disponible en ambos modos) -->
-            <div id="google-container" class="mt-4">
-                <button type="button" id="btn-google" class="w-full py-3 px-4 rounded-xl border border-gray-300 bg-white text-gray-700 font-semibold text-sm hover:bg-gray-50 transition-all flex items-center justify-center gap-3 shadow-sm">
-                    <i class="fa-brands fa-google text-red-500 text-base"></i> Continuar con Google
-                </button>
             </div>
         </div>
     </main>
 
     <!-- Footer simple -->
-    <footer class="w-full py-6 text-center text-xs text-gray-500 border-t border-wine-100">
-        &copy; 2026 Make It Yourself. Todos los derechos reservados.
+    <footer class="site-foot">
+        <p>&copy; 2026 Make It Yourself. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- Script Unificado de Autenticación -->
+    <!-- Cursor personalizado -->
+    <script>
+        (function () {
+            if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+            const root = document.documentElement;
+            const dot = document.querySelector('.cursor');
+            const ring = document.querySelector('.cursor-glow');
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            root.classList.add('has-cursor');
+
+            let x = innerWidth / 2, y = innerHeight / 2, rx = x, ry = y, raf = null;
+
+            function frame() {
+                rx += (x - rx) * (reduce ? 1 : 0.2);
+                ry += (y - ry) * (reduce ? 1 : 0.2);
+                ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px)';
+                raf = (Math.abs(x - rx) > 0.1 || Math.abs(y - ry) > 0.1) ? requestAnimationFrame(frame) : null;
+            }
+
+            window.addEventListener('pointermove', (e) => {
+                if (e.pointerType === 'touch') return;
+                x = e.clientX; y = e.clientY;
+                root.classList.add('cursor-on');
+                dot.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+                if (!raf) raf = requestAnimationFrame(frame);
+
+                const t = e.target;
+                if (!t || !t.closest) return;
+                const isText = !!t.closest('input, textarea, select');
+                root.classList.toggle('cursor-text', isText);
+                root.classList.toggle('cursor-hover', !isText && !!t.closest('a, button, label'));
+            }, { passive: true });
+
+            document.addEventListener('mouseleave', () => root.classList.remove('cursor-on'));
+            document.addEventListener('mouseenter', () => root.classList.add('cursor-on'));
+            window.addEventListener('pointerdown', () => root.classList.add('cursor-down'));
+            window.addEventListener('pointerup', () => root.classList.remove('cursor-down'));
+        })();
+    </script>
+
+    <!-- Script unificado de autenticación (sin cambios) -->
     <script type="module" src="js/auth.js"></script>
 </body>
 </html>

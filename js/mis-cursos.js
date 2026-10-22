@@ -58,7 +58,7 @@ function mostrarVacio(titulo, descripcion) {
 
     const h3 = estadoVacio.querySelector('h3');
     const p = estadoVacio.querySelector('p');
-    
+
     if (h3) h3.textContent = titulo;
     if (p) p.textContent = descripcion;
     estadoVacio.classList.remove('hidden');
@@ -100,51 +100,30 @@ function dibujarModulo(cursoId, modulo) {
         : '';
 
     return `
-        <article class="bg-wine-50/50 rounded-2xl p-6 border
-            border-wine-100 flex flex-col justify-between gap-4">
-
+        <article class="mod">
             <div>
-                <div class="flex items-center justify-between gap-2 mb-3">
-                    <span class="text-xs font-bold text-wine-700
-                        bg-white px-2.5 py-1 rounded-md border border-wine-100">
-                        Módulo ${String(modulo.order || 0).padStart(2, '0')}
-                    </span>
-
-                    <span class="text-xs text-gray-500 font-medium">
-                        ${completadas} / ${total} lecciones (${avance}%)
-                    </span>
+                <div class="mod-top">
+                    <span class="mod-num">Módulo ${String(modulo.order || 0).padStart(2, '0')}</span>
+                    <span class="mod-count">${completadas} / ${total} lecciones (${avance}%)</span>
                 </div>
 
-                <h4 class="font-bold text-wine-900 text-base mb-2">
-                    ${escaparHTML(modulo.title || 'Módulo sin título')}
-                </h4>
+                <h4>${escaparHTML(modulo.title || 'Módulo sin título')}</h4>
 
-                <p class="text-xs text-gray-600 leading-relaxed">
-                    ${escaparHTML(modulo.description || 'Continúa aprendiendo en este módulo.')}
-                </p>
+                <p>${escaparHTML(modulo.description || 'Continúa aprendiendo en este módulo.')}</p>
 
-                <div class="w-full bg-white h-2 rounded-full overflow-hidden
-                    border border-wine-200 mt-4">
-                    <div
-                        class="bg-wine-700 h-full rounded-full transition-all duration-500"
-                        style="width: ${avance}%">
-                    </div>
+                <div class="bar" role="progressbar" aria-valuenow="${avance}" aria-valuemin="0" aria-valuemax="100">
+                    <span style="width: ${avance}%"></span>
                 </div>
             </div>
 
-            <div class="pt-2">
+            <div>
                 ${
                     enlace
-                        ? `<a href="${escaparHTML(enlace)}"
-                            class="block w-full text-center py-2.5 px-4
-                            rounded-xl custom-gradient text-white text-xs
-                            font-bold shadow-md hover:opacity-95 transition-all">
-                            <i class="fa-solid fa-play mr-1"></i>
+                        ? `<a href="${escaparHTML(enlace)}" class="pill small block">
+                            <i class="fa-solid fa-play"></i>
                             ${completadas > 0 ? 'Continuar módulo' : 'Ver lecciones'}
                         </a>`
-                        : `<p class="text-xs text-gray-500">
-                            Este módulo todavía no tiene lecciones publicadas.
-                           </p>`
+                        : `<p class="note">Este módulo todavía no tiene lecciones publicadas.</p>`
                 }
             </div>
         </article>
@@ -179,75 +158,48 @@ function dibujarCurso(curso) {
     const imagenValida = /^https?:\/\//i.test(portada);
 
     return `
-        <article class="bg-white rounded-3xl border border-wine-100
-            shadow-sm overflow-hidden p-6 sm:p-8">
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6
-                items-center pb-8 border-b border-wine-100">
-
-                <div class="lg:col-span-4 rounded-2xl overflow-hidden
-                    h-48 bg-wine-50 flex items-center justify-center">
-
+        <article class="course">
+            <div class="course-top">
+                <div class="course-cover">
                     ${
                         imagenValida
-                            ? `<img src="${escaparHTML(portada)}"
-                                alt="${escaparHTML(curso.title)}"
-                                class="w-full h-full object-cover">`
-                            : `<i class="fa-solid fa-book-open text-5xl text-wine-300"></i>`
+                            ? `<img src="${escaparHTML(portada)}" alt="${escaparHTML(curso.title)}">`
+                            : `<i class="fa-solid fa-book-open"></i>`
                     }
                 </div>
 
-                <div class="lg:col-span-8 space-y-3">
-                    <span class="bg-wine-100 text-wine-700 text-xs
-                        font-bold uppercase px-3 py-1 rounded-full">
-                        Curso inscrito
-                    </span>
+                <div>
+                    <span class="tag">Curso inscrito</span>
 
-                    <h2 class="text-2xl font-bold text-wine-900 serif-font">
-                        ${escaparHTML(curso.title || 'Curso sin título')}
-                    </h2>
+                    <h2>${escaparHTML(curso.title || 'Curso sin título')}</h2>
 
-                    <p class="text-sm text-gray-600 leading-relaxed">
-                        ${escaparHTML(curso.description || 'Continúa tu aprendizaje a tu propio ritmo.')}
-                    </p>
+                    <p class="course-desc">${escaparHTML(curso.description || 'Continúa tu aprendizaje a tu propio ritmo.')}</p>
 
-                    <div class="space-y-1.5 pt-2">
-                        <div class="flex justify-between gap-3 text-xs
-                            font-semibold text-gray-700">
-                            <span>Progreso del curso</span>
-                            <span class="text-wine-700">
-                                ${completadas} de ${total} lecciones (${avance}%)
-                            </span>
-                        </div>
+                    <div class="progress-row">
+                        <span>Progreso del curso</span>
+                        <b>${completadas} de ${total} lecciones (${avance}%)</b>
+                    </div>
 
-                        <div class="w-full bg-wine-50 h-3 rounded-full
-                            overflow-hidden border border-wine-100">
-                            <div class="bg-wine-700 h-full rounded-full
-                                transition-all duration-500"
-                                style="width: ${avance}%">
-                            </div>
-                        </div>
+                    <div class="bar" role="progressbar" aria-valuenow="${avance}" aria-valuemin="0" aria-valuemax="100">
+                        <span style="width: ${avance}%"></span>
                     </div>
                 </div>
             </div>
 
-            <div class="pt-8">
-                <h3 class="text-lg font-bold text-wine-900 serif-font
-                    mb-6 flex items-center gap-2">
-                    <i class="fa-solid fa-layer-group text-wine-500"></i>
+            <div>
+                <h3 class="modules-title">
+                    <i class="fa-solid fa-layer-group"></i>
                     Módulos del curso
                 </h3>
 
                 ${
                     curso.modulos.length
-                        ? `<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        ? `<div class="mod-grid">
                             ${curso.modulos.map(modulo =>
                                 dibujarModulo(curso.id, modulo)
                             ).join('')}
                            </div>`
-                        : `<p class="text-sm text-gray-500">
-                            Este curso todavía no tiene módulos publicados.
-                           </p>`
+                        : `<p class="empty-note">Este curso todavía no tiene módulos publicados.</p>`
                 }
             </div>
         </article>
@@ -445,14 +397,10 @@ async function cargarMisCursos(usuario) {
 
         if (contenedor) {
             contenedor.innerHTML = `
-                <div class="bg-white rounded-2xl border border-wine-100
-                    p-6 text-center">
-                    <i class="fa-solid fa-circle-exclamation
-                        text-3xl text-wine-500 mb-3"></i>
-                    <p class="font-bold text-wine-900 mb-2">
-                        No pudimos cargar tus cursos
-                    </p>
-                    <p class="text-sm text-gray-600">
+                <div class="load-error">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <h3>No pudimos cargar tus cursos</h3>
+                    <p>
                         Comprueba tu conexión y vuelve a intentarlo.
                         Detalle del error: ${escaparHTML(error.message)}
                     </p>

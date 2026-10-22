@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,240 +5,359 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lección | Make It Yourself</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        wine: {
-                            50: '#fff1f4',
-                            100: '#ffe0e8',
-                            200: '#ffc2d2',
-                            500: '#bd4269',
-                            600: '#a72e56',
-                            700: '#872344',
-                            800: '#6e1e3a',
-                            900: '#51172c'
-                        }
-                    }
-                }
-            }
-        };
-    </script>
+    <!-- Tipografías (mismas del index: Playfair Display + DM Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
+        :root {
+            --wine: #64142a;
+            --dark: #260712;
+            --rose: #d38d9f;
+            --blush: #f1dce0;
+            --cream: #fbf6ef;
+            --ink: #25191d;
+            --paper: #fffdf9;
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
-            background: #fff9fa;
-            font-family: Arial, sans-serif;
+            margin: 0; min-height: 100vh; display: flex; flex-direction: column;
+            background: var(--cream); color: var(--ink);
+            font-family: 'DM Sans', sans-serif;
+            overflow-x: hidden; -webkit-font-smoothing: antialiased;
         }
+        a { color: inherit; }
+        ::selection { background: var(--wine); color: #fff; }
+        .hidden { display: none !important; }
 
-        .serif-font {
-            font-family: Georgia, serif;
+        /* ===== Cursor personalizado ===== */
+        .has-cursor, .has-cursor a, .has-cursor button, .has-cursor label { cursor: none; }
+        .cursor, .cursor-glow {
+            position: fixed; left: 0; top: 0; z-index: 3000;
+            pointer-events: none; border-radius: 50%; opacity: 0;
+            transition: opacity .2s, width .25s, height .25s, margin .25s, background .25s, border-color .25s;
         }
+        .cursor { width: 7px; height: 7px; margin: -3.5px; background: var(--wine); }
+        .cursor-glow { width: 38px; height: 38px; margin: -19px; border: 1px solid rgba(100, 20, 42, .35); }
+        .cursor-on .cursor, .cursor-on .cursor-glow { opacity: 1; }
+        .cursor-hover .cursor-glow { width: 64px; height: 64px; margin: -32px; background: rgba(211, 141, 159, .2); border-color: rgba(100, 20, 42, .5); }
+        .cursor-down .cursor-glow { width: 26px; height: 26px; margin: -13px; }
 
-        .custom-gradient {
-            background: linear-gradient(135deg, #872344, #bd4269);
+        /* ===== Header ===== */
+        header.site {
+            position: fixed; inset: 0 0 auto; z-index: 50; height: 84px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 5vw;
+            background: rgba(251, 246, 239, .84);
+            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(100, 20, 42, .12);
         }
+        .brand { display: flex; flex-direction: column; text-decoration: none; color: var(--wine); line-height: 1; }
+        .brand small { font-size: 10px; font-weight: 600; letter-spacing: .34em; text-transform: uppercase; }
+        .brand strong { font-family: 'Playfair Display', serif; font-size: 25px; letter-spacing: .08em; margin-top: 4px; transition: color .3s; }
+        .brand:hover strong { color: var(--dark); }
+        .back-link {
+            display: inline-flex; align-items: center; gap: 10px;
+            color: var(--wine); font-size: 12.5px; font-weight: 600; text-decoration: none; letter-spacing: .02em;
+        }
+        .back-link span {
+            display: inline-grid; place-items: center; width: 36px; height: 36px;
+            border: 1px solid #cbaab2; border-radius: 50%; font-size: 10px;
+            transition: background .3s, color .3s, border-color .3s;
+        }
+        .back-link:hover span { background: var(--wine); border-color: var(--wine); color: #fff; }
 
+        /* ===== Principal ===== */
+        main {
+            position: relative; flex: 1; width: 100%; overflow: hidden;
+            padding: 130px 7vw 100px;
+            background: radial-gradient(circle at 8% 95%, #f7e9e8 0, transparent 30%), var(--cream);
+        }
+        .orb { position: absolute; top: 120px; right: 3%; width: 220px; height: 220px; border-radius: 50%; background: rgba(216, 150, 165, .2); filter: blur(2px); pointer-events: none; animation: drift 12s ease-in-out infinite alternate; }
+        .inner { position: relative; z-index: 2; max-width: 1240px; margin: 0 auto; }
+
+        h1, h2, h3 { margin: 0; color: var(--dark); font-family: 'Playfair Display', serif; font-weight: 600; }
+        .lesson-head { margin-bottom: 40px; }
+        #nombreCurso {
+            margin: 0 0 8px; color: var(--wine); font-size: 10.5px; font-weight: 600;
+            letter-spacing: .26em; text-transform: uppercase;
+        }
+        #nombreCurso::before { content: ""; display: inline-block; width: 34px; height: 1px; margin: 0 12px 3px 0; background: currentColor; }
+        #nombreModulo { margin: 0 0 18px; color: #89787d; font-size: 13.5px; font-weight: 500; }
+        #tituloLeccion { font-size: clamp(34px, 4.4vw, 60px); letter-spacing: -.035em; line-height: 1.02; max-width: 900px; }
+
+        .layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 36px; align-items: start; }
+
+        /* ===== Video ===== */
         .video-container {
-            aspect-ratio: 16 / 9;
+            aspect-ratio: 16 / 9; overflow: hidden; display: flex; align-items: center; justify-content: center;
+            background: var(--dark); color: #fff;
+            border-radius: 3px 80px 3px 3px; box-shadow: 0 35px 80px rgba(54, 4, 19, .22);
         }
+        .video-container iframe, .video-container video { width: 100%; height: 100%; border: 0; background: #000; }
+        .video-container > p { margin: 0; padding: 24px; color: #c8b9bd; font-size: 14px; text-align: center; }
+        .video-empty { padding: 32px; text-align: center; }
+        .video-empty i { margin-bottom: 16px; font-size: 44px; color: #e9a8b6; }
+        .video-empty .t { margin: 0 0 6px; font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; color: #fff; }
+        .video-empty p { margin: 0 auto; max-width: 380px; color: #b8a7ac; font-size: 13.5px; line-height: 1.65; }
 
-        .video-container iframe,
-        .video-container video {
-            width: 100%;
-            height: 100%;
-            border: 0;
+        #estadoLeccion { min-height: 20px; margin: 16px 0 0; color: #74666a; font-size: 13.5px; }
+        #estadoLeccion:empty { min-height: 0; margin: 0; }
+
+        /* ===== Tarjetas ===== */
+        .card {
+            margin-top: 24px; padding: 36px 38px;
+            background: var(--paper); border: 1px solid #e7d7d8; border-radius: 3px 44px 3px 3px;
+        }
+        .card h2 { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; font-size: 28px; letter-spacing: -.02em; }
+        .card h2 i, .card h3 i { color: var(--rose); font-size: 16px; }
+        #contenidoLeccion { color: #6e6064; font-size: 15px; line-height: 1.85; white-space: pre-line; }
+
+        #seccionMaterial { margin-top: 32px; padding-top: 26px; border-top: 1px solid #e3d3d4; }
+        #seccionMaterial h3 { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; font-size: 20px; }
+
+        .pill {
+            display: inline-flex; justify-content: center; align-items: center; gap: 10px;
+            min-height: 52px; padding: 0 28px; border: 0; border-radius: 100px;
+            background: var(--wine); color: #fff; text-decoration: none;
+            font: 600 12.5px/1 'DM Sans', sans-serif; letter-spacing: .025em;
+            box-shadow: 0 12px 30px rgba(100, 20, 42, .2);
+            transition: transform .3s, box-shadow .3s, opacity .2s, background .3s;
+        }
+        .pill:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 18px 38px rgba(100, 20, 42, .28); }
+        .pill:disabled { opacity: .55; box-shadow: none; }
+        .pill.light { background: var(--blush); color: var(--wine); box-shadow: none; min-height: 46px; padding: 0 22px; }
+        .pill.light:hover { background: #ead0d6; transform: translateY(-2px); box-shadow: none; }
+        /* Lección completada (la clase la agrega leccion.js) */
+        .pill.done, .pill.done:disabled { opacity: 1; background: #dcf3e4; color: #1f8a4c; box-shadow: none; }
+
+        .complete p.hint { margin: 0 0 20px; color: #74666a; font-size: 14px; line-height: 1.7; }
+        #estadoProgreso { margin: 14px 0 0; color: #74666a; font-size: 13.5px; }
+        #estadoProgreso:empty { margin: 0; }
+
+        /* ===== Navegación entre lecciones ===== */
+        .lesson-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+        .nav-btn {
+            display: block; width: 100%; padding: 20px 24px; border: 1px solid #e3d3d4; border-radius: 3px 28px 3px 3px;
+            background: var(--paper); color: var(--dark); text-align: left; font: inherit;
+            transition: transform .3s, box-shadow .3s, background .3s;
+        }
+        .nav-btn.next { text-align: right; border-radius: 3px 3px 3px 28px; }
+        .nav-btn small { display: block; margin-bottom: 6px; color: #89787d; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+        .nav-btn small i { color: var(--wine); font-size: 10px; }
+        .nav-btn b { display: block; font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; line-height: 1.3; }
+        .nav-btn:hover:not(:disabled) { transform: translateY(-3px); background: #fff; box-shadow: 0 20px 44px rgba(54, 4, 19, .1); }
+        .nav-btn:disabled { opacity: .45; }
+
+        /* ===== Panel lateral ===== */
+        aside .panel {
+            position: sticky; top: 108px; padding: 32px 28px;
+            background: var(--paper); border: 1px solid #e7d7d8; border-radius: 3px 60px 3px 3px;
+            box-shadow: 0 30px 70px rgba(54, 4, 19, .08);
+        }
+        aside h2 { margin-bottom: 8px; font-size: 28px; letter-spacing: -.02em; }
+        aside .sub { margin: 0 0 24px; color: #84757a; font-size: 13px; line-height: 1.65; }
+        .progress-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 12px; font-weight: 600; color: #4a3a3f; }
+        #porcentajeProgreso { color: var(--wine); font-weight: 700; }
+        .bar { height: 8px; margin-bottom: 28px; overflow: hidden; border-radius: 100px; background: var(--blush); }
+        #barraProgreso { height: 100%; border-radius: 100px; background: var(--wine); transition: width .6s ease; }
+        aside h3 { margin-bottom: 14px; font-size: 20px; }
+
+        #listaLecciones { display: grid; gap: 6px; max-height: 52vh; overflow-y: auto; margin: 0 -6px; padding: 0 6px; }
+        #listaLecciones > p { margin: 0; color: #89787d; font-size: 13px; }
+        .lesson-item {
+            width: 100%; display: flex; align-items: flex-start; gap: 14px; padding: 14px;
+            border: 1px solid transparent; border-radius: 14px; background: transparent;
+            text-align: left; font: inherit; color: var(--dark);
+            transition: background .25s, border-color .25s;
+        }
+        .lesson-item:hover { background: var(--cream); }
+        .lesson-item.active { background: var(--blush); border-color: rgba(100, 20, 42, .2); }
+        .lesson-item .ico { padding-top: 2px; font-size: 16px; color: #c3b0b5; }
+        .lesson-item .ico.done { color: #1f8a4c; }
+        .lesson-item .txt { min-width: 0; }
+        .lesson-item small { display: block; margin-bottom: 3px; color: #9a8489; font-size: 10.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+        .lesson-item b { display: block; font-size: 13.5px; font-weight: 600; line-height: 1.4; }
+
+        a:focus-visible, button:focus-visible { outline: 2px solid var(--wine); outline-offset: 3px; }
+
+        /* ===== Footer ===== */
+        footer.site-foot { padding: 34px 7vw; text-align: center; background: #1b0710; color: #bbaab0; font-size: 11.5px; }
+        footer.site-foot p { margin: 0; }
+
+        @keyframes drift { to { transform: translate(60px, 36px) scale(1.1); } }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 1000px) {
+            .layout { grid-template-columns: 1fr; }
+            aside .panel { position: static; }
+            #listaLecciones { max-height: none; }
+        }
+        @media (max-width: 900px) {
+            .cursor, .cursor-glow { display: none; }
+            header.site { height: 76px; padding: 0 20px; }
+            main { padding: 112px 20px 70px; }
+        }
+        @media (max-width: 600px) {
+            .back-link .txt { display: none; }
+            .video-container { border-radius: 3px 50px 3px 3px; }
+            .card { padding: 28px 22px; border-radius: 3px 36px 3px 3px; }
+            .lesson-nav { grid-template-columns: 1fr; }
+            .nav-btn.next { text-align: left; border-radius: 3px 28px 3px 3px; }
+            .pill.full-sm { width: 100%; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after { animation: none !important; transition: none !important; }
         }
     </style>
 </head>
-
-<body class="min-h-screen text-gray-800">
+<body>
+    <!-- Cursor personalizado -->
+    <div class="cursor" aria-hidden="true"></div>
+    <div class="cursor-glow" aria-hidden="true"></div>
 
     <!-- ENCABEZADO -->
-    <header class="bg-white border-b border-wine-100">
-        <div class="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between gap-4">
-            <a href="index.html"
-               class="text-xl md:text-2xl font-bold text-wine-800 serif-font">
-                Make It Yourself
-            </a>
-
-            <a href="mis-cursos.html"
-               class="text-sm font-semibold text-wine-700 hover:text-wine-900">
-                <i class="fa-solid fa-arrow-left mr-2"></i>
-                Volver a los cursos
-            </a>
-        </div>
+    <header class="site">
+        <a href="index.html" class="brand" aria-label="Make It Yourself, inicio">
+            <small>Make It</small>
+            <strong>YOURSELF</strong>
+        </a>
+        <a href="mis-cursos.html" class="back-link">
+            <span><i class="fa-solid fa-arrow-left"></i></span>
+            <b class="txt" style="font-weight:600">Volver a los cursos</b>
+        </a>
     </header>
 
     <!-- CONTENIDO -->
-    <main class="max-w-7xl mx-auto px-5 py-8 md:py-12">
+    <main>
+        <div class="orb" aria-hidden="true"></div>
 
-        <div class="mb-7">
-            <p id="nombreCurso"
-               class="text-sm text-wine-600 font-semibold mb-2">
-                Cargando curso...
-            </p>
+        <div class="inner">
+            <div class="lesson-head">
+                <p id="nombreCurso">Cargando curso...</p>
+                <p id="nombreModulo">Cargando módulo...</p>
+                <h1 id="tituloLeccion">Cargando lección...</h1>
+            </div>
 
-            <p id="nombreModulo"
-               class="text-sm text-gray-500 mb-2">
-                Cargando módulo...
-            </p>
+            <div class="layout">
 
-            <h1 id="tituloLeccion"
-                class="text-3xl md:text-4xl font-bold text-wine-900 serif-font">
-                Cargando lección...
-            </h1>
-        </div>
+                <!-- VIDEO Y CONTENIDO -->
+                <section style="min-width:0">
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-            <!-- VIDEO Y CONTENIDO -->
-            <section class="lg:col-span-2 min-w-0">
-
-                <div id="contenedorVideo"
-                     class="video-container bg-gray-100 rounded-3xl overflow-hidden shadow-sm flex items-center justify-center">
-                    <p class="text-gray-500 text-center p-6">
-                        Cargando contenido...
-                    </p>
-                </div>
-
-                <!-- ESTADO -->
-                <p id="estadoLeccion"
-                   role="status"
-                   aria-live="polite"
-                   class="text-sm text-gray-600 mt-4"></p>
-
-                <!-- TEXTO -->
-                <article class="bg-white rounded-3xl p-6 md:p-8 mt-6 border border-wine-100 shadow-sm">
-                    <h2 class="text-xl font-bold text-wine-900 mb-4 serif-font">
-                        <i class="fa-solid fa-book-open text-wine-600 mr-2"></i>
-                        Sobre esta lección
-                    </h2>
-
-                    <div id="contenidoLeccion"
-                         class="text-gray-600 leading-7 whitespace-pre-line">
-                        El contenido aparecerá aquí.
+                    <div id="contenedorVideo" class="video-container">
+                        <p>Cargando contenido...</p>
                     </div>
 
-                    <!-- MATERIAL DESCARGABLE -->
-                    <div id="seccionMaterial"
-                         class="hidden mt-7 pt-6 border-t border-wine-100">
-                        <h3 class="font-bold text-wine-900 mb-3">
-                            <i class="fa-solid fa-file-arrow-down mr-2"></i>
-                            Material de apoyo
-                        </h3>
+                    <!-- ESTADO -->
+                    <p id="estadoLeccion" role="status" aria-live="polite"></p>
 
-                        <a id="enlaceMaterial"
-                           href="#"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="inline-flex items-center gap-2 bg-wine-50 text-wine-800 px-5 py-3 rounded-xl font-semibold hover:bg-wine-100 transition">
-                            Descargar material
-                        </a>
-                    </div>
-                </article>
+                    <!-- TEXTO -->
+                    <article class="card">
+                        <h2><i class="fa-solid fa-book-open"></i> Sobre esta lección</h2>
 
-                <!-- COMPLETAR LECCIÓN -->
-                <div class="bg-white rounded-3xl p-6 mt-6 border border-wine-100 shadow-sm">
-                    <p class="text-sm text-gray-600 mb-4">
-                        Cuando termines de estudiar el contenido, marca esta lección como completada para registrar tu avance.
-                    </p>
+                        <div id="contenidoLeccion">El contenido aparecerá aquí.</div>
 
-                    <button id="btnCompletar"
-                            type="button"
-                            disabled
-                            class="w-full md:w-auto custom-gradient text-white px-7 py-3 rounded-xl font-bold hover:opacity-95 disabled:opacity-50 disabled:cursor-not-allowed transition">
-                        <i class="fa-solid fa-check mr-2"></i>
-                        Marcar como completada
-                    </button>
+                        <!-- MATERIAL DESCARGABLE -->
+                        <div id="seccionMaterial" class="hidden">
+                            <h3><i class="fa-solid fa-file-arrow-down"></i> Material de apoyo</h3>
+                            <a id="enlaceMaterial" href="#" target="_blank" rel="noopener noreferrer" class="pill light">
+                                Descargar material
+                            </a>
+                        </div>
+                    </article>
 
-                    <p id="estadoProgreso"
-                       role="status"
-                       aria-live="polite"
-                       class="text-sm text-gray-600 mt-3"></p>
-                </div>
+                    <!-- COMPLETAR LECCIÓN -->
+                    <div class="card complete">
+                        <p class="hint">Cuando termines de estudiar el contenido, marca esta lección como completada para registrar tu avance.</p>
 
-                <!-- NAVEGACIÓN -->
-                <nav class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6"
-                     aria-label="Navegación entre lecciones">
+                        <button id="btnCompletar" type="button" disabled class="pill full-sm">
+                            <i class="fa-solid fa-check"></i> Marcar como completada
+                        </button>
 
-                    <button id="btnAnterior"
-                            type="button"
-                            disabled
-                            class="bg-white border border-wine-200 text-wine-800 rounded-xl px-5 py-4 text-left hover:bg-wine-50 disabled:opacity-40 disabled:cursor-not-allowed">
-                        <span class="block text-xs text-gray-500 mb-1">
-                            <i class="fa-solid fa-arrow-left mr-1"></i>
-                            Lección anterior
-                        </span>
-                        <span id="textoAnterior" class="font-bold">
-                            No disponible
-                        </span>
-                    </button>
-
-                    <button id="btnSiguiente"
-                            type="button"
-                            disabled
-                            class="bg-white border border-wine-200 text-wine-800 rounded-xl px-5 py-4 text-left sm:text-right hover:bg-wine-50 disabled:opacity-40 disabled:cursor-not-allowed">
-                        <span class="block text-xs text-gray-500 mb-1">
-                            Siguiente lección
-                            <i class="fa-solid fa-arrow-right ml-1"></i>
-                        </span>
-                        <span id="textoSiguiente" class="font-bold">
-                            No disponible
-                        </span>
-                    </button>
-                </nav>
-            </section>
-
-            <!-- PANEL LATERAL -->
-            <aside class="lg:col-span-1">
-                <div class="bg-white rounded-3xl p-6 border border-wine-100 shadow-sm lg:sticky lg:top-6">
-
-                    <h2 class="text-xl font-bold text-wine-900 serif-font mb-2">
-                        Tu aprendizaje
-                    </h2>
-
-                    <p class="text-sm text-gray-500 mb-5">
-                        Sigue las lecciones de este módulo a tu propio ritmo.
-                    </p>
-
-                    <div class="flex items-center justify-between text-sm mb-2">
-                        <span class="text-gray-600">Progreso del módulo</span>
-                        <span id="porcentajeProgreso"
-                              class="font-bold text-wine-800">0%</span>
+                        <p id="estadoProgreso" role="status" aria-live="polite"></p>
                     </div>
 
-                    <div class="w-full h-2.5 rounded-full bg-wine-50 overflow-hidden mb-6">
-                        <div id="barraProgreso"
-                             class="h-full bg-wine-600 rounded-full transition-all"
-                             style="width: 0%">
+                    <!-- NAVEGACIÓN -->
+                    <nav class="lesson-nav" aria-label="Navegación entre lecciones">
+                        <button id="btnAnterior" type="button" disabled class="nav-btn">
+                            <small><i class="fa-solid fa-arrow-left"></i> Lección anterior</small>
+                            <b id="textoAnterior">No disponible</b>
+                        </button>
+
+                        <button id="btnSiguiente" type="button" disabled class="nav-btn next">
+                            <small>Siguiente lección <i class="fa-solid fa-arrow-right"></i></small>
+                            <b id="textoSiguiente">No disponible</b>
+                        </button>
+                    </nav>
+                </section>
+
+                <!-- PANEL LATERAL -->
+                <aside>
+                    <div class="panel">
+                        <h2>Tu aprendizaje</h2>
+                        <p class="sub">Sigue las lecciones de este módulo a tu propio ritmo.</p>
+
+                        <div class="progress-row">
+                            <span>Progreso del módulo</span>
+                            <span id="porcentajeProgreso">0%</span>
+                        </div>
+                        <div class="bar"><div id="barraProgreso" style="width: 0%"></div></div>
+
+                        <h3>Lecciones del módulo</h3>
+                        <div id="listaLecciones">
+                            <p>Cargando lecciones...</p>
                         </div>
                     </div>
-
-                    <h3 class="font-bold text-wine-900 mb-3">
-                        Lecciones del módulo
-                    </h3>
-
-                    <div id="listaLecciones" class="space-y-2">
-                        <p class="text-sm text-gray-500">
-                            Cargando lecciones...
-                        </p>
-                    </div>
-                </div>
-            </aside>
+                </aside>
+            </div>
         </div>
     </main>
 
-    <footer class="mt-12 bg-white border-t border-wine-100">
-        <div class="max-w-7xl mx-auto px-5 py-6 text-center text-sm text-gray-500">
-            © 2026 Make It Yourself. Aprende, crea y desarrolla tus habilidades.
-        </div>
+    <footer class="site-foot">
+        <p>&copy; 2026 Make It Yourself. Aprende, crea y desarrolla tus habilidades.</p>
     </footer>
+
+    <!-- Cursor personalizado -->
+    <script>
+        (function () {
+            if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+            const root = document.documentElement;
+            const dot = document.querySelector('.cursor');
+            const ring = document.querySelector('.cursor-glow');
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            root.classList.add('has-cursor');
+
+            let x = innerWidth / 2, y = innerHeight / 2, rx = x, ry = y, raf = null;
+
+            function frame() {
+                rx += (x - rx) * (reduce ? 1 : 0.2);
+                ry += (y - ry) * (reduce ? 1 : 0.2);
+                ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px)';
+                raf = (Math.abs(x - rx) > 0.1 || Math.abs(y - ry) > 0.1) ? requestAnimationFrame(frame) : null;
+            }
+
+            window.addEventListener('pointermove', (e) => {
+                if (e.pointerType === 'touch') return;
+                x = e.clientX; y = e.clientY;
+                root.classList.add('cursor-on');
+                dot.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+                if (!raf) raf = requestAnimationFrame(frame);
+                const t = e.target;
+                if (!t || !t.closest) return;
+                root.classList.toggle('cursor-hover', !!t.closest('a, button, label'));
+            }, { passive: true });
+
+            document.addEventListener('mouseleave', () => root.classList.remove('cursor-on'));
+            document.addEventListener('mouseenter', () => root.classList.add('cursor-on'));
+            window.addEventListener('pointerdown', () => root.classList.add('cursor-down'));
+            window.addEventListener('pointerup', () => root.classList.remove('cursor-down'));
+        })();
+    </script>
 
     <script type="module" src="js/leccion.js"></script>
 </body>
