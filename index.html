@@ -85,21 +85,30 @@
             </a>
             <!-- Enlaces de Navegación Conectados -->
             <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-700">
-                <!-- Se agregó el ID nav-modulos para ocultarlo/mostrarlo con JS -->
-                <a href="#modules-section" id="nav-modulos" class="hidden hover:text-wine-700 transition-colors">Módulos</a>
-                <a href="#clase-gratis" class="hover:text-wine-700 transition-colors flex items-center gap-1.5 text-wine-700 font-semibold">
+                <!-- Selector/Navegación para Usuarios Conectados -->
+                <div id="nav-logged-in" class="hidden flex items-center gap-2 bg-wine-50 p-1 rounded-full border border-wine-200">
+                    <a href="mis-cursos.html" class="px-4 py-1.5 rounded-full text-xs font-bold text-wine-900 hover:bg-white hover:shadow-sm transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-graduation-cap text-wine-700"></i> Mis Cursos
+                    </a>
+                    <a href="admin.html" class="px-4 py-1.5 rounded-full text-xs font-bold text-wine-900 hover:bg-white hover:shadow-sm transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-user-shield text-wine-700"></i> Admin
+                    </a>
+                </div>
+
+                <!-- Enlaces Informativos (Visibles solo para visitantes sin sesión) -->
+                <a href="#clase-gratis" class="nav-public hover:text-wine-700 transition-colors flex items-center gap-1.5 text-wine-700 font-semibold">
                     <i class="fa-solid fa-play text-xs bg-wine-100 p-1 rounded-full"></i> ¡Probar Clase!
                 </a>
-                <a href="#nosotros" class="hover:text-wine-700 transition-colors">Nosotros</a>
-                <a href="#galeria" class="hover:text-wine-700 transition-colors">Galería</a>
-                <a href="#testimonios" class="hover:text-wine-700 transition-colors">Testimonios</a>
+                <a href="#nosotros" class="nav-public hover:text-wine-700 transition-colors">Nosotros</a>
+                <a href="#galeria" class="nav-public hover:text-wine-700 transition-colors">Galería</a>
+                <a href="#testimonios" class="nav-public hover:text-wine-700 transition-colors">Testimonios</a>
                 <a href="#faq" class="hover:text-wine-700 transition-colors">Ayuda</a>
             </nav>
-            <!-- CTA Botón Inscribirme / Menú de Usuario Dinámico -->
+            <!-- CTA Botón Iniciar Sesión / Menú de Usuario Dinámico -->
             <div class="flex items-center space-x-4">
                 <div id="auth-container">
-                    <a href="registro.html" id="btn-inscribirme-nav" class="hidden sm:inline-flex items-center justify-center px-6 py-2.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transform hover:-translate-y-0.5 transition-all">
-                        Inscribirme
+                    <a href="auth.html" id="btn-inscribirme-nav" class="hidden sm:inline-flex items-center justify-center px-6 py-2.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transform hover:-translate-y-0.5 transition-all">
+                        Iniciar Sesión
                     </a>
                 </div>
 
@@ -111,16 +120,25 @@
         </div>
         <!-- Menú Desplegable Móvil -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-wine-100 px-6 py-4 space-y-3 shadow-lg">
-            <!-- Se agregó el ID mobile-nav-modulos para ocultarlo/mostrarlo en móviles -->
-            <a href="#modules-section" id="mobile-nav-modulos" class="hidden block text-gray-700 font-medium py-1 hover:text-wine-700">Módulos</a>
-            <a href="#clase-gratis" class="block text-wine-700 font-semibold py-1">¡Probar Clase!</a>
-            <a href="#nosotros" class="block text-gray-700 font-medium py-1 hover:text-wine-700">Nosotros</a>
-            <a href="#galeria" class="block text-gray-700 font-medium py-1 hover:text-wine-700">Galería</a>
-            <a href="#testimonios" class="block text-gray-700 font-medium py-1 hover:text-wine-700">Testimonios</a>
+            <!-- Opciones para usuario conectado en móvil -->
+            <div id="mobile-nav-logged-in" class="hidden space-y-2 pb-2 border-b border-wine-100">
+                <a href="miscursos.html" class="block w-full text-center py-2 rounded-xl text-xs font-bold text-wine-900 bg-wine-50 border border-wine-200">
+                    <i class="fa-solid fa-graduation-cap text-wine-700 mr-1"></i> Ir a Mis Cursos
+                </a>
+                <a href="admin.html" class="block w-full text-center py-2 rounded-xl text-xs font-bold text-wine-900 bg-wine-50 border border-wine-200">
+                    <i class="fa-solid fa-user-shield text-wine-700 mr-1"></i> Panel Administrador
+                </a>
+            </div>
+
+            <!-- Opciones públicas en móvil -->
+            <a href="#clase-gratis" class="mobile-nav-public block text-wine-700 font-semibold py-1">¡Probar Clase!</a>
+            <a href="#nosotros" class="mobile-nav-public block text-gray-700 font-medium py-1 hover:text-wine-700">Nosotros</a>
+            <a href="#galeria" class="mobile-nav-public block text-gray-700 font-medium py-1 hover:text-wine-700">Galería</a>
+            <a href="#testimonios" class="mobile-nav-public block text-gray-700 font-medium py-1 hover:text-wine-700">Testimonios</a>
             <a href="#faq" class="block text-gray-700 font-medium py-1 hover:text-wine-700">Ayuda</a>
-            <div class="pt-2 border-t border-gray-100">
-                <a href="#inscripcion" class="block w-full text-center py-2.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md">
-                    Inscribirme
+            <div id="mobile-auth-btn" class="pt-2 border-t border-gray-100">
+                <a href="auth.html" class="block w-full text-center py-2.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md">
+                    Iniciar Sesión
                 </a>
             </div>
         </div>
@@ -146,7 +164,7 @@
                         Aprende técnicas profesionales adaptadas a tu tipo de rostro, ahorra dinero en productos innecesarios y resalta tu belleza natural en tiempo récord con lecciones prácticas guiadas paso a paso.
                     </p>
                     <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-                        <a href="#inscripcion" class="w-full sm:w-auto px-8 py-4 rounded-full text-base font-semibold text-white custom-gradient shadow-xl hover:shadow-wine-500/30 transform hover:-translate-y-1 transition-all text-center">
+                        <a href="auth.html" class="w-full sm:w-auto px-8 py-4 rounded-full text-base font-semibold text-white custom-gradient shadow-xl hover:shadow-wine-500/30 transform hover:-translate-y-1 transition-all text-center">
                             ¡Comenzar Ahora!
                         </a>
                         <a href="#clase-gratis" class="w-full sm:w-auto px-8 py-4 rounded-full text-base font-semibold text-wine-700 bg-white border-2 border-wine-300 hover:bg-wine-50 shadow-sm transition-all text-center flex items-center justify-center gap-2">
@@ -196,7 +214,7 @@
                             </div>
                             <p class="text-xs text-gray-500 font-medium">Inversión Única</p>
                             <p class="text-2xl sm:text-3xl font-extrabold text-wine-900 font-serif my-1">89.000 <span class="text-sm font-sans font-normal text-gray-600">COP</span></p>
-                            <a href="#inscripcion" class="block w-full text-center py-2 px-4 rounded-xl text-xs font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-opacity">
+                            <a href="auth.html" class="block w-full text-center py-2 px-4 rounded-xl text-xs font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-opacity">
                                 Asegurar Mi Cupo
                             </a>
                         </div>
@@ -220,18 +238,17 @@
         </div>
     </div>
 
-    <!-- Sección de 5 Módulos de Maquillaje (Oculta por defecto si no hay sesión) -->
-    <section id="modules-section" class="py-24 bg-white relative hidden">
+    <!-- Sección de 5 Módulos de Maquillaje -->
+    <section id="modules-section" class="py-24 bg-white relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
            
             <div class="text-center max-w-3xl mx-auto mb-16">
                 <span class="text-wine-500 font-semibold text-sm uppercase tracking-widest">Plan de Estudio Profesional</span>
                 <h2 class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font mt-2">Los 5 Módulos del Método Make It Yourself</h2>
-                <p class="text-gray-600 mt-3">Acceso exclusivo a las lecciones en video de cada módulo.</p>
+                <p class="text-gray-600 mt-3">Aprende paso a paso la estructura completa de nuestro programa.</p>
             </div>
-            <!-- Grid de Módulos (Convertidos a tarjetas estáticas sin enlace) -->
+            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-               
                 <!-- Módulo 1 -->
                 <div class="bg-wine-50/50 rounded-3xl overflow-hidden border border-wine-100 shadow-sm flex flex-col justify-between">
                     <div>
@@ -245,10 +262,6 @@
                                 Identifica tu tipo de piel, prepara la barrera cutánea con productos adecuados y logra un lienzo suave para un maquillaje de larga duración.
                             </p>
                         </div>
-                    </div>
-                    <div class="px-6 pb-6 pt-2 border-t border-wine-200/60 flex items-center justify-between text-xs font-semibold text-wine-700">
-                        <span>Ver Lecciones en Video</span>
-                        <i class="fa-solid fa-arrow-right"></i>
                     </div>
                 </div>
 
@@ -266,10 +279,6 @@
                             </p>
                         </div>
                     </div>
-                    <div class="px-6 pb-6 pt-2 border-t border-wine-200/60 flex items-center justify-between text-xs font-semibold text-wine-700">
-                        <span>Ver Lecciones en Video</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </div>
                 </div>
 
                 <!-- Módulo 3 -->
@@ -285,10 +294,6 @@
                                 Domina el diseño de cejas pelo a pelo, difuminados de sombras con efecto degradado, delineados asimétricos y postura de pestañas.
                             </p>
                         </div>
-                    </div>
-                    <div class="px-6 pb-6 pt-2 border-t border-wine-200/60 flex items-center justify-between text-xs font-semibold text-wine-700">
-                        <span>Ver Lecciones en Video</span>
-                        <i class="fa-solid fa-arrow-right"></i>
                     </div>
                 </div>
 
@@ -306,10 +311,6 @@
                             </p>
                         </div>
                     </div>
-                    <div class="px-6 pb-6 pt-2 border-t border-wine-200/60 flex items-center justify-between text-xs font-semibold text-wine-700">
-                        <span>Ver Lecciones en Video</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </div>
                 </div>
 
                 <!-- Módulo 5 -->
@@ -326,10 +327,6 @@
                             </p>
                         </div>
                     </div>
-                    <div class="px-6 pb-6 pt-2 border-t border-wine-200/60 flex items-center justify-between text-xs font-semibold text-wine-700">
-                        <span>Ver Lecciones en Video</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </div>
                 </div>
 
                 <!-- Tarjeta Bono Destacado -->
@@ -343,7 +340,7 @@
                     </div>
                     <div class="mt-8 pt-4 border-t border-white/20 flex flex-wrap items-center justify-between gap-4">
                         <span class="text-xs font-medium text-gold-400">Valorizado en 150.000 COP (¡Gratis hoy!)</span>
-                        <a href="#inscripcion" class="bg-white text-wine-700 px-6 py-2.5 rounded-full text-xs font-bold hover:bg-wine-50 transition-colors shadow-md">
+                        <a href="auth.html" class="bg-white text-wine-700 px-6 py-2.5 rounded-full text-xs font-bold hover:bg-wine-50 transition-colors shadow-md">
                             Reclamar Bono Gratis
                         </a>
                     </div>
@@ -353,21 +350,7 @@
         </div>
     </section>
 
-    <!-- Mensaje para cuando NO ha iniciado sesión -->
-    <section id="modules-locked-msg" class="py-20 bg-white text-center">
-        <div class="max-w-xl mx-auto px-4">
-            <div class="w-16 h-16 bg-wine-100 text-wine-700 rounded-full flex items-center justify-center mx-auto text-2xl mb-4 shadow-sm">
-                <i class="fa-solid fa-lock"></i>
-            </div>
-            <h3 class="text-2xl font-bold text-wine-900 serif-font">Catálogo de Módulos Exclusivo</h3>
-            <p class="text-gray-600 text-sm mt-2 mb-6">Inicia sesión o regístrate para desbloquear la ruta completa de aprendizaje y ver las lecciones del método Make It Yourself.</p>
-            <a href="registro.html" class="inline-block px-8 py-3 rounded-full text-sm font-semibold text-white custom-gradient shadow-md">
-                Iniciar Sesión / Registrarme
-            </a>
-        </div>
-    </section>
-
-    <!-- Sección de Clase Gratuita / Trial Class -->
+    <!-- Sección de Clase Gratuita -->
     <section id="clase-gratis" class="py-20 bg-wine-50 relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="bg-white rounded-3xl p-8 sm:p-12 border border-wine-200 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -462,7 +445,7 @@
         </div>
     </section>
 
-    <!-- Sección Sobre Nosotros / Nuestra Academia -->
+    <!-- Sección Sobre Nosotros -->
     <section id="nosotros" class="py-20 bg-wine-50/60 border-y border-wine-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -725,21 +708,14 @@
                             <input type="tel" id="telefono" name="telefono" placeholder="Ej. 300 123 4567" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-wine-700 focus:ring-1 focus:ring-wine-700 transition-all">
                             <p id="error-telefono" class="text-xs text-red-500 mt-1 hidden">Por favor ingresa un número válido.</p>
                         </div>
-                    <div class="flex items-start gap-2 text-xs text-gray-600">
-    <input
-        type="checkbox"
-        id="consent"
-        name="consent"
-        required
-        class="mt-1 accent-wine-700"
-    >
-    <label for="consent">
-        Autorizo el uso de mis datos de contacto para recibir información
-        sobre los cursos de Make It Yourself.
-    </label>
-</div>
+                        <div class="flex items-start gap-2 text-xs text-gray-600">
+                            <input type="checkbox" id="consent" name="consent" required class="mt-1 accent-wine-700">
+                            <label for="consent">
+                                Autorizo el uso de mis datos de contacto para recibir información sobre los cursos de Make It Yourself.
+                            </label>
+                        </div>
 
-<p id="firebase-error" class="hidden text-sm text-red-600" role="alert"></p>
+                        <p id="firebase-error" class="hidden text-sm text-red-600" role="alert"></p>
                         <button type="submit" class="w-full py-4 rounded-xl text-white font-bold text-sm custom-gradient shadow-lg hover:opacity-95 transform hover:-translate-y-0.5 transition-all">
                             ¡Quiero recibir más información!
                         </button>
@@ -848,60 +824,83 @@
                 alert('¡Gracias por suscribirte a nuestro boletín!');
             }
         });
+    </script>
 
-        // Lógica de Autenticación y Control de Visibilidad
+    <!-- Script de Leads -->
+    <script type="module" src="js/leads.js"></script>
+
+    <!-- Script de Autenticación de Firebase (Conmuta visibilidad del menú según inicio de sesión) -->
+    <script type="module">
+        import { auth } from './js/firebase-config.js';
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+
         document.addEventListener("DOMContentLoaded", () => {
-            // Variable de prueba (Cambiar a tu respuesta real de Firebase onAuthStateChanged)
-            const user = null; 
-            
             const authContainer = document.getElementById('auth-container');
-            const modulesSection = document.getElementById('modules-section');
-            const modulesLockedMsg = document.getElementById('modules-locked-msg');
-            const navModulos = document.getElementById('nav-modulos');
-            const mobileNavModulos = document.getElementById('mobile-nav-modulos');
+            const navLoggedIn = document.getElementById('nav-logged-in');
+            const mobileNavLoggedIn = document.getElementById('mobile-nav-logged-in');
+            const navPublicLinks = document.querySelectorAll('.nav-public');
+            const mobileNavPublicLinks = document.querySelectorAll('.mobile-nav-public');
+            const mobileAuthBtn = document.getElementById('mobile-auth-btn');
 
-            if (user) {
-                // --- SI HAY SESIÓN ACTIVA ---
-                if (modulesSection) modulesSection.classList.remove('hidden');
-                if (modulesLockedMsg) modulesLockedMsg.classList.add('hidden');
-                if (navModulos) navModulos.classList.remove('hidden');
-                if (mobileNavModulos) mobileNavModulos.classList.remove('hidden');
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    // --- SI HAY SESIÓN ACTIVA ---
+                    // 1. Mostrar selector "Mis Cursos / Admin"
+                    if (navLoggedIn) navLoggedIn.classList.remove('hidden');
+                    if (mobileNavLoggedIn) mobileNavLoggedIn.classList.remove('hidden');
 
-                // Renderizar perfil y botón de cerrar sesión en el Header
-                authContainer.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <div class="text-right hidden sm:block">
-                            <p class="text-xs font-bold text-wine-900">${user.displayName || 'Mi Cuenta'}</p>
-                            <p class="text-[10px] text-gray-500">Estudiante Activa</p>
+                    // 2. Ocultar enlaces públicos ("Nosotros", "Galería", "Testimonios", etc.)
+                    navPublicLinks.forEach(link => link.classList.add('hidden'));
+                    mobileNavPublicLinks.forEach(link => link.classList.add('hidden'));
+                    if (mobileAuthBtn) mobileAuthBtn.classList.add('hidden');
+
+                    let nombreUsuario = user.displayName || 'Mi Cuenta';
+
+                    // 3. Renderizar tarjeta de usuario con icono y salir
+                    authContainer.innerHTML = `
+                        <div class="flex items-center gap-3 bg-wine-50 px-3 py-1.5 rounded-full border border-wine-200">
+                            <div class="w-8 h-8 rounded-full bg-wine-700 text-white flex items-center justify-center text-xs font-bold">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div class="text-left hidden sm:block">
+                                <p class="text-xs font-bold text-wine-900">${nombreUsuario}</p>
+                                <p class="text-[10px] text-gray-500">Sesión Activa</p>
+                            </div>
+                            <button id="logout-btn" title="Cerrar Sesión" class="w-8 h-8 rounded-full bg-white text-wine-700 flex items-center justify-center hover:bg-wine-100 transition-colors shadow-sm ml-1">
+                                <i class="fa-solid fa-arrow-right-from-bracket text-xs"></i>
+                            </button>
                         </div>
-                        <button id="logout-btn" title="Cerrar Sesión" class="w-10 h-10 rounded-full bg-wine-100 text-wine-700 flex items-center justify-center hover:bg-wine-200 transition-colors">
-                            <i class="fa-solid fa-arrow-right-from-bracket text-sm"></i>
-                        </button>
-                    </div>
-                `;
+                    `;
 
-                // Evento para cerrar sesión
-                document.getElementById('logout-btn').addEventListener('click', () => {
-                    alert("Sesión cerrada (Conéctalo con tu signOut de Firebase)");
-                });
+                    // Evento para cerrar sesión
+                    document.getElementById('logout-btn').addEventListener('click', async () => {
+                        try {
+                            await signOut(auth);
+                            window.location.reload();
+                        } catch (error) {
+                            console.error("Error al cerrar sesión", error);
+                        }
+                    });
 
-            } else {
-                // --- SI NO HAY SESIÓN ---
-                if (modulesSection) modulesSection.classList.add('hidden');
-                if (modulesLockedMsg) modulesLockedMsg.classList.remove('hidden');
-                if (navModulos) navModulos.classList.add('hidden');
-                if (mobileNavModulos) mobileNavModulos.classList.add('hidden');
+                } else {
+                    // --- SI NO HAY SESIÓN ---
+                    // 1. Ocultar opciones de usuario logueado
+                    if (navLoggedIn) navLoggedIn.classList.add('hidden');
+                    if (mobileNavLoggedIn) mobileNavLoggedIn.classList.add('hidden');
 
-                // Botón por defecto de Inscribirme
-                authContainer.innerHTML = `
-                    <a href="registro.html" class="hidden sm:inline-flex items-center justify-center px-6 py-2.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transform hover:-translate-y-0.5 transition-all">
-                        Inscribirme
-                    </a>
-                `;
-            }
+                    // 2. Mostrar enlaces públicos
+                    navPublicLinks.forEach(link => link.classList.remove('hidden'));
+                    mobileNavPublicLinks.forEach(link => link.classList.remove('hidden'));
+                    if (mobileAuthBtn) mobileAuthBtn.classList.remove('hidden');
+
+                    authContainer.innerHTML = `
+                        <a href="auth.html" class="hidden sm:inline-flex items-center justify-center px-6 py-2.5 rounded-full text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transform hover:-translate-y-0.5 transition-all">
+                            Iniciar Sesión
+                        </a>
+                    `;
+                }
+            });
         });
     </script>
-   
-    <script type="module" src="js/leads.js"></script>
 </body>
 </html>

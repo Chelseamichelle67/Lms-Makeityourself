@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Instructor - Make It Yourself</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wine: {
+                            50: '#fcf2f4',
+                            100: '#f8e4e7',
+                            200: '#f1c8ce',
+                            300: '#e5a1ab',
+                            500: '#a3283c',
+                            700: '#721422',
+                            900: '#520e18'
+                        },
+                        blush: {
+                            100: '#fbe9eb',
+                            200: '#f5d5d8',
+                            500: '#e08a95',
+                            600: '#cc6a77'
+                        },
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #fcf2f4; color: #2d1519; }
+        .serif-font { font-family: 'Playfair Display', serif; }
+        .custom-gradient { background: linear-gradient(135deg, #721422 0%, #a3283c 50%, #520e18 100%); }
+    </style>
+</head>
+<body class="bg-wine-50 antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- NAVBAR INSTRUCTOR -->
+    <header class="fixed top-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-wine-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex flex-col text-left">
+                <span class="text-[10px] sm:text-xs font-semibold tracking-widest text-wine-500 uppercase">Make It</span>
+                <span class="text-xl sm:text-2xl font-bold tracking-tight text-wine-700 font-serif -mt-1">YOURSELF</span>
+            </a>
+            <div class="flex items-center space-x-4">
+                <span class="bg-wine-100 text-wine-700 px-3 py-1.5 rounded-full text-xs font-bold">Panel de Instructor</span>
+                <a href="index.html" class="text-xs font-bold text-gray-600 hover:text-wine-700 transition-colors">Cerrar sesión</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO INSTRUCTOR -->
+    <main class="flex-grow pt-32 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full space-y-8">
+        <div>
+            <span class="bg-wine-100 text-wine-700 font-bold text-xs uppercase px-3 py-1 rounded-full">Área Académica</span>
+            <h1 class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font mt-2">Bienvenido, Instructor</h1>
+            <p class="text-gray-600 text-sm mt-1">Consulta tus pantallas de clases asignadas, materiales didácticos y horarios programados.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Pantallas de Clases -->
+            <div class="bg-white rounded-3xl p-6 border border-wine-100 shadow-sm space-y-4">
+                <div class="w-10 h-10 rounded-xl bg-wine-50 text-wine-700 flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-desktop"></i>
+                </div>
+                <h3 class="text-lg font-bold text-wine-900 serif-font">Pantallas de Transmisión</h3>
+                <p class="text-xs text-gray-600">Accede a las salas de grabación y paneles de streaming para tus cursos asignados.</p>
+                <button class="w-full py-2.5 rounded-xl bg-wine-50 text-wine-700 font-bold text-xs hover:bg-wine-100 transition-colors">Ver Pantallas</button>
+            </div>
+
+            <!-- Materiales -->
+            <div class="bg-white rounded-3xl p-6 border border-wine-100 shadow-sm space-y-4">
+                <div class="w-10 h-10 rounded-xl bg-wine-50 text-wine-700 flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-folder-open"></i>
+                </div>
+                <h3 class="text-lg font-bold text-wine-900 serif-font">Materiales Didácticos</h3>
+                <p class="text-xs text-gray-600">Descarga guías de apoyo, PDFs y recursos visuales para tus estudiantes.</p>
+                <button class="w-full py-2.5 rounded-xl bg-wine-50 text-wine-700 font-bold text-xs hover:bg-wine-100 transition-colors">Ver Materiales</button>
+            </div>
+
+            <!-- Horarios -->
+            <div class="bg-white rounded-3xl p-6 border border-wine-100 shadow-sm space-y-4">
+                <div class="w-10 h-10 rounded-xl bg-wine-50 text-wine-700 flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
+                <h3 class="text-lg font-bold text-wine-900 serif-font">Horarios y Asesorías</h3>
+                <p class="text-xs text-gray-600">Revisa tu calendario de clases en vivo, mentorías y entregas de proyectos.</p>
+                <button class="w-full py-2.5 rounded-xl bg-wine-50 text-wine-700 font-bold text-xs hover:bg-wine-100 transition-colors">Ver Horarios</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-wine-900 text-white py-8 text-center text-xs">
+        <p>&copy; 2026 Make It Yourself. Portal de Instructores.</p>
+    </footer>
+</body>
+</html>

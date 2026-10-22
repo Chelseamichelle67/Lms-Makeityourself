@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración - Make It Yourself</title>
+    <title>Panel de Administración Profesional - Make It Yourself</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -61,22 +61,20 @@
 <body class="bg-wine-50 antialiased selection:bg-wine-500 selection:text-white min-h-screen flex flex-col justify-between">
 
     <!-- ENCABEZADO / NAVBAR -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-wine-100 shadow-sm transition-all duration-300">
+    <header class="fixed top-0 left-0 right-0 z-40 bg-white/90 backdrop-blur-md border-b border-wine-100 shadow-sm transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <a href="index.html" class="flex flex-col group text-left">
                 <span class="text-[10px] sm:text-xs font-semibold tracking-widest text-wine-500 uppercase">Make It</span>
                 <span class="text-xl sm:text-2xl font-bold tracking-tight text-wine-700 font-serif -mt-1 group-hover:text-wine-900 transition-colors">YOURSELF</span>
             </a>
 
-            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-700">
-                <a href="mis-cursos.html" class="hover:text-wine-700 transition-colors">Mis Cursos</a>
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-700">
+                <a href="index.html" class="hover:text-wine-700 transition-colors">Inicio</a>
                 <a href="cursos.html" class="hover:text-wine-700 transition-colors">Catálogo</a>
-                <a href="admin.html" class="text-wine-700 font-semibold border-b-2 border-wine-700 pb-1">Administración</a>
-                <a href="index.html#clase-gratis" class="hover:text-wine-700 transition-colors">¡Probar Clase!</a>
+                <span class="bg-wine-100 text-wine-700 px-3 py-1.5 rounded-full text-xs font-bold shadow-sm">Modo Admin</span>
             </nav>
 
             <div class="flex items-center space-x-4">
-                <span class="text-xs font-semibold bg-wine-700 text-white px-3 py-1.5 rounded-full shadow-sm">Admin</span>
                 <button id="menu-btn" aria-label="Abrir menú" class="md:hidden text-wine-700 focus:outline-none p-2 rounded-lg hover:bg-wine-100 transition-colors">
                     <i class="fa-solid fa-bars text-2xl"></i>
                 </button>
@@ -84,27 +82,32 @@
         </div>
         <!-- Menú Móvil -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-wine-100 px-6 py-4 space-y-3 shadow-lg">
-            <a href="mis-cursos.html" class="block text-gray-700 font-medium py-1">Mis Cursos</a>
+            <a href="index.html" class="block text-gray-700 font-medium py-1">Inicio</a>
             <a href="cursos.html" class="block text-gray-700 font-medium py-1">Catálogo</a>
-            <a href="admin.html" class="block text-wine-700 font-semibold py-1">Administración</a>
-            <a href="index.html#clase-gratis" class="block text-gray-700 font-medium py-1">¡Probar Clase!</a>
         </div>
     </header>
 
     <!-- CONTENIDO PRINCIPAL -->
     <main class="flex-grow pt-32 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
 
-        <!-- TÍTULO Y MIGAS DE PAN -->
-        <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <!-- TÍTULO Y PESTAÑAS PRINCIPALES DE NAVEGACIÓN -->
+        <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6 border-b border-wine-100 pb-6">
             <div>
-                <span class="bg-wine-100 text-wine-700 font-bold text-xs uppercase px-3 py-1 rounded-full">Panel de Control</span>
-                <h1 id="admin-title" class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font mt-2">Gestión de Cursos</h1>
-                <p id="admin-subtitle" class="text-gray-600 text-sm mt-1">Crea, edita y organiza los contenidos de tu academia de automaquillaje.</p>
+                <span class="bg-wine-100 text-wine-700 font-bold text-xs uppercase px-3 py-1 rounded-full">Panel Profesional</span>
+                <h1 id="admin-title" class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font mt-2">Gestión de Contenidos</h1>
+                <p id="admin-subtitle" class="text-gray-600 text-sm mt-1">Administra cursos, módulos, lecciones y supervisa el progreso de las estudiantes.</p>
             </div>
-            <div id="breadcrumb-container" class="flex items-center gap-2">
-                <!-- Botón de acción principal dinámico -->
-                <button id="btn-nuevo-curso" class="px-6 py-3 rounded-full text-xs sm:text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-plus"></i> Nuevo Curso
+            
+            <!-- PESTAÑAS PRINCIPALES (CURSOS VS USUARIOS) -->
+            <div class="flex bg-white p-1.5 rounded-2xl border border-wine-200 shadow-sm self-start md:self-auto">
+                <button id="tab-btn-cursos" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-wine-700 text-white shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-book-open"></i> Cursos y Lecciones
+                </button>
+                <button id="tab-btn-recursos" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all text-gray-700 hover:text-wine-900 flex items-center gap-2">
+        <i class="fa-solid fa-sliders"></i> Recursos y Costos (Curso)
+    </button>
+                <button id="tab-btn-usuarios" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all text-gray-600 hover:text-wine-900 flex items-center gap-2">
+                    <i class="fa-solid fa-users"></i> Usuarios y Avances
                 </button>
             </div>
         </div>
@@ -115,137 +118,225 @@
         <!-- INDICADOR DE CARGA -->
         <div id="admin-loading" class="hidden text-center py-20 space-y-3">
             <i class="fa-solid fa-spinner fa-spin text-3xl text-wine-700"></i>
-            <p class="text-sm text-gray-600 font-medium">Procesando información...</p>
+            <p class="text-sm text-gray-600 font-medium">Cargando datos de Firestore...</p>
         </div>
 
-        <!-- ================= VISTA 1: LISTADO DE CURSOS ================= -->
-        <section id="view-cursos" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="grid-cursos">
-                <!-- Tarjeta de Ejemplo Estática -->
-                <div class="bg-white rounded-3xl p-6 border border-wine-100 shadow-sm flex flex-col justify-between space-y-4">
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="bg-green-100 text-green-800 text-[10px] font-bold uppercase px-2.5 py-1 rounded-full">Publicado</span>
-                            <span class="text-xs text-gray-400 font-mono">ID: SS777MOfOK</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-wine-900 serif-font mb-2">Maquillaje Profesional Autodidacta</h3>
-                        <p class="text-xs text-gray-600 leading-relaxed mb-4">Programa completo de automaquillaje desde cero con técnicas avanzadas.</p>
-                        <p class="text-sm font-extrabold text-wine-700">Precio: $89.000 COP</p>
-                    </div>
-                    <div class="pt-4 border-t border-wine-100 flex items-center justify-between gap-2">
-                        <button class="flex-1 py-2 px-3 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 text-xs font-bold transition-colors">
-                            <i class="fa-solid fa-layer-group mr-1"></i> Módulos
-                        </button>
-                        <button class="py-2 px-3 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 text-xs font-bold transition-colors">
-                            <i class="fa-solid fa-pen"></i>
-                        </button>
-                        <button class="py-2 px-3 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 text-xs font-bold transition-colors">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </div>
+        <!-- ================= SECCIÓN PRINCIPAL: CURSOS / MÓDULOS / LECCIONES ================= -->
+        <div id="section-cursos-manager" class="space-y-6">
+            <div class="flex items-center justify-between">
+                <div id="breadcrumb-container" class="flex items-center gap-2">
+                    <h2 class="text-xl font-bold text-wine-900 serif-font">Listado General de Cursos</h2>
                 </div>
-            </div>
-        </section>
-
-        <!-- ================= VISTA 2: LISTADO DE MÓDULOS (Oculta por defecto) ================= -->
-        <section id="view-modulos" class="hidden space-y-6">
-            <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-wine-100 shadow-sm">
-                <div>
-                    <span class="text-xs text-gray-500">Curso seleccionado:</span>
-                    <h2 id="current-course-title" class="text-lg font-bold text-wine-900 serif-font">Nombre del Curso</h2>
-                </div>
-                <button id="btn-volver-cursos" class="px-4 py-2 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 text-xs font-bold transition-colors flex items-center gap-2">
-                    <i class="fa-solid fa-arrow-left"></i> Volver a Cursos
+                <!-- Botón de acción principal dinámico -->
+                <button id="btn-nuevo-curso" class="px-6 py-3 rounded-full text-xs sm:text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Nuevo Curso
                 </button>
-            </div>
-
-            <div class="flex justify-end">
-                <button id="btn-nuevo-modulo" class="px-6 py-2.5 rounded-full text-xs font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-all flex items-center gap-2">
+                <button id="btn-nuevo-modulo" class="hidden px-6 py-3 rounded-full text-xs sm:text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-all flex items-center gap-2">
                     <i class="fa-solid fa-plus"></i> Nuevo Módulo
                 </button>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="grid-modulos">
-                <!-- Módulos de ejemplo -->
-                <div class="bg-white rounded-2xl p-6 border border-wine-100 shadow-sm flex flex-col justify-between space-y-4">
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="bg-wine-100 text-wine-700 text-xs font-bold px-2.5 py-1 rounded-md">Orden: 1</span>
-                            <span class="bg-green-100 text-green-800 text-[10px] font-bold uppercase px-2.5 py-1 rounded-full">Publicado</span>
-                        </div>
-                        <h4 class="font-bold text-wine-900 text-base mb-1">Preparación de Piel y Skincare</h4>
-                        <p class="text-xs text-gray-600">Identifica tu tipo de piel y prepara la barrera cutánea.</p>
-                    </div>
-                    <div class="pt-4 border-t border-wine-100 flex items-center justify-between gap-2">
-                        <button class="flex-1 py-2 px-3 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 text-xs font-bold transition-colors">
-                            <i class="fa-solid fa-video mr-1"></i> Lecciones
-                        </button>
-                        <button class="py-2 px-3 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 text-xs font-bold transition-colors">
-                            <i class="fa-solid fa-pen"></i>
-                        </button>
-                        <button class="py-2 px-3 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 text-xs font-bold transition-colors">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= VISTA 3: LISTADO DE LECCIONES (Oculta por defecto) ================= -->
-        <section id="view-lecciones" class="hidden space-y-6">
-            <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-wine-100 shadow-sm">
-                <div>
-                    <span class="text-xs text-gray-500">Módulo seleccionado:</span>
-                    <h2 id="current-module-title" class="text-lg font-bold text-wine-900 serif-font">Nombre del Módulo</h2>
-                </div>
-                <button id="btn-volver-modulos" class="px-4 py-2 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 text-xs font-bold transition-colors flex items-center gap-2">
-                    <i class="fa-solid fa-arrow-left"></i> Volver a Módulos
-                </button>
-            </div>
-
-            <div class="flex justify-end">
-                <button id="btn-nueva-leccion" class="px-6 py-2.5 rounded-full text-xs font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-all flex items-center gap-2">
+                <button id="btn-nueva-leccion" class="hidden px-6 py-3 rounded-full text-xs sm:text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-all flex items-center gap-2">
                     <i class="fa-solid fa-plus"></i> Nueva Lección
                 </button>
             </div>
 
-            <div class="space-y-4" id="grid-lecciones">
-                <!-- Lección de ejemplo -->
-                <div class="bg-white rounded-2xl p-6 border border-wine-100 shadow-sm flex items-center justify-between">
+            <!-- VISTA 1: CURSOS -->
+            <section id="view-cursos" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="grid-cursos"></div>
+            </section>
+
+            <!-- VISTA 2: MÓDULOS -->
+            <section id="view-modulos" class="hidden space-y-6">
+                <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-wine-100 shadow-sm">
                     <div>
-                        <div class="flex items-center gap-3 mb-1">
-                            <span class="bg-wine-100 text-wine-700 text-xs font-bold px-2 py-0.5 rounded">Orden: 1</span>
-                            <h4 class="font-bold text-wine-900 text-base">Lección 1: Limpieza e hidratación</h4>
-                        </div>
-                        <p class="text-xs text-gray-600">Video explicativo sobre productos recomendados.</p>
+                        <span class="text-xs text-gray-500">Curso seleccionado:</span>
+                        <h2 id="current-course-title" class="text-lg font-bold text-wine-900 serif-font">Nombre del Curso</h2>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <button class="py-2 px-3 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 text-xs font-bold transition-colors">
-                            <i class="fa-solid fa-pen"></i> Editar
-                        </button>
-                        <button class="py-2 px-3 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 text-xs font-bold transition-colors">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
+                    <button id="btn-volver-cursos" class="px-4 py-2 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 text-xs font-bold transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-left"></i> Volver a Cursos
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="grid-modulos"></div>
+            </section>
+
+            <!-- VISTA 3: LECCIONES -->
+            <section id="view-lecciones" class="hidden space-y-6">
+                <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-wine-100 shadow-sm">
+                    <div>
+                        <span class="text-xs text-gray-500">Módulo seleccionado:</span>
+                        <h2 id="current-module-title" class="text-lg font-bold text-wine-900 serif-font">Nombre del Módulo</h2>
                     </div>
+                    <button id="btn-volver-modulos" class="px-4 py-2 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 text-xs font-bold transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-left"></i> Volver a Módulos
+                    </button>
+                </div>
+                <div class="space-y-4" id="grid-lecciones"></div>
+            </section>
+        </div>
+        <!-- ================= SECCIÓN NUEVA: RECURSOS Y COSTOS POR CURSO ================= -->
+<div id="section-recursos-manager" class="hidden space-y-6">
+    <div class="bg-white p-6 rounded-3xl border border-wine-100 shadow-sm space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-wine-100 pb-4">
+            <div>
+                <h2 class="text-2xl font-bold text-wine-900 serif-font">Recursos y Costos de Producción por Curso</h2>
+                <p class="text-xs text-gray-600 mt-1">Configura pantallas para instructores, materiales, horarios y presupuesto de producción curso por curso.</p>
+            </div>
+            <!-- Selector de curso -->
+            <select id="select-curso-recursos" class="px-4 py-2.5 rounded-xl border border-gray-300 text-xs font-bold text-wine-900 focus:outline-none focus:border-wine-700 bg-wine-50">
+                <option value="">Selecciona un curso...</option>
+            </select>
+        </div>
+
+        <!-- Panel de edición de recursos por curso seleccionado -->
+        <div id="form-recursos-container" class="hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Pantallas para instructores -->
+                <div class="p-5 rounded-2xl bg-wine-50/50 border border-wine-100 space-y-3">
+                    <h3 class="font-bold text-wine-900 text-sm flex items-center gap-2"><i class="fa-solid fa-desktop text-wine-700"></i> Pantallas / URLs de Instructor</h3>
+                    <textarea id="rec-pantallas" rows="3" placeholder="Enlaces a salas, OBS o accesos de transmisión..." class="w-full p-3 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700 bg-white"></textarea>
+                </div>
+                <!-- Materiales -->
+                <div class="p-5 rounded-2xl bg-wine-50/50 border border-wine-100 space-y-3">
+                    <h3 class="font-bold text-wine-900 text-sm flex items-center gap-2"><i class="fa-solid fa-folder-open text-wine-700"></i> Materiales y Enlaces de Apoyo</h3>
+                    <textarea id="rec-materiales" rows="3" placeholder="Links a Google Drive, Notion o PDFs de recursos..." class="w-full p-3 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700 bg-white"></textarea>
+                </div>
+                <!-- Horarios -->
+                <div class="p-5 rounded-2xl bg-wine-50/50 border border-wine-100 space-y-3">
+                    <h3 class="font-bold text-wine-900 text-sm flex items-center gap-2"><i class="fa-solid fa-calendar-days text-wine-700"></i> Horarios de Clases / Grabaciones</h3>
+                    <textarea id="rec-horarios" rows="3" placeholder="Fechas, horas y cronograma de grabaciones..." class="w-full p-3 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700 bg-white"></textarea>
+                </div>
+                <!-- Costos de producción -->
+                <div class="p-5 rounded-2xl bg-wine-50/50 border border-wine-100 space-y-3">
+                    <h3 class="font-bold text-wine-900 text-sm flex items-center gap-2"><i class="fa-solid fa-wallet text-wine-700"></i> Costos de Producción (COP)</h3>
+                    <input type="number" id="rec-costos" placeholder="Ej: 1500000" class="w-full p-3 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700 bg-white">
+                    <p class="text-[10px] text-gray-500">Presupuesto invertido en edición, luces, materiales o instructores.</p>
                 </div>
             </div>
-        </section>
+
+            <div class="flex justify-end pt-4">
+                <button id="btn-guardar-recursos" class="px-6 py-3 rounded-xl text-xs font-bold text-white custom-gradient shadow-md hover:opacity-95 transition-all">
+                    Guardar Recursos del Curso
+                </button>
+            </div>
+        </div>
+
+        <div id="recursos-placeholder" class="text-center py-12 text-gray-400 text-xs">
+            Selecciona un curso en la parte superior para administrar sus pantallas, materiales, horarios y costos de producción.
+        </div>
+    </div>
+</div>
+
+        <!-- ================= SECCIÓN: USUARIOS Y AVANCES ================= -->
+        <div id="section-usuarios-manager" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-3xl border border-wine-100 shadow-sm">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-wine-900 serif-font">Estudiantes Registrados y Progreso</h2>
+                        <p class="text-xs text-gray-600 mt-1">Supervisa las cuentas de usuario dadas de alta en la plataforma y sus roles.</p>
+                    </div>
+                    <div class="relative">
+                        <input type="text" id="search-user" placeholder="Buscar por nombre o correo..." class="px-4 py-2.5 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700 w-full sm:w-64">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-wine-100 text-[11px] font-bold text-wine-800 uppercase tracking-wider bg-wine-50/50">
+                                <th class="py-3 px-4 rounded-l-xl">Estudiante</th>
+                                <th class="py-3 px-4">Correo Electrónico</th>
+                                <th class="py-3 px-4">Rol en Sistema</th>
+                                <th class="py-3 px-4">Fecha de Registro</th>
+                                <th class="py-3 px-4 rounded-r-xl text-center">Acciones / Avance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-usuarios-body" class="text-xs text-gray-700 divide-y divide-wine-50">
+                            <!-- Los usuarios se cargarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
     </main>
+
+    <!-- ================= MODAL DE EDICIÓN / CREACIÓN DE CONTENIDO ================= -->
+    <div id="modal-form" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-wine-100 space-y-6 relative animate-fadeIn max-h-[90vh] overflow-y-auto">
+            <button id="modal-close-btn" class="absolute top-6 right-6 text-gray-400 hover:text-wine-700 text-xl font-bold transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div>
+                <h3 id="modal-title" class="text-2xl font-bold text-wine-900 serif-font">Título del Formulario</h3>
+                <p id="modal-subtitle" class="text-xs text-gray-500 mt-1">Completa los campos requeridos a continuación.</p>
+            </div>
+            
+            <form id="dynamic-form" class="space-y-4">
+                <input type="hidden" id="form-item-id">
+                <input type="hidden" id="form-item-type">
+
+                <div id="form-fields-container" class="space-y-4">
+                    <!-- Los inputs dinámicos se construirán en JS -->
+                </div>
+
+                <div class="pt-4 border-t border-wine-100 flex items-center justify-end gap-3">
+                    <button type="button" id="btn-cancel-modal" class="px-5 py-2.5 rounded-xl border border-gray-200 text-xs font-bold text-gray-600 hover:bg-gray-50 transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="px-6 py-2.5 rounded-xl text-xs font-bold text-white custom-gradient shadow-md hover:opacity-95 transition-all">
+                        Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= MODAL DE VER AVANCES DE ESTUDIANTE ================= -->
+    <div id="modal-progress" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-wine-100 space-y-6 relative max-h-[85vh] overflow-y-auto">
+            <button id="modal-progress-close" class="absolute top-6 right-6 text-gray-400 hover:text-wine-700 text-xl font-bold transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="flex items-center gap-4 border-b border-wine-100 pb-4">
+                <div class="w-12 h-12 rounded-2xl bg-wine-100 text-wine-700 flex items-center justify-center text-xl font-bold">
+                    <i class="fa-solid fa-user-graduate"></i>
+                </div>
+                <div>
+                    <h3 id="progress-user-name" class="text-xl font-bold text-wine-900 serif-font">Nombre del Estudiante</h3>
+                    <p id="progress-user-email" class="text-xs text-gray-500">correo@ejemplo.com</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex items-center justify-between text-xs font-bold text-wine-900">
+                    <span>Lecciones Completadas</span>
+                    <span id="progress-count-badge" class="bg-wine-100 text-wine-700 px-3 py-1 rounded-full">0 lecciones</span>
+                </div>
+
+                <div id="progress-lessons-list" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+                    <!-- Lista de lecciones dinámicas -->
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-wine-100 text-right">
+                <button id="btn-close-progress-modal" class="px-6 py-2.5 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 font-bold text-xs transition-colors">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- FOOTER -->
     <footer class="bg-wine-900 text-white py-10 mt-20 text-center text-xs">
         <div class="max-w-7xl mx-auto px-4 space-y-3">
-            <p>&copy; 2026 Make It Yourself. Panel de Administración.</p>
+            <p>&copy; 2026 Make It Yourself. Panel de Administración Profesional.</p>
             <div class="flex justify-center space-x-6 text-gray-300">
                 <a href="index.html" class="hover:text-white transition-colors">Inicio</a>
-                <a href="mis-cursos.html" class="hover:text-white transition-colors">Mis Cursos</a>
                 <a href="cursos.html" class="hover:text-white transition-colors">Catálogo</a>
             </div>
         </div>
     </footer>
 
-    <!-- SCRIPT PARA MENÚ MÓVIL Y CAMBIO DE VISTAS -->
+    <!-- SCRIPT PARA MENÚ MÓVIL -->
     <script>
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -253,6 +344,6 @@
             mobileMenu.classList.toggle('hidden');
         });
     </script>
-<script type="module" src="js/admin.js"></script>
+    <script type="module" src="js/admin.js"></script>
 </body>
 </html>
