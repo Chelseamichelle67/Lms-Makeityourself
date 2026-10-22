@@ -3,346 +3,779 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración Profesional - Make It Yourself</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        wine: {
-                            50: '#fcf2f4',
-                            100: '#f8e4e7',
-                            200: '#f1c8ce',
-                            300: '#e5a1ab',
-                            500: '#a3283c',
-                            700: '#721422',
-                            900: '#520e18'
-                        },
-                        blush: {
-                            100: '#fbe9eb',
-                            200: '#f5d5d8',
-                            500: '#e08a95',
-                            600: '#cc6a77'
-                        },
-                        gold: {
-                            400: '#facc15',
-                            500: '#eab308'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Montserrat', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif']
-                    }
-                }
+    <meta name="theme-color" content="#fbf6ef">
+    <title>Panel de Administración | Make It Yourself</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --wine: #64142a;
+            --dark: #260712;
+            --rose: #d38d9f;
+            --blush: #f1dce0;
+            --cream: #fbf6ef;
+            --ink: #25191d;
+            --paper: #fffdf9;
+            --muted: #74666a;
+            --border: #e3d3d4;
+            --gold: #ca8a04;
+            --success-bg: #dcf3e4;
+            --success-text: #1f8a4c;
+            --error: #b42318;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at 10% 10%, rgba(241, 220, 224, 0.6) 0%, transparent 40%), var(--cream);
+            color: var(--ink);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.7;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button, input, select, textarea {
+            font: inherit;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Cursor personalizado */
+        @media (hover: hover) and (pointer: fine) {
+            body { cursor: default; }
+            a, button, input, select, textarea { cursor: pointer; }
+        }
+
+        .cursor-dot {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 7px;
+            height: 7px;
+            background: var(--wine);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+        }
+
+        .cursor-ring {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 38px;
+            height: 38px;
+            border: 1px solid rgba(100, 20, 42, 0.35);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.25s, height 0.25s, border-color 0.25s, transform 0.08s ease-out;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 84px;
+            padding: 0 7vw;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(251, 246, 239, 0.85);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(14px);
+            z-index: 50;
+        }
+
+        @media (max-width: 900px) {
+            .header { height: 76px; padding: 0 5vw; }
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .brand-small {
+            display: block;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: .34em;
+            color: var(--wine);
+            text-transform: uppercase;
+            margin-bottom: -2px;
+        }
+
+        .brand-large {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-size: 25px;
+            font-weight: 600;
+            letter-spacing: .08em;
+            color: var(--wine);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-links a {
+            position: relative;
+            padding-bottom: 4px;
+            transition: color 0.2s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--wine);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--blush);
+            color: var(--wine);
+            font-size: 9.5px;
+            font-weight: 700;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            border-radius: 100px;
+        }
+
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--wine);
+            font-size: 22px;
+            padding: 8px;
+        }
+
+        @media (max-width: 900px) {
+            .nav-links { display: none; }
+            .menu-btn { display: block; }
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 76px;
+            left: 0;
+            right: 0;
+            background: var(--paper);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 5vw;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 0 10px 25px rgba(54, 4, 19, 0.1);
+            z-index: 49;
+        }
+
+        /* Container & Typography */
+        main {
+            flex-grow: 1;
+            padding-top: 120px;
+            padding-bottom: 80px;
+            width: min(1200px, 90vw);
+            margin: 0 auto;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            position: relative;
+            font-size: 10.5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .26em;
+            color: var(--wine);
+            margin-bottom: 10px;
+        }
+
+        .eyebrow::before {
+            content: "";
+            display: inline-block;
+            width: 34px;
+            height: 1px;
+            background: var(--wine);
+            vertical-align: middle;
+            margin-right: 12px;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            letter-spacing: -.035em;
+            color: var(--dark);
+            margin: 0;
+        }
+
+        h1 {
+            font-size: clamp(32px, 4.5vw, 48px);
+            line-height: 1.1;
+        }
+
+        /* Top Header Area */
+        .admin-header {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+
+        @media (min-width: 900px) {
+            .admin-header {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
             }
         }
-    </script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #fcf2f4;
-            color: #2d1519;
-            overflow-x: hidden;
+
+        /* Tab Switcher */
+        .tab-switcher {
+            display: flex;
+            background: var(--paper);
+            padding: 5px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            gap: 4px;
+            align-self: flex-start;
         }
-        .serif-font {
-            font-family: 'Playfair Display', serif;
+
+        .tab-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 100px;
+            background: transparent;
+            color: var(--muted);
+            font-size: 12.5px;
+            font-weight: 600;
+            transition: all 0.25s ease;
         }
-        .custom-gradient {
-            background: linear-gradient(135deg, #721422 0%, #a3283c 50%, #520e18 100%);
+
+        .tab-btn.active {
+            background: var(--wine);
+            color: white;
+            box-shadow: 0 4px 15px rgba(100, 20, 42, 0.2);
         }
+
+        .tab-btn:hover:not(.active) {
+            color: var(--wine);
+        }
+
+        /* Buttons */
+        .pill-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 48px;
+            padding: 12px 26px;
+            border: none;
+            border-radius: 100px;
+            background: var(--wine);
+            color: white;
+            font-size: 12.5px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(100, 20, 42, 0.18);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s;
+        }
+
+        .pill-button:hover {
+            transform: translateY(-3px);
+            background: var(--dark);
+        }
+
+        .pill-button.secondary {
+            background: var(--cream);
+            color: var(--wine);
+            border: 1px solid var(--border);
+            box-shadow: none;
+        }
+
+        .pill-button.secondary:hover {
+            background: var(--blush);
+        }
+
+        /* Cards & Grids */
+        .card {
+            background: var(--paper);
+            border: 1px solid var(--border);
+            border-radius: 3px 44px 3px 3px;
+            box-shadow: 0 14px 35px rgba(54, 4, 19, 0.06);
+            padding: 28px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 18px 45px rgba(54, 4, 19, 0.1);
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 24px;
+        }
+
+        /* Form Inputs */
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--paper);
+            color: var(--ink);
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--wine);
+            box-shadow: 0 0 0 3px rgba(100, 20, 42, 0.12);
+        }
+
+        /* Alerts & Status */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            font-size: 13.5px;
+            font-weight: 500;
+            margin-bottom: 24px;
+            border: 1px solid transparent;
+        }
+
+        .alert-success { background: var(--success-bg); color: var(--success-text); border-color: rgba(31, 138, 76, 0.2); }
+        .alert-error { background: #fde8e8; color: var(--error); border-color: rgba(180, 35, 24, 0.2); }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            background: var(--paper);
+            border: 1px solid var(--border);
+            border-radius: 3px 30px 3px 3px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 13.5px;
+        }
+
+        th {
+            background: var(--cream);
+            color: var(--wine);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 10.5px;
+            letter-spacing: .1em;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            color: var(--ink);
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        /* Modals */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(38, 7, 18, 0.6);
+            backdrop-filter: blur(6px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: var(--paper);
+            border: 1px solid var(--border);
+            border-radius: 3px 44px 3px 3px;
+            box-shadow: 0 25px 60px rgba(38, 7, 18, 0.25);
+            width: min(580px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 36px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 20px;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover { color: var(--wine); }
+
+        /* Footer */
+        .footer {
+            background: #1b0710;
+            color: white;
+            padding: 40px 7vw;
+            text-align: center;
+            font-size: 12px;
+            border-top: 1px solid rgba(227, 211, 212, 0.15);
+            margin-top: 80px;
+        }
+
+        .footer .brand-small { color: var(--rose); }
+        .footer .brand-large { color: white; }
     </style>
 </head>
-<body class="bg-wine-50 antialiased selection:bg-wine-500 selection:text-white min-h-screen flex flex-col justify-between">
+
+<body>
+    <!-- Cursor Personalizado -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
 
     <!-- ENCABEZADO / NAVBAR -->
-    <header class="fixed top-0 left-0 right-0 z-40 bg-white/90 backdrop-blur-md border-b border-wine-100 shadow-sm transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <a href="index.html" class="flex flex-col group text-left">
-                <span class="text-[10px] sm:text-xs font-semibold tracking-widest text-wine-500 uppercase">Make It</span>
-                <span class="text-xl sm:text-2xl font-bold tracking-tight text-wine-700 font-serif -mt-1 group-hover:text-wine-900 transition-colors">YOURSELF</span>
-            </a>
+    <header class="header">
+        <a href="index.html" class="brand" aria-label="Make It Yourself, inicio">
+            <span class="brand-small">Make It</span>
+            <span class="brand-large">YOURSELF</span>
+        </a>
 
-            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-700">
-                <a href="index.html" class="hover:text-wine-700 transition-colors">Inicio</a>
-                <a href="cursos.html" class="hover:text-wine-700 transition-colors">Catálogo</a>
-                <span class="bg-wine-100 text-wine-700 px-3 py-1.5 rounded-full text-xs font-bold shadow-sm">Modo Admin</span>
-            </nav>
+        <nav class="nav-links">
+            <a href="index.html">Inicio</a>
+            <a href="cursos.html">Catálogo</a>
+            <span class="tag">Modo Admin</span>
+        </nav>
 
-            <div class="flex items-center space-x-4">
-                <button id="menu-btn" aria-label="Abrir menú" class="md:hidden text-wine-700 focus:outline-none p-2 rounded-lg hover:bg-wine-100 transition-colors">
-                    <i class="fa-solid fa-bars text-2xl"></i>
-                </button>
-            </div>
-        </div>
-        <!-- Menú Móvil -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-wine-100 px-6 py-4 space-y-3 shadow-lg">
-            <a href="index.html" class="block text-gray-700 font-medium py-1">Inicio</a>
-            <a href="cursos.html" class="block text-gray-700 font-medium py-1">Catálogo</a>
-        </div>
+        <button id="menu-btn" aria-label="Abrir menú" class="menu-btn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
     </header>
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <main class="flex-grow pt-32 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+    <!-- Menú Móvil -->
+    <div id="mobile-menu" class="mobile-menu hidden">
+        <a href="index.html">Inicio</a>
+        <a href="cursos.html">Catálogo</a>
+        <div><span class="tag">Modo Admin</span></div>
+    </div>
 
-        <!-- TÍTULO Y PESTAÑAS PRINCIPALES DE NAVEGACIÓN -->
-        <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6 border-b border-wine-100 pb-6">
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+        <!-- CABECERA Y NAVEGACIÓN -->
+        <div class="admin-header">
             <div>
-                <span class="bg-wine-100 text-wine-700 font-bold text-xs uppercase px-3 py-1 rounded-full">Panel Profesional</span>
-                <h1 id="admin-title" class="text-3xl sm:text-4xl font-bold text-wine-900 serif-font mt-2">Gestión de Contenidos</h1>
-                <p id="admin-subtitle" class="text-gray-600 text-sm mt-1">Administra cursos, módulos, lecciones y supervisa el progreso de las estudiantes.</p>
+                <span class="eyebrow">Panel Profesional</span>
+                <h1 id="admin-title">Gestión de <em>Contenidos</em></h1>
+                <p id="admin-subtitle" style="color: var(--muted); margin-top: 6px; font-size: 14.5px;">
+                    Administra cursos, módulos, lecciones y supervisa el progreso de las estudiantes.
+                </p>
             </div>
             
-            <!-- PESTAÑAS PRINCIPALES (CURSOS VS USUARIOS) -->
-            <div class="flex bg-white p-1.5 rounded-2xl border border-wine-200 shadow-sm self-start md:self-auto">
-                <button id="tab-btn-cursos" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-wine-700 text-white shadow-sm flex items-center gap-2">
+            <!-- PESTAÑAS PRINCIPALES -->
+            <div class="tab-switcher">
+                <button id="tab-btn-cursos" class="tab-btn active">
                     <i class="fa-solid fa-book-open"></i> Cursos y Lecciones
                 </button>
-                <button id="tab-btn-recursos" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all text-gray-700 hover:text-wine-900 flex items-center gap-2">
-        <i class="fa-solid fa-sliders"></i> Recursos y Costos (Curso)
-    </button>
-                <button id="tab-btn-usuarios" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all text-gray-600 hover:text-wine-900 flex items-center gap-2">
+                <button id="tab-btn-recursos" class="tab-btn">
+                    <i class="fa-solid fa-sliders"></i> Recursos y Costos
+                </button>
+                <button id="tab-btn-usuarios" class="tab-btn">
                     <i class="fa-solid fa-users"></i> Usuarios y Avances
                 </button>
             </div>
         </div>
 
-        <!-- ALERTAS Y MENSAJES DE ESTADO -->
-        <div id="admin-alert" class="hidden mb-6 p-4 rounded-2xl text-xs sm:text-sm font-medium border shadow-sm"></div>
+        <!-- ALERTAS Y MENSAJES -->
+        <div id="admin-alert" class="hidden alert"></div>
 
         <!-- INDICADOR DE CARGA -->
-        <div id="admin-loading" class="hidden text-center py-20 space-y-3">
-            <i class="fa-solid fa-spinner fa-spin text-3xl text-wine-700"></i>
-            <p class="text-sm text-gray-600 font-medium">Cargando datos de Firestore...</p>
+        <div id="admin-loading" class="hidden" style="text-align: center; padding: 60px 0;">
+            <i class="fa-solid fa-spinner fa-spin" style="font-size: 32px; color: var(--wine);"></i>
+            <p style="margin-top: 12px; color: var(--muted); font-weight: 500;">Cargando datos de Firestore...</p>
         </div>
 
-        <!-- ================= SECCIÓN PRINCIPAL: CURSOS / MÓDULOS / LECCIONES ================= -->
-        <div id="section-cursos-manager" class="space-y-6">
-            <div class="flex items-center justify-between">
-                <div id="breadcrumb-container" class="flex items-center gap-2">
-                    <h2 class="text-xl font-bold text-wine-900 serif-font">Listado General de Cursos</h2>
+        <!-- ================= SECCIÓN 1: CURSOS / MÓDULOS / LECCIONES ================= -->
+        <div id="section-cursos-manager" style="display: flex; flex-direction: column; gap: 24px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+                <div id="breadcrumb-container">
+                    <h2>Listado General de Cursos</h2>
                 </div>
-                <!-- Botón de acción principal dinámico -->
-                <button id="btn-nuevo-curso" class="px-6 py-3 rounded-full text-xs sm:text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-all flex items-center gap-2">
+                
+                <button id="btn-nuevo-curso" class="pill-button">
                     <i class="fa-solid fa-plus"></i> Nuevo Curso
                 </button>
-                <button id="btn-nuevo-modulo" class="hidden px-6 py-3 rounded-full text-xs sm:text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-all flex items-center gap-2">
+                <button id="btn-nuevo-modulo" class="pill-button hidden">
                     <i class="fa-solid fa-plus"></i> Nuevo Módulo
                 </button>
-                <button id="btn-nueva-leccion" class="hidden px-6 py-3 rounded-full text-xs sm:text-sm font-semibold text-white custom-gradient shadow-md hover:opacity-95 transition-all flex items-center gap-2">
+                <button id="btn-nueva-leccion" class="pill-button hidden">
                     <i class="fa-solid fa-plus"></i> Nueva Lección
                 </button>
             </div>
 
             <!-- VISTA 1: CURSOS -->
-            <section id="view-cursos" class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="grid-cursos"></div>
+            <section id="view-cursos">
+                <div class="grid-3" id="grid-cursos"></div>
             </section>
 
             <!-- VISTA 2: MÓDULOS -->
-            <section id="view-modulos" class="hidden space-y-6">
-                <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-wine-100 shadow-sm">
+            <section id="view-modulos" class="hidden" style="display: flex; flex-direction: column; gap: 20px;">
+                <div class="card" style="display: flex; align-items: center; justify-content: space-between; padding: 20px 28px;">
                     <div>
-                        <span class="text-xs text-gray-500">Curso seleccionado:</span>
-                        <h2 id="current-course-title" class="text-lg font-bold text-wine-900 serif-font">Nombre del Curso</h2>
+                        <span style="font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.1em; font-weight: 700;">Curso seleccionado</span>
+                        <h3 id="current-course-title" style="margin-top: 2px;">Nombre del Curso</h3>
                     </div>
-                    <button id="btn-volver-cursos" class="px-4 py-2 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 text-xs font-bold transition-colors flex items-center gap-2">
+                    <button id="btn-volver-cursos" class="pill-button secondary" style="min-height: 40px; padding: 8px 18px;">
                         <i class="fa-solid fa-arrow-left"></i> Volver a Cursos
                     </button>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="grid-modulos"></div>
+                <div class="grid-2" id="grid-modulos"></div>
             </section>
 
             <!-- VISTA 3: LECCIONES -->
-            <section id="view-lecciones" class="hidden space-y-6">
-                <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-wine-100 shadow-sm">
+            <section id="view-lecciones" class="hidden" style="display: flex; flex-direction: column; gap: 20px;">
+                <div class="card" style="display: flex; align-items: center; justify-content: space-between; padding: 20px 28px;">
                     <div>
-                        <span class="text-xs text-gray-500">Módulo seleccionado:</span>
-                        <h2 id="current-module-title" class="text-lg font-bold text-wine-900 serif-font">Nombre del Módulo</h2>
+                        <span style="font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.1em; font-weight: 700;">Módulo seleccionado</span>
+                        <h3 id="current-module-title" style="margin-top: 2px;">Nombre del Módulo</h3>
                     </div>
-                    <button id="btn-volver-modulos" class="px-4 py-2 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 text-xs font-bold transition-colors flex items-center gap-2">
+                    <button id="btn-volver-modulos" class="pill-button secondary" style="min-height: 40px; padding: 8px 18px;">
                         <i class="fa-solid fa-arrow-left"></i> Volver a Módulos
                     </button>
                 </div>
-                <div class="space-y-4" id="grid-lecciones"></div>
+                <div style="display: flex; flex-direction: column; gap: 14px;" id="grid-lecciones"></div>
             </section>
         </div>
-        <!-- ================= SECCIÓN NUEVA: RECURSOS Y COSTOS POR CURSO ================= -->
-<div id="section-recursos-manager" class="hidden space-y-6">
-    <div class="bg-white p-6 rounded-3xl border border-wine-100 shadow-sm space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-wine-100 pb-4">
-            <div>
-                <h2 class="text-2xl font-bold text-wine-900 serif-font">Recursos y Costos de Producción por Curso</h2>
-                <p class="text-xs text-gray-600 mt-1">Configura pantallas para instructores, materiales, horarios y presupuesto de producción curso por curso.</p>
-            </div>
-            <!-- Selector de curso -->
-            <select id="select-curso-recursos" class="px-4 py-2.5 rounded-xl border border-gray-300 text-xs font-bold text-wine-900 focus:outline-none focus:border-wine-700 bg-wine-50">
-                <option value="">Selecciona un curso...</option>
-            </select>
-        </div>
 
-        <!-- Panel de edición de recursos por curso seleccionado -->
-        <div id="form-recursos-container" class="hidden space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Pantallas para instructores -->
-                <div class="p-5 rounded-2xl bg-wine-50/50 border border-wine-100 space-y-3">
-                    <h3 class="font-bold text-wine-900 text-sm flex items-center gap-2"><i class="fa-solid fa-desktop text-wine-700"></i> Pantallas / URLs de Instructor</h3>
-                    <textarea id="rec-pantallas" rows="3" placeholder="Enlaces a salas, OBS o accesos de transmisión..." class="w-full p-3 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700 bg-white"></textarea>
-                </div>
-                <!-- Materiales -->
-                <div class="p-5 rounded-2xl bg-wine-50/50 border border-wine-100 space-y-3">
-                    <h3 class="font-bold text-wine-900 text-sm flex items-center gap-2"><i class="fa-solid fa-folder-open text-wine-700"></i> Materiales y Enlaces de Apoyo</h3>
-                    <textarea id="rec-materiales" rows="3" placeholder="Links a Google Drive, Notion o PDFs de recursos..." class="w-full p-3 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700 bg-white"></textarea>
-                </div>
-                <!-- Horarios -->
-                <div class="p-5 rounded-2xl bg-wine-50/50 border border-wine-100 space-y-3">
-                    <h3 class="font-bold text-wine-900 text-sm flex items-center gap-2"><i class="fa-solid fa-calendar-days text-wine-700"></i> Horarios de Clases / Grabaciones</h3>
-                    <textarea id="rec-horarios" rows="3" placeholder="Fechas, horas y cronograma de grabaciones..." class="w-full p-3 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700 bg-white"></textarea>
-                </div>
-                <!-- Costos de producción -->
-                <div class="p-5 rounded-2xl bg-wine-50/50 border border-wine-100 space-y-3">
-                    <h3 class="font-bold text-wine-900 text-sm flex items-center gap-2"><i class="fa-solid fa-wallet text-wine-700"></i> Costos de Producción (COP)</h3>
-                    <input type="number" id="rec-costos" placeholder="Ej: 1500000" class="w-full p-3 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700 bg-white">
-                    <p class="text-[10px] text-gray-500">Presupuesto invertido en edición, luces, materiales o instructores.</p>
-                </div>
-            </div>
-
-            <div class="flex justify-end pt-4">
-                <button id="btn-guardar-recursos" class="px-6 py-3 rounded-xl text-xs font-bold text-white custom-gradient shadow-md hover:opacity-95 transition-all">
-                    Guardar Recursos del Curso
-                </button>
-            </div>
-        </div>
-
-        <div id="recursos-placeholder" class="text-center py-12 text-gray-400 text-xs">
-            Selecciona un curso en la parte superior para administrar sus pantallas, materiales, horarios y costos de producción.
-        </div>
-    </div>
-</div>
-
-        <!-- ================= SECCIÓN: USUARIOS Y AVANCES ================= -->
-        <div id="section-usuarios-manager" class="hidden space-y-6">
-            <div class="bg-white p-6 rounded-3xl border border-wine-100 shadow-sm">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <!-- ================= SECCIÓN 2: RECURSOS Y COSTOS POR CURSO ================= -->
+        <div id="section-recursos-manager" class="hidden">
+            <div class="card" style="display: flex; flex-direction: column; gap: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; border-bottom: 1px solid var(--border); padding-bottom: 20px;">
                     <div>
-                        <h2 class="text-2xl font-bold text-wine-900 serif-font">Estudiantes Registrados y Progreso</h2>
-                        <p class="text-xs text-gray-600 mt-1">Supervisa las cuentas de usuario dadas de alta en la plataforma y sus roles.</p>
+                        <h2>Recursos y Costos de Producción</h2>
+                        <p style="color: var(--muted); font-size: 13.5px; margin-top: 4px;">Configura accesos para instructores, materiales, horarios y presupuesto de producción curso por curso.</p>
                     </div>
-                    <div class="relative">
-                        <input type="text" id="search-user" placeholder="Buscar por nombre o correo..." class="px-4 py-2.5 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700 w-full sm:w-64">
+                    <select id="select-curso-recursos" style="width: auto; min-width: 240px; font-weight: 600; color: var(--wine);">
+                        <option value="">Selecciona un curso...</option>
+                    </select>
+                </div>
+
+                <div id="form-recursos-container" class="hidden" style="display: flex; flex-direction: column; gap: 24px;">
+                    <div class="grid-2">
+                        <div style="background: var(--cream); p: 20px; border-radius: 16px; border: 1px solid var(--border); padding: 20px;">
+                            <h4 style="margin-bottom: 10px; font-size: 16px;"><i class="fa-solid fa-desktop" style="color: var(--wine); margin-right: 8px;"></i> Pantallas / URLs de Instructor</h4>
+                            <textarea id="rec-pantallas" rows="3" placeholder="Enlaces a salas, OBS o accesos de transmisión..."></textarea>
+                        </div>
+                        <div style="background: var(--cream); p: 20px; border-radius: 16px; border: 1px solid var(--border); padding: 20px;">
+                            <h4 style="margin-bottom: 10px; font-size: 16px;"><i class="fa-solid fa-folder-open" style="color: var(--wine); margin-right: 8px;"></i> Materiales y Enlaces de Apoyo</h4>
+                            <textarea id="rec-materiales" rows="3" placeholder="Links a Google Drive, Notion o PDFs de recursos..."></textarea>
+                        </div>
+                        <div style="background: var(--cream); p: 20px; border-radius: 16px; border: 1px solid var(--border); padding: 20px;">
+                            <h4 style="margin-bottom: 10px; font-size: 16px;"><i class="fa-solid fa-calendar-days" style="color: var(--wine); margin-right: 8px;"></i> Horarios de Clases / Grabaciones</h4>
+                            <textarea id="rec-horarios" rows="3" placeholder="Fechas, horas y cronograma de grabaciones..."></textarea>
+                        </div>
+                        <div style="background: var(--cream); p: 20px; border-radius: 16px; border: 1px solid var(--border); padding: 20px;">
+                            <h4 style="margin-bottom: 10px; font-size: 16px;"><i class="fa-solid fa-wallet" style="color: var(--wine); margin-right: 8px;"></i> Costos de Producción (COP)</h4>
+                            <input type="number" id="rec-costos" placeholder="Ej: 1500000">
+                            <p style="font-size: 11px; color: var(--muted); margin-top: 6px;">Presupuesto invertido en edición, luces, materiales o instructores.</p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; padding-top: 10px;">
+                        <button id="btn-guardar-recursos" class="pill-button">Guardar Recursos del Curso</button>
                     </div>
                 </div>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
+                <div id="recursos-placeholder" style="text-align: center; padding: 50px 0; color: var(--muted); font-size: 14px;">
+                    Selecciona un curso en la lista desplegable superior para gestionar sus materiales, accesos y costos asociados.
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SECCIÓN 3: USUARIOS Y AVANCES ================= -->
+        <div id="section-usuarios-manager" class="hidden">
+            <div class="card" style="display: flex; flex-direction: column; gap: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                    <div>
+                        <h2>Estudiantes Registrados y Progreso</h2>
+                        <p style="color: var(--muted); font-size: 13.5px; margin-top: 2px;">Supervisa las cuentas activas en la plataforma y realiza seguimiento a sus avances.</p>
+                    </div>
+                    <input type="text" id="search-user" placeholder="Buscar por nombre o correo..." style="width: 260px;">
+                </div>
+
+                <div class="table-container">
+                    <table>
                         <thead>
-                            <tr class="border-b border-wine-100 text-[11px] font-bold text-wine-800 uppercase tracking-wider bg-wine-50/50">
-                                <th class="py-3 px-4 rounded-l-xl">Estudiante</th>
-                                <th class="py-3 px-4">Correo Electrónico</th>
-                                <th class="py-3 px-4">Rol en Sistema</th>
-                                <th class="py-3 px-4">Fecha de Registro</th>
-                                <th class="py-3 px-4 rounded-r-xl text-center">Acciones / Avance</th>
+                            <tr>
+                                <th>Estudiante</th>
+                                <th>Correo Electrónico</th>
+                                <th>Rol en Sistema</th>
+                                <th>Fecha de Registro</th>
+                                <th style="text-align: center;">Acciones / Avance</th>
                             </tr>
                         </thead>
-                        <tbody id="table-usuarios-body" class="text-xs text-gray-700 divide-y divide-wine-50">
-                            <!-- Los usuarios se cargarán dinámicamente aquí -->
+                        <tbody id="table-usuarios-body">
+                            <!-- Carga dinámica -->
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-
     </main>
 
-    <!-- ================= MODAL DE EDICIÓN / CREACIÓN DE CONTENIDO ================= -->
-    <div id="modal-form" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-wine-100 space-y-6 relative animate-fadeIn max-h-[90vh] overflow-y-auto">
-            <button id="modal-close-btn" class="absolute top-6 right-6 text-gray-400 hover:text-wine-700 text-xl font-bold transition-colors">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <div>
-                <h3 id="modal-title" class="text-2xl font-bold text-wine-900 serif-font">Título del Formulario</h3>
-                <p id="modal-subtitle" class="text-xs text-gray-500 mt-1">Completa los campos requeridos a continuación.</p>
+    <!-- ================= MODAL: FORMULARIO DINÁMICO ================= -->
+    <div id="modal-form" class="modal-backdrop hidden">
+        <div class="modal-card">
+            <button id="modal-close-btn" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+            <div style="margin-bottom: 24px;">
+                <h3 id="modal-title">Formulario de Edición</h3>
+                <p id="modal-subtitle" style="color: var(--muted); font-size: 13px; margin-top: 4px;">Completa los campos requeridos.</p>
             </div>
             
-            <form id="dynamic-form" class="space-y-4">
+            <form id="dynamic-form" style="display: flex; flex-direction: column; gap: 18px;">
                 <input type="hidden" id="form-item-id">
                 <input type="hidden" id="form-item-type">
 
-                <div id="form-fields-container" class="space-y-4">
-                    <!-- Los inputs dinámicos se construirán en JS -->
-                </div>
+                <div id="form-fields-container" style="display: flex; flex-direction: column; gap: 16px;"></div>
 
-                <div class="pt-4 border-t border-wine-100 flex items-center justify-end gap-3">
-                    <button type="button" id="btn-cancel-modal" class="px-5 py-2.5 rounded-xl border border-gray-200 text-xs font-bold text-gray-600 hover:bg-gray-50 transition-colors">
-                        Cancelar
-                    </button>
-                    <button type="submit" class="px-6 py-2.5 rounded-xl text-xs font-bold text-white custom-gradient shadow-md hover:opacity-95 transition-all">
-                        Guardar Cambios
-                    </button>
+                <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 12px; border-top: 1px solid var(--border); padding-top: 20px;">
+                    <button type="button" id="btn-cancel-modal" class="pill-button secondary" style="min-height: 42px; padding: 8px 20px;">Cancelar</button>
+                    <button type="submit" class="pill-button" style="min-height: 42px; padding: 8px 24px;">Guardar Cambios</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- ================= MODAL DE VER AVANCES DE ESTUDIANTE ================= -->
-    <div id="modal-progress" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-wine-100 space-y-6 relative max-h-[85vh] overflow-y-auto">
-            <button id="modal-progress-close" class="absolute top-6 right-6 text-gray-400 hover:text-wine-700 text-xl font-bold transition-colors">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <div class="flex items-center gap-4 border-b border-wine-100 pb-4">
-                <div class="w-12 h-12 rounded-2xl bg-wine-100 text-wine-700 flex items-center justify-center text-xl font-bold">
+    <!-- ================= MODAL: AVANCE DE ESTUDIANTE ================= -->
+    <div id="modal-progress" class="modal-backdrop hidden">
+        <div class="modal-card">
+            <button id="modal-progress-close" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div style="display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 20px;">
+                <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--blush); color: var(--wine); display: flex; align-items: center; justify-content: center; font-size: 20px;">
                     <i class="fa-solid fa-user-graduate"></i>
                 </div>
                 <div>
-                    <h3 id="progress-user-name" class="text-xl font-bold text-wine-900 serif-font">Nombre del Estudiante</h3>
-                    <p id="progress-user-email" class="text-xs text-gray-500">correo@ejemplo.com</p>
+                    <h3 id="progress-user-name">Nombre del Estudiante</h3>
+                    <p id="progress-user-email" style="color: var(--muted); font-size: 13px;">correo@ejemplo.com</p>
                 </div>
             </div>
 
-            <div class="space-y-4">
-                <div class="flex items-center justify-between text-xs font-bold text-wine-900">
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 13px;">
                     <span>Lecciones Completadas</span>
-                    <span id="progress-count-badge" class="bg-wine-100 text-wine-700 px-3 py-1 rounded-full">0 lecciones</span>
+                    <span id="progress-count-badge" class="tag">0 lecciones</span>
                 </div>
 
-                <div id="progress-lessons-list" class="space-y-2 max-h-60 overflow-y-auto pr-1">
-                    <!-- Lista de lecciones dinámicas -->
-                </div>
+                <div id="progress-lessons-list" style="display: flex; flex-direction: column; gap: 10px; max-height: 240px; overflow-y: auto;"></div>
             </div>
 
-            <div class="pt-4 border-t border-wine-100 text-right">
-                <button id="btn-close-progress-modal" class="px-6 py-2.5 rounded-xl bg-wine-50 text-wine-700 hover:bg-wine-100 font-bold text-xs transition-colors">
-                    Cerrar
-                </button>
+            <div style="text-align: right; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 18px;">
+                <button id="btn-close-progress-modal" class="pill-button secondary" style="min-height: 40px; padding: 8px 20px;">Cerrar</button>
             </div>
         </div>
     </div>
 
     <!-- FOOTER -->
-    <footer class="bg-wine-900 text-white py-10 mt-20 text-center text-xs">
-        <div class="max-w-7xl mx-auto px-4 space-y-3">
-            <p>&copy; 2026 Make It Yourself. Panel de Administración Profesional.</p>
-            <div class="flex justify-center space-x-6 text-gray-300">
-                <a href="index.html" class="hover:text-white transition-colors">Inicio</a>
-                <a href="cursos.html" class="hover:text-white transition-colors">Catálogo</a>
-            </div>
+    <footer class="footer">
+        <div class="brand" style="margin-bottom: 12px; align-items: center;">
+            <span class="brand-small">Make It</span>
+            <span class="brand-large">YOURSELF</span>
         </div>
+        <p>Panel de Administración Profesional &copy; 2026 Make It Yourself. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- SCRIPT PARA MENÚ MÓVIL -->
+    <!-- Scripts de Interacción -->
     <script>
+        // Menú móvil
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Cursor personalizado
+        const dot = document.getElementById('cursorDot');
+        const ring = document.getElementById('cursorRing');
+        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches && dot && ring) {
+            let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+            window.addEventListener('mousemove', e => {
+                mouseX = e.clientX; mouseY = e.clientY;
+                dot.style.transform = `translate(${mouseX - 3.5}px, ${mouseY - 3.5}px)`;
+            });
+            function renderCursor() {
+                ringX += (mouseX - ringX) * 0.15;
+                ringY += (mouseY - ringY) * 0.15;
+                ring.style.transform = `translate(${ringX - 19}px, ${ringY - 19}px)`;
+                requestAnimationFrame(renderCursor);
+            }
+            renderCursor();
+            document.querySelectorAll('a, button, input, select, textarea').forEach(el => {
+                el.addEventListener('mouseenter', () => ring.style.transform += ' scale(1.4)');
+                el.addEventListener('mouseleave', () => ring.style.transform = ring.style.transform.replace(' scale(1.4)', ''));
+            });
+        } else {
+            if (dot) dot.remove();
+            if (ring) ring.remove();
+        }
     </script>
     <script type="module" src="js/admin.js"></script>
 </body>

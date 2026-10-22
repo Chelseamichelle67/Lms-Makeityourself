@@ -1,30 +1,31 @@
-
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#fcf2f4">
-  <title>Confirmar compra | Make It Yourself</title>
+  <meta name="theme-color" content="#fbf6ef">
+  <title>Confirmar Compra | Make It Yourself</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
     :root {
-      --wine-50: #fcf2f4;
-      --wine-100: #f8e4e7;
-      --wine-200: #f1c8ce;
-      --wine-400: #e5a1ab;
-      --wine-600: #a3283c;
-      --wine-700: #721422;
-      --wine-900: #520e18;
-      --blush: #fbe9eb;
+      --wine: #64142a;
+      --dark: #260712;
+      --rose: #d38d9f;
+      --blush: #f1dce0;
+      --cream: #fbf6ef;
+      --ink: #25191d;
+      --paper: #fffdf9;
+      --muted: #74666a;
+      --border: #e3d3d4;
       --gold: #ca8a04;
-      --text: #2d1519;
-      --muted: #806a6e;
-      --white: #ffffff;
+      --success-bg: #dcf3e4;
+      --success-text: #1f8a4c;
+      --error: #b42318;
     }
 
     * {
@@ -34,11 +35,11 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background:
-        radial-gradient(ellipse at top left, #f8e4e7 0, transparent 48%),
-        var(--wine-50);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at 10% 10%, rgba(241, 220, 224, 0.6) 0%, transparent 40%), var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
     }
 
     a {
@@ -50,121 +51,236 @@
       font: inherit;
     }
 
+    /* Cursor personalizado */
+    @media (hover: hover) and (pointer: fine) {
+      body { cursor: default; }
+      a, button, input { cursor: pointer; }
+    }
+
+    .cursor-dot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 7px;
+      height: 7px;
+      background: var(--wine);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease;
+    }
+
+    .cursor-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 38px;
+      height: 38px;
+      border: 1px solid rgba(100, 20, 42, 0.35);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.25s, height 0.25s, border-color 0.25s, transform 0.08s ease-out;
+    }
+
+    /* Header */
     .header {
-      height: 82px;
-      padding: 0 7%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 84px;
+      padding: 0 7vw;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(255,255,255,.86);
-      border-bottom: 1px solid rgba(163,40,60,.12);
-      backdrop-filter: blur(12px);
+      background: rgba(251, 246, 239, 0.85);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+      z-index: 50;
+    }
+
+    @media (max-width: 900px) {
+      .header { height: 76px; padding: 0 5vw; }
     }
 
     .brand {
-      color: var(--wine-700);
-      line-height: 1;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
     }
 
     .brand-small {
       display: block;
-      margin-bottom: 4px;
       font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 4px;
+      font-weight: 600;
+      letter-spacing: .34em;
+      color: var(--wine);
+      text-transform: uppercase;
+      margin-bottom: -2px;
     }
 
     .brand-large {
       display: block;
       font-family: 'Playfair Display', serif;
       font-size: 25px;
-      font-weight: 700;
-      letter-spacing: .5px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      color: var(--wine);
     }
 
     .back-link {
-      color: var(--wine-700);
+      color: var(--wine);
       font-size: 13px;
       font-weight: 600;
+      transition: opacity 0.2s;
     }
 
     .back-link:hover {
-      color: var(--wine-600);
+      opacity: 0.75;
     }
 
+    /* Marquee */
+    .marquee-band {
+      background: var(--wine);
+      color: white;
+      padding: 10px 0;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      overflow: hidden;
+      white-space: nowrap;
+      margin-top: 84px;
+    }
+
+    @media (max-width: 900px) {
+      .marquee-band { margin-top: 76px; }
+    }
+
+    .marquee-content {
+      display: inline-block;
+      animation: marquee 25s linear infinite;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Main Container */
     .page {
       width: min(1060px, 90%);
-      margin: 48px auto 70px;
+      margin: 40px auto 70px;
     }
 
     .intro {
-      margin-bottom: 28px;
+      margin-bottom: 35px;
       text-align: center;
     }
 
     .eyebrow {
-      color: var(--wine-600);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 2.5px;
+      display: inline-block;
+      position: relative;
+      font-size: 10.5px;
+      font-weight: 600;
       text-transform: uppercase;
+      letter-spacing: .26em;
+      color: var(--wine);
+      margin-bottom: 12px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      display: inline-block;
+      width: 34px;
+      height: 1px;
+      background: var(--wine);
+      vertical-align: middle;
+      margin-right: 12px;
     }
 
     h1, h2, h3 {
       font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      letter-spacing: -.035em;
     }
 
     h1 {
-      margin: 12px 0;
-      color: var(--wine-900);
-      font-size: clamp(30px, 5vw, 43px);
-      font-weight: 600;
+      margin: 0 0 14px;
+      font-size: clamp(36px, 5vw, 56px);
+      color: var(--dark);
+      line-height: 1.1;
+    }
+
+    h1 em {
+      color: var(--wine);
+      font-weight: 500;
+      font-style: italic;
     }
 
     .intro p {
       max-width: 520px;
       margin: 0 auto;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 15px;
       line-height: 1.8;
     }
 
+    /* Layout */
     .layout {
       display: grid;
-      grid-template-columns: 1fr .85fr;
-      gap: 24px;
+      grid-template-columns: 1fr 0.9fr;
+      gap: 30px;
       align-items: start;
     }
 
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+
     .card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 3px 44px 3px 3px;
+      box-shadow: 0 16px 40px rgba(54, 4, 19, 0.08);
       overflow: hidden;
-      background: rgba(255,255,255,.94);
-      border: 1px solid rgba(163,40,60,.14);
-      border-radius: 22px;
-      box-shadow: 0 14px 45px rgba(82,14,24,.06);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 20px 50px rgba(54, 4, 19, 0.12);
     }
 
     .card-content {
-      padding: 28px;
+      padding: 32px;
+    }
+
+    @media (max-width: 640px) {
+      .card-content { padding: 22px; }
     }
 
     .card h2 {
       margin: 0 0 20px;
-      color: var(--wine-900);
-      font-size: 23px;
+      color: var(--dark);
+      font-size: 24px;
     }
 
+    /* Product Art Box */
     .product-art {
       position: relative;
-      min-height: 190px;
+      min-height: 210px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 25px;
-      overflow: hidden;
+      padding: 30px;
       text-align: center;
-      background: linear-gradient(135deg, #fbe9eb, #f8e4e7 58%, #f1c8ce);
+      background: linear-gradient(135deg, var(--blush), var(--cream));
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
     }
 
     .product-art::before,
@@ -173,270 +289,229 @@
       content: "";
       width: 180px;
       height: 180px;
-      border: 1px solid rgba(163,40,60,.14);
+      border: 1px solid rgba(100, 20, 42, 0.15);
       border-radius: 50%;
     }
 
-    .product-art::before {
-      top: -100px;
-      left: -65px;
-    }
-
-    .product-art::after {
-      right: -90px;
-      bottom: -120px;
-      width: 240px;
-      height: 240px;
-    }
+    .product-art::before { top: -80px; left: -60px; }
+    .product-art::after { right: -80px; bottom: -100px; width: 220px; height: 220px; }
 
     .sparkle {
+      position: relative;
+      z-index: 1;
       margin-bottom: 10px;
-      color: var(--wine-600);
-      font-size: 35px;
+      color: var(--wine);
+      font-size: 28px;
+      animation: spin 8s linear infinite;
     }
+
+    @keyframes spin { 100% { transform: rotate(360deg); } }
 
     .product-label {
       position: relative;
       z-index: 1;
-      color: var(--wine-600);
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 2px;
+      display: inline-block;
+      padding: 4px 12px;
+      background: var(--blush);
+      color: var(--wine);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: .15em;
       text-transform: uppercase;
+      border-radius: 100px;
+      margin-bottom: 8px;
     }
 
     .product-art h2 {
       position: relative;
       z-index: 1;
-      max-width: 360px;
-      margin: 10px 0 0;
-      font-size: 28px;
-      line-height: 1.3;
+      margin: 0;
+      font-size: 26px;
+      color: var(--dark);
+      line-height: 1.25;
     }
 
     .product-description {
-      margin: 0 0 22px;
+      margin: 0 0 24px;
       color: var(--muted);
-      font-size: 13px;
-      line-height: 1.8;
+      font-size: 14px;
+      line-height: 1.75;
     }
 
+    /* Details Rows */
     .detail-row {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap: 18px;
-      padding: 15px 0;
-      border-bottom: 1px solid #f3e5e7;
-      font-size: 13px;
+      gap: 15px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13.5px;
     }
 
-    .detail-row:last-child {
-      border-bottom: none;
-    }
+    .detail-row:last-child { border-bottom: none; }
 
-    .detail-label {
-      color: var(--muted);
-    }
+    .detail-label { color: var(--muted); }
+    .detail-value { color: var(--dark); font-weight: 700; text-align: right; }
 
-    .detail-value {
-      color: var(--wine-900);
-      font-weight: 700;
-      text-align: right;
-    }
-
+    /* Price Box */
     .price-box {
-      margin-top: 18px;
-      padding: 20px;
-      background: var(--wine-50);
-      border: 1px solid var(--wine-100);
-      border-radius: 16px;
+      margin-top: 22px;
+      padding: 22px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 3px 24px 3px 3px;
     }
 
-    .price-label {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
+    .price-label { color: var(--muted); font-size: 12px; font-weight: 500; }
     .price {
-      margin-top: 6px;
-      color: var(--wine-700);
-      font-size: 30px;
-      font-weight: 800;
-      letter-spacing: -1px;
+      margin-top: 4px;
+      color: var(--wine);
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
     }
+    .price-note { margin-top: 4px; color: var(--muted); font-size: 11px; }
 
-    .price-note {
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 11px;
-    }
-
+    /* Security Note */
     .security-note {
       display: flex;
       align-items: flex-start;
-      gap: 12px;
-      margin: 20px 0;
-      padding: 15px;
-      background: #fffaf0;
-      border: 1px solid #f5e7c6;
-      border-radius: 14px;
+      gap: 14px;
+      margin: 22px 0;
+      padding: 18px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 3px 20px 3px 3px;
     }
 
-    .security-icon {
-      color: var(--gold);
-      font-size: 20px;
-    }
+    .security-icon { color: var(--gold); font-size: 20px; margin-top: 2px; }
+    .security-note strong { display: block; margin-bottom: 4px; color: var(--dark); font-size: 13px; }
+    .security-note p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
 
-    .security-note strong {
-      display: block;
-      margin-bottom: 5px;
-      color: var(--wine-900);
-      font-size: 12px;
-    }
-
-    .security-note p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.7;
-    }
-
+    /* Checkbox & Button */
     .confirm-label {
       display: flex;
       align-items: flex-start;
-      gap: 10px;
-      margin: 18px 0;
-      color: #665258;
-      font-size: 12px;
-      line-height: 1.7;
+      gap: 12px;
+      margin: 22px 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
       cursor: pointer;
     }
 
     .confirm-label input {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       margin-top: 2px;
-      accent-color: var(--wine-600);
+      accent-color: var(--wine);
       flex-shrink: 0;
     }
 
-    .button {
+    .pill-button {
+      position: relative;
       width: 100%;
       min-height: 52px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 15px 20px;
+      gap: 10px;
+      padding: 15px 30px;
       border: none;
-      border-radius: 13px;
-      background: linear-gradient(135deg, var(--wine-700), var(--wine-600), var(--wine-900));
+      border-radius: 100px;
+      background: var(--wine);
       color: white;
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 600;
+      letter-spacing: 0.05em;
       cursor: pointer;
-      transition: transform .2s, opacity .2s;
+      box-shadow: 0 10px 25px rgba(100, 20, 42, 0.22);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s, opacity 0.25s;
     }
 
-    .button:hover:not(:disabled) {
-      transform: translateY(-2px);
+    .pill-button:hover:not(:disabled) {
+      transform: translateY(-3px);
+      background: var(--dark);
     }
 
-    .button:disabled {
+    .pill-button:disabled {
       cursor: not-allowed;
       opacity: .45;
+      transform: none;
     }
 
     .status {
-      margin-top: 15px;
+      margin-top: 18px;
       color: var(--muted);
-      font-size: 12px;
-      line-height: 1.7;
+      font-size: 12.5px;
+      line-height: 1.6;
       text-align: center;
     }
 
-    .status.error {
-      color: #b42335;
-    }
-
-    .status.success {
-      color: #247348;
+    .status.error { color: var(--error); font-weight: 500; }
+    .status.success { 
+      color: var(--success-text); 
+      background: var(--success-bg); 
+      padding: 12px; 
+      border-radius: 12px; 
+      font-weight: 600; 
     }
 
     .login-link {
-      color: var(--wine-600);
-      font-weight: 800;
+      color: var(--wine);
+      font-weight: 700;
       text-decoration: underline;
     }
 
+    /* Footer */
     .footer {
-      padding: 24px;
-      color: var(--muted);
-      font-size: 11px;
+      background: #1b0710;
+      color: white;
+      padding: 40px 7vw;
       text-align: center;
+      font-size: 12px;
+      border-top: 1px solid rgba(227, 211, 212, 0.15);
     }
 
-    @media (max-width: 760px) {
-      .header {
-        height: 72px;
-        padding: 0 5%;
-      }
-
-      .brand-large {
-        font-size: 21px;
-      }
-
-      .back-link {
-        font-size: 11px;
-      }
-
-      .page {
-        width: 92%;
-        margin-top: 32px;
-      }
-
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      .card-content {
-        padding: 22px;
-      }
-
-      .product-art {
-        min-height: 160px;
-      }
-
-      .product-art h2 {
-        font-size: 25px;
-      }
-    }
+    .footer .brand-small { color: var(--rose); }
+    .footer .brand-large { color: white; }
+    .footer-copy { margin-top: 20px; color: #89787d; font-size: 11px; }
   </style>
 </head>
 
 <body>
+  <!-- Cursor animado -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
   <header class="header">
     <a href="index.html" class="brand" aria-label="Make It Yourself, inicio">
-      <span class="brand-small">MAKE IT</span>
+      <span class="brand-small">Make It</span>
       <span class="brand-large">YOURSELF</span>
     </a>
-    <a href="cursos.html" class="back-link">← Volver a los cursos</a>
+    <a href="cursos.html" class="back-link"><i class="fa-solid fa-arrow-left mr-1"></i> Volver a los módulos</a>
   </header>
+
+  <div class="marquee-band" aria-hidden="true">
+    <div class="marquee-content">
+      COMPRA 100% SEGURA ✦ MERCADO PAGO ✦ ACCESO DIGITAL INMEDIATO ✦ APRENDE A TU RITMO ✦ MAKE IT YOURSELF ✦ 
+      COMPRA 100% SEGURA ✦ MERCADO PAGO ✦ ACCESO DIGITAL INMEDIATO ✦ APRENDE A TU RITMO ✦ MAKE IT YOURSELF ✦ 
+    </div>
+  </div>
 
   <main class="page">
     <section class="intro">
-      <span class="eyebrow">Tu próxima experiencia comienza aquí</span>
-      <h1>Confirma tu compra</h1>
-      <p>
-        Revisa los detalles de tu selección y prepárate para aprender,
-        practicar y descubrir tu propio estilo.
-      </p>
+      <span class="eyebrow">Checkout Oficial</span>
+      <h1>Confirma tu <em>compra</em></h1>
+      <p>Revisa los detalles de tu selección y prepárate para aprender, practicar y descubrir tu propio estilo.</p>
     </section>
 
     <div class="layout">
+      <!-- Columna Izquierda: Detalle del producto -->
       <section class="card">
         <div class="product-art">
-          <span class="sparkle">✧</span>
+          <span class="sparkle">✦</span>
           <span class="product-label">Make It Yourself Academy</span>
           <h2 id="productTitle">Cargando producto...</h2>
         </div>
@@ -444,7 +519,7 @@
         <div class="card-content">
           <h2>Tu selección</h2>
           <p class="product-description" id="productDescription">
-            Estamos verificando los detalles de tu producto.
+            Estamos verificando los detalles de tu producto en la academia.
           </p>
 
           <div class="detail-row">
@@ -454,67 +529,54 @@
 
           <div class="detail-row">
             <span class="detail-label">Modalidad</span>
-            <span class="detail-value">Contenido digital</span>
+            <span class="detail-value">Contenido digital en video</span>
           </div>
 
           <div class="detail-row">
-            <span class="detail-label">Cuenta</span>
+            <span class="detail-label">Cuenta de usuario</span>
             <span class="detail-value" id="userEmail">Comprobando...</span>
           </div>
 
           <div class="price-box">
-            <div class="price-label">Precio de tu selección</div>
+            <div class="price-label">Inversión total</div>
             <div class="price" id="productPrice">—</div>
-            <div class="price-note">
-              Precio en pesos colombianos (COP).
-            </div>
+            <div class="price-note">Precio expresado en pesos colombianos (COP). Sin cobros ocultos.</div>
           </div>
         </div>
       </section>
 
+      <!-- Columna Derecha: Finalizar Pedido -->
       <section class="card">
         <div class="card-content">
           <h2>Finaliza tu pedido</h2>
           <p class="product-description">
-            Antes de continuar, revisa el producto seleccionado y confirma
-            que deseas proceder al pago.
+            Antes de continuar, verifica que el módulo o curso seleccionado sea el correcto para proceder con total seguridad.
           </p>
 
           <div class="security-note">
-            <span class="security-icon">✧</span>
+            <span class="security-icon"><i class="fa-solid fa-shield-halved"></i></span>
             <div>
-              <strong>Pago procesado por Mercado Pago</strong>
-              <p>
-                El pago se realizará en la plataforma de Mercado Pago.
-                El acceso al contenido se habilitará una vez se verifique
-                la aprobación de la transacción.
-              </p>
+              <strong>Pago procesado de forma segura</strong>
+              <p>La transacción se realiza mediante la plataforma certificada de Mercado Pago. Tu acceso se activará de forma inmediata al confirmar el pago.</p>
             </div>
           </div>
 
           <div id="loginNotice" class="status" hidden>
-            Para comprar, primero debes
-            <a class="login-link" href="login.html">iniciar sesión</a>.
+            Para realizar tu compra, primero debes <a class="login-link" href="login.html">iniciar sesión</a> en tu cuenta.
           </div>
 
           <label class="confirm-label">
             <input type="checkbox" id="confirmCheckbox">
-            <span>
-              Confirmo que el producto y el precio mostrados corresponden
-              a mi selección y deseo continuar al pago.
-            </span>
+            <span>Confirmo que el producto y la tarifa mostrados corresponden a mi elección y deseo continuar hacia la pasarela de pagos.</span>
           </label>
 
-          <button id="payButton" class="button" disabled>
-            Confirmar y continuar al pago
+          <button id="payButton" class="pill-button" disabled>
+            <span>Confirmar y continuar al pago</span>
+            <i class="fa-solid fa-arrow-right-long"></i>
           </button>
 
           <p id="statusMessage" class="status" aria-live="polite">
-            Comprobando tu sesión...
-          </p>
-
-          <p class="status">
-            ¿Tienes dudas? Regresa a los cursos para revisar tu selección.
+            Comprobando estado de sesión...
           </p>
         </div>
       </section>
@@ -522,202 +584,230 @@
   </main>
 
   <footer class="footer">
-    <div class="brand" style="margin-bottom:10px">
-      <span class="brand-small">MAKE IT</span>
+    <div class="brand" style="margin-bottom: 12px; align-items: center;">
+      <span class="brand-small">Make It</span>
       <span class="brand-large">YOURSELF</span>
     </div>
-    Aprende a tu ritmo. Crea a tu manera.
+    <p>Aprende a tu ritmo. Crea a tu manera.</p>
+    <p class="footer-copy">&copy; 2026 Make It Yourself. Todos los derechos reservados.</p>
   </footer>
 
+  <!-- Script de Cursor y Lógica Firebase / Mercado Pago -->
+  <script>
+    // Cursor personalizado suave
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches && dot && ring) {
+      let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+      window.addEventListener('mousemove', e => {
+        mouseX = e.clientX; mouseY = e.clientY;
+        dot.style.transform = `translate(${mouseX - 3.5}px, ${mouseY - 3.5}px)`;
+      });
+      function renderCursor() {
+        ringX += (mouseX - ringX) * 0.15;
+        ringY += (mouseY - ringY) * 0.15;
+        ring.style.transform = `translate(${ringX - 19}px, ${ringY - 19}px)`;
+        requestAnimationFrame(renderCursor);
+      }
+      renderCursor();
+      document.querySelectorAll('a, button, input').forEach(el => {
+        el.addEventListener('mouseenter', () => ring.style.transform += ' scale(1.4)');
+        el.addEventListener('mouseleave', () => ring.style.transform = ring.style.transform.replace(' scale(1.4)', ''));
+      });
+    } else {
+      if (dot) dot.remove();
+      if (ring) ring.remove();
+    }
+  </script>
+
   <script type="module">
-  import { auth, db } from "./js/firebase-config.js";
-  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
-  import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+    import { auth, db } from "./js/firebase-config.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+    import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
 
-  // URL de tu función Serverless en Vercel
-  const APPS_SCRIPT_URL = "https://makeityourself67.vercel.app/api/crear-pago";
+    // URL de la función Serverless en Vercel
+    const APPS_SCRIPT_URL = "https://makeityourself67.vercel.app/api/crear-pago";
 
-  const products = {
-    completo: {
-      name: "Curso completo de automaquillaje",
-      description: "Accede a la experiencia completa: preparación de la piel, rostro, ojos, labios y ejercicios prácticos.",
-      type: "Curso completo",
-      price: 89000
-    },
-    piel: {
-      name: "Preparación de la piel",
-      description: "Aprende las bases para preparar la piel antes de comenzar tu maquillaje.",
-      type: "Módulo individual",
-      price: 17800
-    },
-    rostro: {
-      name: "Rostro impecable",
-      description: "Aprende técnicas de maquillaje para trabajar el rostro y crear un acabado uniforme.",
-      type: "Módulo individual",
-      price: 17800
-    },
-    ojos: {
-      name: "Maquillaje de ojos",
-      description: "Explora técnicas y recursos para crear distintos estilos de maquillaje de ojos.",
-      type: "Módulo individual",
-      price: 17800
-    },
-    labios: {
-      name: "Maquillaje de labios",
-      description: "Aprende técnicas para trabajar el color, el delineado y el acabado de los labios.",
-      type: "Módulo individual",
-      price: 17800
-    },
-    ejercicios: {
-      name: "Módulo de ejercicios",
-      description: "Refuerza lo aprendido mediante actividades y ejercicios prácticos.",
-      type: "Módulo individual",
-      price: 17800
+    const products = {
+      completo: {
+        name: "Curso completo de automaquillaje",
+        description: "Accede a la experiencia completa: preparación de la piel, rostro, ojos, labios y ejercicios prácticos con certificado oficial.",
+        type: "Curso completo",
+        price: 89000
+      },
+      piel: {
+        name: "Preparación de la piel",
+        description: "Aprende las bases para preparar correctamente la piel y asegurar una larga duración de tu maquillaje.",
+        type: "Módulo individual",
+        price: 17800
+      },
+      rostro: {
+        name: "Rostro impecable",
+        description: "Domina la aplicación de bases, contornos e iluminación para un acabado profesional.",
+        type: "Módulo individual",
+        price: 17800
+      },
+      ojos: {
+        name: "Maquillaje de ojos",
+        description: "Explora técnicas de sombreado, diseño de cejas natural y delineados precisos.",
+        type: "Módulo individual",
+        price: 17800
+      },
+      labios: {
+        name: "Maquillaje de labios",
+        description: "Secretos para elegir labiales de larga duración y aplicarlos impecablemente.",
+        type: "Módulo individual",
+        price: 17800
+      },
+      ejercicios: {
+        name: "Módulo de ejercicios prácticos",
+        description: "Refuerza tus habilidades mediante sesiones guiadas paso a paso desde casa.",
+        type: "Módulo individual",
+        price: 17800
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const productKey = params.get("producto") || "";
+    const resultado = params.get("resultado");
+    const product = products[productKey];
+
+    const titleElement = document.getElementById("productTitle");
+    const descriptionElement = document.getElementById("productDescription");
+    const typeElement = document.getElementById("productType");
+    const priceElement = document.getElementById("productPrice");
+    const emailElement = document.getElementById("userEmail");
+    const checkbox = document.getElementById("confirmCheckbox");
+    const payButton = document.getElementById("payButton");
+    const statusMessage = document.getElementById("statusMessage");
+    const loginNotice = document.getElementById("loginNotice");
+
+    let currentUser = null;
+    let sessionChecked = false;
+    let submitting = false;
+
+    function setStatus(message, type = "") {
+      if (statusMessage) {
+        statusMessage.textContent = message;
+        statusMessage.className = "status " + type;
+      }
     }
-  };
 
-  const params = new URLSearchParams(window.location.search);
-  const productKey = params.get("producto") || "";
-  const resultado = params.get("resultado");
-  const product = products[productKey];
-
-  const titleElement = document.getElementById("productTitle");
-  const descriptionElement = document.getElementById("productDescription");
-  const typeElement = document.getElementById("productType");
-  const priceElement = document.getElementById("productPrice");
-  const emailElement = document.getElementById("userEmail");
-  const checkbox = document.getElementById("confirmCheckbox");
-  const payButton = document.getElementById("payButton");
-  const statusMessage = document.getElementById("statusMessage");
-  const loginNotice = document.getElementById("loginNotice");
-
-  let currentUser = null;
-  let sessionChecked = false;
-  let submitting = false;
-
-  function setStatus(message, type = "") {
-    if (statusMessage) {
-      statusMessage.textContent = message;
-      statusMessage.className = "status " + type;
+    function updateButton() {
+      if (payButton && checkbox) {
+        payButton.disabled = !product || !currentUser || !sessionChecked || !checkbox.checked || submitting;
+      }
     }
-  }
 
-  function updateButton() {
-    if (payButton && checkbox) {
-      payButton.disabled = !product || !currentUser || !sessionChecked || !checkbox.checked || submitting;
+    if (product) {
+      if (titleElement) titleElement.textContent = product.name;
+      if (descriptionElement) descriptionElement.textContent = product.description;
+      if (typeElement) typeElement.textContent = product.type;
+      if (priceElement) priceElement.textContent = product.price.toLocaleString("es-CO", {
+        style: "currency",
+        currency: "COP",
+        maximumFractionDigits: 0
+      });
+    } else {
+      if (titleElement) titleElement.textContent = "Producto no disponible";
+      if (descriptionElement) descriptionElement.textContent = "No pudimos identificar el producto seleccionado.";
+      if (checkbox) checkbox.disabled = true;
+      setStatus("Por favor regresa al catálogo y selecciona un producto válido.", "error");
     }
-  }
 
-  if (product) {
-    if (titleElement) titleElement.textContent = product.name;
-    if (descriptionElement) descriptionElement.textContent = product.description;
-    if (typeElement) typeElement.textContent = product.type;
-    if (priceElement) priceElement.textContent = product.price.toLocaleString("es-CO", {
-      style: "currency",
-      currency: "COP",
-      maximumFractionDigits: 0
+    if (checkbox) {
+      checkbox.addEventListener("change", updateButton);
+    }
+
+    // Observador de sesión y registro automático de inscripción en Firestore si hay éxito
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      sessionChecked = true;
+
+      if (user) {
+        if (emailElement) emailElement.textContent = user.email || "Sesión activa";
+        if (loginNotice) loginNotice.hidden = true;
+
+        if (resultado === "exito" && productKey) {
+          try {
+            const moduleMap = {
+              piel: "modulo-1",
+              rostro: "modulo-2",
+              ojos: "modulo-3",
+              labios: "modulo-4",
+              ejercicios: "modulo-5"
+            };
+
+            const isCompleto = productKey === "completo";
+
+            await addDoc(collection(db, "enrollments"), {
+              userId: user.uid,
+              courseId: "SS777MOfOK3VVX17JLKn",
+              moduleId: isCompleto ? "" : (moduleMap[productKey] || productKey),
+              purchaseType: isCompleto ? "course" : "module",
+              status: "active",
+              createdAt: serverTimestamp()
+            });
+
+            console.log("¡Inscripción registrada con éxito!");
+            window.history.replaceState({}, document.title, window.location.pathname);
+            setStatus("¡Pago aprobado con éxito! Tu acceso al contenido ha sido habilitado.", "success");
+
+          } catch (error) {
+            console.error("Error al registrar inscripción:", error);
+            setStatus("Pago procesado con éxito, pero ocurrió un detalle al sincronizar tu acceso automático.", "error");
+          }
+        } else if (product) {
+          setStatus("Sesión verificada correctamente. Confirma tu selección para continuar.");
+        }
+
+      } else {
+        if (emailElement) emailElement.textContent = "Inicia sesión para continuar";
+        if (loginNotice) loginNotice.hidden = false;
+        if (product) setStatus("Debes iniciar sesión en tu cuenta antes de proceder al pago.", "error");
+      }
+
+      updateButton();
     });
-  } else {
-    if (titleElement) titleElement.textContent = "Producto no válido";
-    if (descriptionElement) descriptionElement.textContent = "No pudimos identificar el producto.";
-    if (checkbox) checkbox.disabled = true;
-    setStatus("Selecciona un producto válido.", "error");
-  }
 
-  if (checkbox) {
-    checkbox.addEventListener("change", updateButton);
-  }
+    // Envío del pago a la API Serverless
+    if (payButton) {
+      payButton.addEventListener("click", async () => {
+        if (!product || !currentUser || !checkbox.checked || submitting) return;
 
-  // Único observador de sesión y registro automático de inscripción
-  onAuthStateChanged(auth, async (user) => {
-    currentUser = user;
-    sessionChecked = true;
+        submitting = true;
+        updateButton();
+        setStatus("Generando enlace de pago seguro en Mercado Pago...");
 
-    if (user) {
-      if (emailElement) emailElement.textContent = user.email || "Sesión iniciada";
-      if (loginNotice) loginNotice.hidden = true;
-
-      // Si regresa con pago exitoso, registramos en Firestore
-      if (resultado === "exito" && productKey) {
         try {
-          const moduleMap = {
-            piel: "modulo-1",
-            rostro: "modulo-2",
-            ojos: "modulo-3",
-            labios: "modulo-4",
-            ejercicios: "modulo-5"
-          };
+          const idToken = await currentUser.getIdToken(true);
 
-          const isCompleto = productKey === "completo";
-
-          await addDoc(collection(db, "enrollments"), {
-            userId: user.uid,
-            courseId: "SS777MOfOK3VVX17JLKn",
-            moduleId: isCompleto ? "" : (moduleMap[productKey] || productKey),
-            purchaseType: isCompleto ? "course" : "module",
-            status: "active",
-            createdAt: serverTimestamp()
+          const response = await fetch(APPS_SCRIPT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ producto: productKey, idToken: idToken })
           });
 
-          console.log("¡Inscripción registrada con éxito!");
-          window.history.replaceState({}, document.title, window.location.pathname);
-          setStatus("¡Pago aprobado! Tu curso ha sido activado con éxito.", "success");
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || "No se pudo iniciar el proceso de pago.");
+          }
+
+          if (data.init_point) {
+            window.location.href = data.init_point;
+          } else {
+            throw new Error("No se recibió el enlace de pago de la pasarela.");
+          }
 
         } catch (error) {
-          console.error("Error al registrar la inscripción:", error);
-          setStatus("Pago exitoso, pero ocurrió un error al registrar la inscripción.", "error");
+          console.error("Error al iniciar pago:", error);
+          submitting = false;
+          updateButton();
+          setStatus(error.message || "No pudimos conectar con la pasarela de pagos.", "error");
         }
-      } else if (product) {
-        setStatus("Sesión verificada. Revisa tu selección antes de pagar.");
-      }
-
-    } else {
-      if (emailElement) emailElement.textContent = "Inicia sesión para comprar";
-      if (loginNotice) loginNotice.hidden = false;
-      if (product) setStatus("Debes iniciar sesión antes de continuar.", "error");
+      });
     }
-
-    updateButton();
-  });
-
-  // Botón de pago hacia Vercel
-  if (payButton) {
-    payButton.addEventListener("click", async () => {
-      if (!product || !currentUser || !checkbox.checked || submitting) return;
-
-      submitting = true;
-      updateButton();
-      setStatus("Preparando tu pago seguro...");
-
-      try {
-        const idToken = await currentUser.getIdToken(true);
-
-        const response = await fetch(APPS_SCRIPT_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ producto: productKey, idToken: idToken })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error || "No se pudo iniciar el pago.");
-        }
-
-        if (data.init_point) {
-          window.location.href = data.init_point;
-        } else {
-          throw new Error("No se recibió el enlace de pago.");
-        }
-
-      } catch (error) {
-        console.error("Error al iniciar el pago:", error);
-        submitting = false;
-        updateButton();
-        setStatus(error.message || "No pudimos iniciar el pago.", "error");
-      }
-    });
-  }
-</script>
+  </script>
 </body>
 </html>
