@@ -63,7 +63,7 @@ form.addEventListener('submit', async (e) => {
         });
 
         // 3. Redirección exitosa a mis-cursos.html (o fallback a index.html)
-        window.location.href = 'mis-cursos.html';
+        window.location.href = 'index.html';
 
     } catch (error) {
         console.error("Error en el registro:", error);
