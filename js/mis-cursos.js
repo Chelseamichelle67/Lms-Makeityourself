@@ -54,14 +54,92 @@ function porcentaje(completadas, total) {
         : 0;
 }
 
-function actualizarResumen(cursos, completadas, total) {
-    const elTotalCursos = elemento('total-cursos');
-    const elTotalLecciones = elemento('total-lecciones');
-    const elAvanceGeneral = elemento('avance-general');
+// Anima un número desde 0 hasta su valor final
+function animarNumero(el, hasta, formato) {
+    if (!el) return;
+    const reducir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducir || hasta === 0) {
+        el.textContent = formato(hasta);
+        return;
+    }
+    const duracion = 900;
+    const inicio = performance.now();
+    function paso(ahora) {
+        const t = Math.min((ahora - inicio) / duracion, 1);
+        const suave = 1 - Math.pow(1 - t, 3);
+        el.textContent = formato(Math.round(hasta * suave));
+        if (t < 1) requestAnimationFrame(paso);
+    }
+    requestAnimationFrame(paso);
+}
 
-    if (elTotalCursos) elTotalCursos.textContent = cursos;
-    if (elTotalLecciones) elTotalLecciones.textContent = `${completadas} / ${total}`;
-    if (elAvanceGeneral) elAvanceGeneral.textContent = `${porcentaje(completadas, total)}%`;
+function actualizarResumen(cursos, completadas, total) {
+    animarNumero(elemento('total-cursos'), cursos, n => String(n));
+    animarNumero(elemento('total-lecciones'), completadas, n => `${n} / ${total}`);
+    animarNumero(elemento('avance-general'), porcentaje(completadas, total), n => `${n}%`);
+}
+
+// Saludo según la hora del día
+function saludoSegunHora() {
+    const hora = new Date().getHours();
+    if (hora < 12) return '¡Buenos días! Hoy es un gran día para practicar';
+    if (hora < 19) return '¡Buenas tardes! Sigue avanzando con tu curso';
+    return '¡Buenas noches! Un módulo más antes de descansar';
+}
+
+const saludo = elemento('greeting-text');
+if (saludo) saludo.textContent = saludoSegunHora();
+
+// Animaciones al dibujar los cursos: barras de progreso y aparición al hacer scroll
+function animarContenido() {
+    if (!contenedor) return;
+
+    contenedor.querySelectorAll('.bar span').forEach(barra => {
+        const destino = barra.style.width;
+        barra.style.width = '0%';
+        setTimeout(() => { barra.style.width = destino; }, 120);
+    });
+
+    const items = contenedor.querySelectorAll('.course, .mod');
+    if (!('IntersectionObserver' in window)) return;
+
+    const observador = new IntersectionObserver(entradas => {
+        entradas.forEach(entrada => {
+            if (entrada.isIntersecting) {
+                entrada.target.classList.add('in');
+                observador.unobserve(entrada.target);
+            }
+        });
+    }, { threshold: 0.12 });
+
+    items.forEach((item, i) => {
+        item.classList.add('reveal');
+        item.style.transitionDelay = `${(i % 4) * 70}ms`;
+        observador.observe(item);
+    });
+}
+
+// Buscador de módulos
+function inicializarBuscador() {
+    const fila = elemento('tools-row');
+    const input = elemento('mod-search');
+    const sinResultados = elemento('no-results');
+    if (!fila || !input) return;
+
+    fila.classList.add('on');
+
+    input.addEventListener('input', () => {
+        const texto = input.value.trim().toLowerCase();
+        let visibles = 0;
+
+        contenedor.querySelectorAll('.mod').forEach(mod => {
+            const coincide = !texto || mod.textContent.toLowerCase().includes(texto);
+            mod.classList.toggle('filtered-out', !coincide);
+            if (coincide) visibles++;
+        });
+
+        sinResultados?.classList.toggle('on', texto !== '' && visibles === 0);
+    });
 }
 
 function mostrarCarga(visible) {
@@ -119,7 +197,11 @@ function dibujarModulo(cursoId, modulo) {
             <div>
                 <div class="mod-top">
                     <span class="mod-num">Módulo ${String(modulo.order || 0).padStart(2, '0')}</span>
-                    <span class="mod-count">${completadas} / ${total} lecciones (${avance}%)</span>
+                    ${
+                        total > 0 && completadas === total
+                            ? `<span class="done-badge"><i class="fa-solid fa-circle-check"></i> Completado</span>`
+                            : `<span class="mod-count">${completadas} / ${total} lecciones (${avance}%)</span>`
+                    }
                 </div>
 
                 <h4>${escaparHTML(modulo.title || 'Módulo sin título')}</h4>
@@ -405,6 +487,8 @@ async function cargarMisCursos(usuario) {
 
         if (contenedor) {
             contenedor.innerHTML = cursos.map(dibujarCurso).join('');
+            animarContenido();
+            inicializarBuscador();
         }
 
     } catch (error) {

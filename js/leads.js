@@ -1,4 +1,3 @@
-
 import { db } from './firebase-config.js';
 
 import {
@@ -7,10 +6,30 @@ import {
     serverTimestamp
 } from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js';
 
+// Pega aquí la URL /exec de tu aplicación web de Google Apps Script (creada con makeupyourselfoficial@gmail.com)
+const URL_SCRIPT_BIENVENIDA = 'https://script.google.com/macros/s/AKfycbxyzgiFW-B3o7sOaQevH5FB7b3y-GIx00Q7ezfd96ISAM-xvaav95MNF-lT6UYhLO4-/exec';
+
 const form = document.getElementById('enrollment-form');
 const successMsg = document.getElementById('success-msg');
 const errorBox = document.getElementById('firebase-error');
 const submitButton = form.querySelector('button[type="submit"]');
+
+async function enviarCorreoBienvenida({ nombre, email, telefono }) {
+    if (!URL_SCRIPT_BIENVENIDA || URL_SCRIPT_BIENVENIDA.includes('TU_ID_DEL_SCRIPT')) return;
+
+    await fetch(URL_SCRIPT_BIENVENIDA, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify({
+            nombre,
+            email,
+            telefono
+        })
+    });
+}
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -56,7 +75,7 @@ form.addEventListener('submit', async (e) => {
     submitButton.textContent = 'Guardando tus datos...';
 
     try {
-        // Guardar el contacto en Firestore
+        // 1. Guardar el contacto en Firestore
         await addDoc(collection(db, 'leads'), {
             name: nombre,
             email: email,
@@ -69,7 +88,15 @@ form.addEventListener('submit', async (e) => {
             createdAt: serverTimestamp()
         });
 
-        // Mostrar confirmación solo si se guardó correctamente
+        // 2. Enviar correo de bienvenida desde makeupyourselfoficial@gmail.com
+        try {
+            await enviarCorreoBienvenida({ nombre, email, telefono });
+        } catch (mailError) {
+            // Si falla el envío de correo, no bloqueamos el registro ya guardado en Firebase
+            console.warn('Lead guardado, pero hubo un error enviando el correo:', mailError);
+        }
+
+        // 3. Mostrar confirmación
         form.classList.add('hidden');
         successMsg.classList.remove('hidden');
 

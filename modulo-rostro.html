@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rostro Impecable | Make It Yourself</title>
+    <title>Rostro Impecable | Makeup Yourself</title>
     
     <!-- Fuentes Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -154,7 +154,36 @@
             justify-content: space-between;
             transition: all 0.3s ease;
         }
+/* LOGO GRÁFICO OFICIAL */
+.brand-logo {
+    display: block;
+    flex-shrink: 0;
+    width: 149px;
+    height: 46px;
+    background: #980a1e;
+    -webkit-mask: url("logo-make-it-yourself.png") center / contain no-repeat;
+    mask: url("logo-make-it-yourself.png") center / contain no-repeat;
+}
 
+/* Logo del pie de página */
+.brand-logo.footer-logo {
+    width: 246px;
+    height: 76px;
+    background: #f7e2e7;
+}
+
+/* Adaptación para celulares */
+@media (max-width: 900px) {
+    .brand-logo {
+        width: 116px;
+        height: 36px;
+    }
+
+    .brand-logo.footer-logo {
+        width: 194px;
+        height: 60px;
+    }
+}
         .brand-logo { text-decoration: none; display: flex; flex-direction: column; }
         .logo-sub { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.34em; color: var(--wine); line-height: 1; }
         .logo-main { font-family: 'Playfair Display', serif; font-size: 25px; font-weight: 700; letter-spacing: 0.08em; color: var(--wine); line-height: 1.1; }
@@ -318,10 +347,7 @@
     <div class="cursor-ring" id="cursorRing"></div>
 
     <header class="site-header header-pad">
-        <a href="index.html" class="brand-logo">
-            <span class="logo-sub">Make It</span>
-            <span class="logo-main">YOURSELF</span>
-        </a>
+  <a href="index.html" class="brand-logo" aria-label="Make It Yourself, inicio"></a>
 
         <nav class="nav-menu">
             <a href="cursos.html" class="nav-link active">Módulos</a>
@@ -436,7 +462,7 @@
 
                 <div class="price-container">
                     <span class="price-old">$49.000 COP</span>
-                    <span class="price-current">$17.800 COP</span>
+                    <span class="price-current">$19.900 COP</span>
                 </div>
 
                 <a href="comprar.html?producto=rostro" class="pill pill-cta-checkout block" style="min-height: 56px; font-size: 14px;">
