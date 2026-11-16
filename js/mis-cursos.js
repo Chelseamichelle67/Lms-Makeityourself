@@ -6,11 +6,17 @@ import {
     getDoc,
     getDocs,
     query,
+    setDoc,
     where
 } from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js';
 
 import {
-    onAuthStateChanged
+    EmailAuthProvider,
+    onAuthStateChanged,
+    reauthenticateWithCredential,
+    sendEmailVerification,
+    updatePassword,
+    updateProfile
 } from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js';
 
 // --------------------------------------------------
@@ -31,6 +37,15 @@ function escaparHTML(valor = '') {
         '"': '&quot;',
         "'": '&#39;'
     })[caracter]);
+}
+
+function mostrarToast(mensaje) {
+    const toast = elemento('toast');
+    if (!toast) return;
+    toast.textContent = mensaje;
+    toast.classList.add('on');
+    clearTimeout(mostrarToast._timer);
+    mostrarToast._timer = setTimeout(() => toast.classList.remove('on'), 2800);
 }
 
 function porcentaje(completadas, total) {
@@ -413,10 +428,299 @@ async function cargarMisCursos(usuario) {
 }
 
 // --------------------------------------------------
+// PERSONALIZACIÓN DE PERFIL Y SEGURIDAD DEL USUARIO
+// --------------------------------------------------
+
+let usuarioActual = null;
+let fotoPendienteDataUrl = '';
+
+function renderizarAvatar(contenedorEl, fotoUrl, nombre) {
+    if (!contenedorEl) return;
+    const inicial = (nombre || 'E').trim().charAt(0).toUpperCase();
+
+    if (fotoUrl && (/^https?:\/\//i.test(fotoUrl) || /^data:image\//i.test(fotoUrl))) {
+        contenedorEl.innerHTML = `<img src="${escaparHTML(fotoUrl)}" alt="Foto de ${escaparHTML(nombre || 'perfil')}">`;
+    } else {
+        contenedorEl.textContent = inicial;
+    }
+}
+
+function actualizarEstadoCorreoUI(usuario) {
+    const badge = elemento('email-verified-badge');
+    const btnVerificar = elemento('send-verify-email-btn');
+    if (!badge || !btnVerificar) return;
+
+    if (usuario.emailVerified) {
+        badge.className = 'badge-status ok';
+        badge.innerHTML = '<i class="fa-solid fa-circle-check"></i> Verificado';
+        btnVerificar.textContent = 'Correo verificado';
+        btnVerificar.disabled = true;
+    } else {
+        badge.className = 'badge-status pending';
+        badge.innerHTML = '<i class="fa-solid fa-clock"></i> Pendiente de verificar';
+        btnVerificar.textContent = 'Enviar correo de verificación';
+        btnVerificar.disabled = false;
+    }
+}
+
+async function sincronizarUIUsuario(usuario) {
+    let nombre = usuario.displayName || '';
+    let foto = usuario.photoURL || '';
+
+    // Si hay datos extra guardados en Firestore (users/{uid}), los leemos
+    try {
+        const snap = await getDoc(doc(db, 'users', usuario.uid));
+        if (snap.exists()) {
+            const data = snap.data();
+            if (!nombre && data.name) nombre = data.name;
+            if (data.photoBase64) foto = data.photoBase64;
+            else if (!foto && data.photoURL) foto = data.photoURL;
+        }
+    } catch (e) {
+        console.warn('No se pudo leer perfil extendido en Firestore:', e);
+    }
+
+    const primerNombre = nombre ? nombre.split(' ')[0] : '';
+
+    const headerName = elemento('header-user-name');
+    const welcomeName = elemento('welcome-name');
+    if (headerName) headerName.textContent = primerNombre || 'Mi Perfil';
+    if (welcomeName) welcomeName.textContent = primerNombre ? `de ${primerNombre}` : 'inscritos';
+
+    renderizarAvatar(elemento('header-avatar'), foto, nombre || usuario.email);
+    renderizarAvatar(elemento('modal-avatar-preview'), foto, nombre || usuario.email);
+
+    const inputNombre = elemento('profile-name-input');
+    const inputFotoUrl = elemento('profile-photo-url');
+    const inputEmail = elemento('profile-email-input');
+
+    if (inputNombre) inputNombre.value = nombre;
+    if (inputFotoUrl) inputFotoUrl.value = /^https?:\/\//i.test(foto) ? foto : '';
+    if (inputEmail) inputEmail.value = usuario.email || '';
+
+    actualizarEstadoCorreoUI(usuario);
+}
+
+// Redimensiona imagen local a avatar ligero (240x240 JPEG)
+function procesarImagenLocal(archivo) {
+    return new Promise((resolve, reject) => {
+        const lector = new FileReader();
+        lector.onload = () => {
+            const img = new Image();
+            img.onload = () => {
+                const size = 240;
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d');
+
+                const lado = Math.min(img.width, img.height);
+                const sx = (img.width - lado) / 2;
+                const sy = (img.height - lado) / 2;
+
+                ctx.drawImage(img, sx, sy, lado, lado, 0, 0, size, size);
+                resolve(canvas.toDataURL('image/jpeg', 0.82));
+            };
+            img.onerror = reject;
+            img.src = lector.result;
+        };
+        lector.onerror = reject;
+        lector.readAsDataURL(archivo);
+    });
+}
+
+function abrirModalPerfil() {
+    if (!usuarioActual) {
+        mostrarToast('Inicia sesión para personalizar tu perfil');
+        return;
+    }
+    fotoPendienteDataUrl = '';
+    elemento('profile-modal')?.classList.remove('hidden');
+}
+
+function cerrarModalPerfil() {
+    elemento('profile-modal')?.classList.add('hidden');
+}
+
+function inicializarEventosPerfil() {
+    const modal = elemento('profile-modal');
+
+    elemento('open-profile-btn')?.addEventListener('click', abrirModalPerfil);
+    elemento('hero-profile-btn')?.addEventListener('click', abrirModalPerfil);
+    elemento('mobile-profile-btn')?.addEventListener('click', () => {
+        elemento('mobile-menu')?.classList.add('hidden');
+        abrirModalPerfil();
+    });
+    elemento('close-profile-btn')?.addEventListener('click', cerrarModalPerfil);
+
+    modal?.addEventListener('click', e => {
+        if (e.target === modal) cerrarModalPerfil();
+    });
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+            cerrarModalPerfil();
+        }
+    });
+
+    // Subir archivo de foto
+    const fileInput = elemento('avatar-file-input');
+    elemento('pick-avatar-btn')?.addEventListener('click', () => fileInput?.click());
+
+    fileInput?.addEventListener('change', async e => {
+        const archivo = e.target.files?.[0];
+        if (!archivo) return;
+
+        try {
+            fotoPendienteDataUrl = await procesarImagenLocal(archivo);
+            const nombreActual = elemento('profile-name-input')?.value || usuarioActual?.displayName;
+            renderizarAvatar(elemento('modal-avatar-preview'), fotoPendienteDataUrl, nombreActual);
+            if (elemento('profile-photo-url')) elemento('profile-photo-url').value = '';
+            mostrarToast('Vista previa lista. Haz clic en Guardar.');
+        } catch (err) {
+            console.error(err);
+            mostrarToast('No se pudo procesar la imagen');
+        }
+    });
+
+    // Vista previa al pegar una URL de foto
+    elemento('profile-photo-url')?.addEventListener('input', e => {
+        const url = e.target.value.trim();
+        if (/^https?:\/\//i.test(url)) {
+            fotoPendienteDataUrl = '';
+            const nombreActual = elemento('profile-name-input')?.value || usuarioActual?.displayName;
+            renderizarAvatar(elemento('modal-avatar-preview'), url, nombreActual);
+        }
+    });
+
+    // Guardar nombre y foto
+    elemento('profile-identity-form')?.addEventListener('submit', async e => {
+        e.preventDefault();
+        if (!usuarioActual) return;
+
+        const btn = elemento('save-identity-btn');
+        const nuevoNombre = elemento('profile-name-input')?.value.trim() || '';
+        const urlEscrita = elemento('profile-photo-url')?.value.trim() || '';
+
+        if (!nuevoNombre) {
+            mostrarToast('Por favor escribe tu nombre');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
+
+        try {
+            const datosAuth = { displayName: nuevoNombre };
+            if (urlEscrita) {
+                datosAuth.photoURL = urlEscrita;
+            }
+
+            await updateProfile(usuarioActual, datosAuth);
+
+            const datosFirestore = {
+                name: nuevoNombre,
+                email: usuarioActual.email,
+                updatedAt: new Date().toISOString()
+            };
+
+            if (fotoPendienteDataUrl) {
+                datosFirestore.photoBase64 = fotoPendienteDataUrl;
+                datosFirestore.photoURL = '';
+            } else if (urlEscrita) {
+                datosFirestore.photoURL = urlEscrita;
+                datosFirestore.photoBase64 = '';
+            }
+
+            await setDoc(doc(db, 'users', usuarioActual.uid), datosFirestore, { merge: true });
+
+            fotoPendienteDataUrl = '';
+            await sincronizarUIUsuario(usuarioActual);
+            mostrarToast('¡Perfil actualizado correctamente!');
+        } catch (error) {
+            console.error('Error al actualizar perfil:', error);
+            mostrarToast('No se pudieron guardar los cambios: ' + error.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Guardar nombre y foto';
+        }
+    });
+
+    // Enviar verificación de correo
+    elemento('send-verify-email-btn')?.addEventListener('click', async () => {
+        if (!usuarioActual) return;
+        const btn = elemento('send-verify-email-btn');
+        btn.disabled = true;
+
+        try {
+            await usuarioActual.reload();
+            if (usuarioActual.emailVerified) {
+                actualizarEstadoCorreoUI(usuarioActual);
+                mostrarToast('¡Tu correo ya está verificado!');
+                return;
+            }
+
+            await sendEmailVerification(usuarioActual);
+            mostrarToast('Te enviamos un enlace de verificación a tu correo');
+        } catch (error) {
+            console.error('Error al enviar verificación:', error);
+            if (error.code === 'auth/too-many-requests') {
+                mostrarToast('Ya enviamos un correo hace poco. Revisa tu bandeja o spam.');
+            } else {
+                mostrarToast('No se pudo enviar el correo: ' + error.message);
+            }
+        } finally {
+            if (!usuarioActual.emailVerified) btn.disabled = false;
+        }
+    });
+
+    // Cambiar contraseña
+    elemento('profile-password-form')?.addEventListener('submit', async e => {
+        e.preventDefault();
+        if (!usuarioActual || !usuarioActual.email) return;
+
+        const actual = elemento('current-password-input')?.value || '';
+        const nueva = elemento('new-password-input')?.value || '';
+        const btn = elemento('save-password-btn');
+
+        if (nueva.length < 6) {
+            mostrarToast('La nueva contraseña debe tener al menos 6 caracteres');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Actualizando...';
+
+        try {
+            const credencial = EmailAuthProvider.credential(usuarioActual.email, actual);
+            await reauthenticateWithCredential(usuarioActual, credencial);
+            await updatePassword(usuarioActual, nueva);
+
+            elemento('profile-password-form').reset();
+            mostrarToast('¡Contraseña actualizada con éxito!');
+        } catch (error) {
+            console.error('Error al cambiar contraseña:', error);
+            if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+                mostrarToast('La contraseña actual es incorrecta');
+            } else {
+                mostrarToast('Error al cambiar contraseña: ' + error.message);
+            }
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-key"></i> Actualizar contraseña';
+        }
+    });
+}
+
+inicializarEventosPerfil();
+
+// --------------------------------------------------
 // INICIAR LA PÁGINA
 // --------------------------------------------------
 
 onAuthStateChanged(auth, usuario => {
+    usuarioActual = usuario;
+
     if (!usuario) {
         mostrarCarga(false);
         if (contenedor) contenedor.innerHTML = '';
@@ -431,5 +735,6 @@ onAuthStateChanged(auth, usuario => {
         return;
     }
 
+    sincronizarUIUsuario(usuario);
     cargarMisCursos(usuario);
 });

@@ -28,10 +28,14 @@ const adminSubtitle = document.getElementById('admin-subtitle');
 const tabBtnCursos = document.getElementById('tab-btn-cursos');
 const tabBtnRecursos = document.getElementById('tab-btn-recursos');
 const tabBtnUsuarios = document.getElementById('tab-btn-usuarios');
+const tabBtnCrm = document.getElementById('tab-btn-crm');
+const tabBtnReportes = document.getElementById('tab-btn-reportes');
 
 const sectionCursosManager = document.getElementById('section-cursos-manager');
 const sectionRecursosManager = document.getElementById('section-recursos-manager');
 const sectionUsuariosManager = document.getElementById('section-usuarios-manager');
+const sectionCrmManager = document.getElementById('section-crm-manager');
+const sectionReportesManager = document.getElementById('section-reportes-manager');
 
 const viewCursos = document.getElementById('view-cursos');
 const viewModulos = document.getElementById('view-modulos');
@@ -64,6 +68,16 @@ const recCostos = document.getElementById('rec-costos');
 const btnGuardarRecursos = document.getElementById('btn-guardar-recursos');
 let cursoRecursoActivoId = null;
 
+// Elementos de CRM y Reportes
+const kanbanContainer = document.getElementById('kanban-container');
+const crmContactSelect = document.getElementById('crm-contact-select');
+const crmNotaInput = document.getElementById('crm-nota-input');
+const btnGuardarNotaCrm = document.getElementById('btn-guardar-nota-crm');
+const crmNotasList = document.getElementById('crm-notas-list');
+
+const reportesKpis = document.getElementById('reportes-kpis');
+const reportesChart = document.getElementById('reportes-chart');
+
 // Elementos de Modales de Formulario
 const modalForm = document.getElementById('modal-form');
 const modalTitle = document.getElementById('modal-title');
@@ -92,6 +106,9 @@ let moduloSeleccionadoId = null;
 let moduloSeleccionadoNombre = '';
 let usuarioEsAdministrador = false;
 let listaUsuariosCache = [];
+let listaCursosCache = [];
+let listaMatriculasCache = [];
+let crmNotasCache = [];
 
 // ==================================================
 // MENSAJES Y UTILIDADES
@@ -99,15 +116,9 @@ let listaUsuariosCache = [];
 
 function mostrarAlerta(mensaje, tipo = 'error') {
     if (!adminAlert) return;
-
     adminAlert.textContent = mensaje;
-    adminAlert.classList.remove('hidden', 'bg-green-50', 'border-green-200', 'text-green-800', 'bg-red-50', 'border-red-200', 'text-red-800');
-
-    if (tipo === 'exito') {
-        adminAlert.classList.add('bg-green-50', 'border-green-200', 'text-green-800');
-    } else {
-        adminAlert.classList.add('bg-red-50', 'border-red-200', 'text-red-800');
-    }
+    adminAlert.classList.remove('hidden', 'alert-success', 'alert-error');
+    adminAlert.classList.add(tipo === 'exito' ? 'alert-success' : 'alert-error');
 }
 
 function ocultarAlerta() {
@@ -128,7 +139,7 @@ function escaparHTML(valor = '') {
 }
 
 function dinero(valor) {
-    return Number(valor || 0).toLocaleString('es-CO');
+    return '$' + Number(valor || 0).toLocaleString('es-CO');
 }
 
 function verificarAdministrador() {
@@ -138,7 +149,7 @@ function verificarAdministrador() {
 }
 
 // ==================================================
-// MANEJO DE MODALES ELEGANTES
+// MANEJO DE MODALES
 // ==================================================
 
 function abrirModalForm(tipo, id = null, datos = {}) {
@@ -153,24 +164,24 @@ function abrirModalForm(tipo, id = null, datos = {}) {
         formFieldsContainer.innerHTML = `
             <div>
                 <label class="block text-xs font-bold text-wine-900 mb-1">Título del Curso</label>
-                <input type="text" id="f-title" value="${escaparHTML(datos.title || '')}" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700">
+                <input type="text" id="f-title" value="${escaparHTML(datos.title || '')}" required>
             </div>
             <div>
                 <label class="block text-xs font-bold text-wine-900 mb-1">Descripción</label>
-                <textarea id="f-description" rows="3" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700">${escaparHTML(datos.description || '')}</textarea>
+                <textarea id="f-description" rows="3">${escaparHTML(datos.description || '')}</textarea>
             </div>
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-bold text-wine-900 mb-1">Precio (COP)</label>
-                    <input type="number" id="f-price" value="${datos.price ?? 89000}" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700">
+                    <input type="number" id="f-price" value="${datos.price ?? 89000}" required>
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-wine-900 mb-1">Número de Orden</label>
-                    <input type="number" id="f-order" value="${datos.order ?? 1}" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700">
+                    <input type="number" id="f-order" value="${datos.order ?? 1}" required>
                 </div>
             </div>
             <div class="flex items-center gap-2 pt-2">
-                <input type="checkbox" id="f-published" ${datos.published ? 'checked' : ''} class="rounded border-gray-300 text-wine-700 focus:ring-wine-700">
+                <input type="checkbox" id="f-published" ${datos.published ? 'checked' : ''} style="width:auto;">
                 <label for="f-published" class="text-xs font-bold text-gray-700">Publicar inmediatamente</label>
             </div>
         `;
@@ -181,18 +192,18 @@ function abrirModalForm(tipo, id = null, datos = {}) {
         formFieldsContainer.innerHTML = `
             <div>
                 <label class="block text-xs font-bold text-wine-900 mb-1">Título del Módulo</label>
-                <input type="text" id="f-title" value="${escaparHTML(datos.title || '')}" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700">
+                <input type="text" id="f-title" value="${escaparHTML(datos.title || '')}" required>
             </div>
             <div>
                 <label class="block text-xs font-bold text-wine-900 mb-1">Descripción corta</label>
-                <textarea id="f-description" rows="2" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700">${escaparHTML(datos.description || '')}</textarea>
+                <textarea id="f-description" rows="2">${escaparHTML(datos.description || '')}</textarea>
             </div>
             <div>
                 <label class="block text-xs font-bold text-wine-900 mb-1">Número de Orden</label>
-                <input type="number" id="f-order" value="${datos.order ?? 1}" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700">
+                <input type="number" id="f-order" value="${datos.order ?? 1}" required>
             </div>
             <div class="flex items-center gap-2 pt-2">
-                <input type="checkbox" id="f-published" ${datos.published ? 'checked' : ''} class="rounded border-gray-300 text-wine-700 focus:ring-wine-700">
+                <input type="checkbox" id="f-published" ${datos.published ? 'checked' : ''} style="width:auto;">
                 <label for="f-published" class="text-xs font-bold text-gray-700">Publicar módulo</label>
             </div>
         `;
@@ -203,22 +214,22 @@ function abrirModalForm(tipo, id = null, datos = {}) {
         formFieldsContainer.innerHTML = `
             <div>
                 <label class="block text-xs font-bold text-wine-900 mb-1">Título de la Lección</label>
-                <input type="text" id="f-title" value="${escaparHTML(datos.title || '')}" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700">
+                <input type="text" id="f-title" value="${escaparHTML(datos.title || '')}" required>
             </div>
             <div>
                 <label class="block text-xs font-bold text-wine-900 mb-1">Contenido / Texto explicativo</label>
-                <textarea id="f-content" rows="3" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700">${escaparHTML(datos.content || '')}</textarea>
+                <textarea id="f-content" rows="3">${escaparHTML(datos.content || '')}</textarea>
             </div>
             <div>
                 <label class="block text-xs font-bold text-wine-900 mb-1">URL del Video (YouTube / Embed)</label>
-                <input type="text" id="f-video" value="${escaparHTML(datos.videoUrl || '')}" placeholder="https://..." class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700">
+                <input type="text" id="f-video" value="${escaparHTML(datos.videoUrl || '')}" placeholder="https://...">
             </div>
             <div>
                 <label class="block text-xs font-bold text-wine-900 mb-1">Número de Orden</label>
-                <input type="number" id="f-order" value="${datos.order ?? 1}" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-wine-700">
+                <input type="number" id="f-order" value="${datos.order ?? 1}" required>
             </div>
             <div class="flex items-center gap-2 pt-2">
-                <input type="checkbox" id="f-published" ${datos.published ? 'checked' : ''} class="rounded border-gray-300 text-wine-700 focus:ring-wine-700">
+                <input type="checkbox" id="f-published" ${datos.published ? 'checked' : ''} style="width:auto;">
                 <label for="f-published" class="text-xs font-bold text-gray-700">Publicar lección</label>
             </div>
         `;
@@ -303,38 +314,52 @@ dynamicForm?.addEventListener('submit', async (e) => {
 function cambiarSeccionAdmin(seccion) {
     ocultarAlerta();
 
-    tabBtnCursos.className = 'px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all text-gray-600 hover:text-wine-900 flex items-center gap-2';
-    tabBtnRecursos.className = 'px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all text-gray-600 hover:text-wine-900 flex items-center gap-2';
-    tabBtnUsuarios.className = 'px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all text-gray-600 hover:text-wine-900 flex items-center gap-2';
+    [tabBtnCursos, tabBtnRecursos, tabBtnUsuarios, tabBtnCrm, tabBtnReportes].forEach(btn => {
+        if (btn) btn.className = 'tab-btn';
+    });
 
-    sectionCursosManager.classList.add('hidden');
-    sectionRecursosManager.classList.add('hidden');
-    sectionUsuariosManager.classList.add('hidden');
+    [sectionCursosManager, sectionRecursosManager, sectionUsuariosManager, sectionCrmManager, sectionReportesManager].forEach(sec => {
+        if (sec) sec.classList.add('hidden');
+    });
 
     if (seccion === 'cursos') {
-        tabBtnCursos.className = 'px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-wine-700 text-white shadow-sm flex items-center gap-2';
+        tabBtnCursos.className = 'tab-btn active';
         sectionCursosManager.classList.remove('hidden');
         if (adminTitle) adminTitle.textContent = 'Gestión de Contenidos';
         if (adminSubtitle) adminSubtitle.textContent = 'Administra cursos, módulos, lecciones de tu academia.';
         mostrarVistaCursosSub('cursos');
     } else if (seccion === 'recursos') {
-        tabBtnRecursos.className = 'px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-wine-700 text-white shadow-sm flex items-center gap-2';
+        tabBtnRecursos.className = 'tab-btn active';
         sectionRecursosManager.classList.remove('hidden');
         if (adminTitle) adminTitle.textContent = 'Recursos y Costos';
         if (adminSubtitle) adminSubtitle.textContent = 'Gestión avanzada por curso para instructores y producción.';
         cargarSelectorCursosRecursos();
     } else if (seccion === 'usuarios') {
-        tabBtnUsuarios.className = 'px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-wine-700 text-white shadow-sm flex items-center gap-2';
+        tabBtnUsuarios.className = 'tab-btn active';
         sectionUsuariosManager.classList.remove('hidden');
         if (adminTitle) adminTitle.textContent = 'Control de Estudiantes';
         if (adminSubtitle) adminSubtitle.textContent = 'Supervisa todos los usuarios registrados y su actividad.';
         cargarUsuariosRegistrados();
+    } else if (seccion === 'crm') {
+        tabBtnCrm.className = 'tab-btn active';
+        sectionCrmManager.classList.remove('hidden');
+        if (adminTitle) adminTitle.textContent = 'CRM y Embudo de Ventas';
+        if (adminSubtitle) adminSubtitle.textContent = 'Gestión de contactos basada en registros y matrículas reales.';
+        inicializarCrm();
+    } else if (seccion === 'reportes') {
+        tabBtnReportes.className = 'tab-btn active';
+        sectionReportesManager.classList.remove('hidden');
+        if (adminTitle) adminTitle.textContent = 'Reportes y Rentabilidad';
+        if (adminSubtitle) adminSubtitle.textContent = 'Resumen financiero de ventas contra costos de producción.';
+        inicializarReportes();
     }
 }
 
 tabBtnCursos?.addEventListener('click', () => cambiarSeccionAdmin('cursos'));
 tabBtnRecursos?.addEventListener('click', () => cambiarSeccionAdmin('recursos'));
 tabBtnUsuarios?.addEventListener('click', () => cambiarSeccionAdmin('usuarios'));
+tabBtnCrm?.addEventListener('click', () => cambiarSeccionAdmin('crm'));
+tabBtnReportes?.addEventListener('click', () => cambiarSeccionAdmin('reportes'));
 
 // ==================================================
 // NAVEGACIÓN ENTRE VISTAS DE CURSOS
@@ -367,14 +392,10 @@ function mostrarVistaCursosSub(vista) {
 async function siguienteIdNumerico(ruta, prefijo) {
     const snapshot = await getDocs(ruta);
     let numeroMayor = 0;
-
     snapshot.forEach(documento => {
         const coincidencia = documento.id.match(new RegExp(`^${prefijo}-(\\d+)$`));
-        if (coincidencia) {
-            numeroMayor = Math.max(numeroMayor, Number(coincidencia[1]));
-        }
+        if (coincidencia) numeroMayor = Math.max(numeroMayor, Number(coincidencia[1]));
     });
-
     return `${prefijo}-${numeroMayor + 1}`;
 }
 
@@ -389,20 +410,23 @@ async function cargarCursos() {
     try {
         const snapshot = await getDocs(collection(db, 'courses'));
         gridCursos.innerHTML = '';
+        listaCursosCache = [];
 
         if (snapshot.empty) {
             gridCursos.innerHTML = `<p class="text-sm text-gray-500 col-span-full text-center py-8">Aún no hay cursos registrados.</p>`;
             return;
         }
 
-        const cursos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        cursos.sort((a, b) => (Number(a.order) || 9999) - (Number(b.order) || 9999));
+        snapshot.forEach(docSnap => {
+            listaCursosCache.push({ id: docSnap.id, ...docSnap.data() });
+        });
 
-        for (const curso of cursos) {
+        listaCursosCache.sort((a, b) => (Number(a.order) || 9999) - (Number(b.order) || 9999));
+
+        for (const curso of listaCursosCache) {
             const publicado = curso.published === true;
             const tarjeta = document.createElement('div');
-
-            tarjeta.className = 'bg-white rounded-3xl p-6 border border-wine-100 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow';
+            tarjeta.className = 'card flex flex-col justify-between space-y-4';
 
             tarjeta.innerHTML = `
                 <div>
@@ -413,9 +437,9 @@ async function cargarCursos() {
                         <span class="text-xs text-gray-400">Orden: ${Number(curso.order) || 1}</span>
                     </div>
 
-                    <h3 class="text-xl font-bold text-wine-900 serif-font mb-2">${escaparHTML(curso.title || 'Curso sin título')}</h3>
+                    <h3 class="text-xl font-bold text-wine-900 mb-2">${escaparHTML(curso.title || 'Curso sin título')}</h3>
                     <p class="text-xs text-gray-600 leading-relaxed mb-4 line-clamp-2">${escaparHTML(curso.description || 'Sin descripción')}</p>
-                    <p class="text-sm font-extrabold text-wine-700">Precio: $${dinero(curso.price)} COP</p>
+                    <p class="text-sm font-extrabold text-wine-700">Precio: ${dinero(curso.price)} COP</p>
                 </div>
 
                 <div class="pt-4 border-t border-wine-100 flex flex-wrap items-center gap-2">
@@ -446,7 +470,7 @@ async function cargarCursos() {
 }
 
 // ==================================================
-// 2. GESTIÓN DE MÓDULOS
+// 2. GESTIÓN DE MÓDULOS Y LECCIONES
 // ==================================================
 
 async function cargarModulos(courseId) {
@@ -469,7 +493,7 @@ async function cargarModulos(courseId) {
         modulos.forEach(modulo => {
             const publicado = modulo.published === true;
             const tarjeta = document.createElement('div');
-            tarjeta.className = 'bg-white rounded-2xl p-6 border border-wine-100 shadow-sm flex flex-col justify-between space-y-4';
+            tarjeta.className = 'card flex flex-col justify-between space-y-4';
 
             tarjeta.innerHTML = `
                 <div>
@@ -527,10 +551,6 @@ async function eliminarModulo(courseId, moduleId) {
     }
 }
 
-// ==================================================
-// 3. GESTIÓN DE LECCIONES
-// ==================================================
-
 async function cargarLecciones(courseId, moduleId) {
     verificarAdministrador();
     if (!courseId || !moduleId) return;
@@ -550,7 +570,7 @@ async function cargarLecciones(courseId, moduleId) {
 
         lecciones.forEach(leccion => {
             const tarjeta = document.createElement('div');
-            tarjeta.className = 'bg-white rounded-2xl p-6 border border-wine-100 shadow-sm flex items-center justify-between gap-4';
+            tarjeta.className = 'card flex items-center justify-between gap-4 py-4 px-6';
 
             tarjeta.innerHTML = `
                 <div>
@@ -598,7 +618,7 @@ async function eliminarLeccion(courseId, moduleId, lessonId) {
 }
 
 // ==================================================
-// 4. RECURSOS Y COSTOS POR CURSO
+// 3. RECURSOS Y COSTOS POR CURSO
 // ==================================================
 
 async function cargarSelectorCursosRecursos() {
@@ -672,7 +692,7 @@ btnGuardarRecursos?.addEventListener('click', async () => {
 });
 
 // ==================================================
-// 5. LISTADO DE USUARIOS Y AVANCES EN PANTALLA
+// 4. LISTADO DE USUARIOS Y AVANCES
 // ==================================================
 
 async function cargarUsuariosRegistrados() {
@@ -682,13 +702,17 @@ async function cargarUsuariosRegistrados() {
     try {
         const snapshot = await getDocs(collection(db, 'users'));
         tableUsuariosBody.innerHTML = '';
+        listaUsuariosCache = [];
 
         if (snapshot.empty) {
             tableUsuariosBody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-gray-500">No hay usuarios registrados en Firestore.</td></tr>`;
             return;
         }
 
-        listaUsuariosCache = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        snapshot.forEach(docSnap => {
+            listaUsuariosCache.push({ id: docSnap.id, ...docSnap.data() });
+        });
+
         renderizarTablaUsuarios(listaUsuariosCache);
     } catch (error) {
         console.error('Error al cargar usuarios:', error);
@@ -708,7 +732,7 @@ function renderizarTablaUsuarios(usuarios) {
 
     usuarios.forEach(usuario => {
         const fila = document.createElement('tr');
-        fila.className = 'hover:bg-wine-50/40 transition-colors border-b border-wine-50';
+        fila.className = 'hover:bg-wine-50/40 transition-colors';
 
         let fechaStr = 'Fecha desconocida';
         if (usuario.createdAt?.toDate) {
@@ -810,6 +834,231 @@ modalProgressClose?.addEventListener('click', () => modalProgress.classList.add(
 btnCloseProgressModal?.addEventListener('click', () => modalProgress.classList.add('hidden'));
 
 // ==================================================
+// 5. CRM / LEADS Y EMBUDO DE VENTAS
+// ==================================================
+
+const STAGES = ['Nuevo', 'Contactado', 'Interesado', 'Cliente', 'Perdido'];
+
+async function inicializarCrm() {
+    mostrarCarga(true);
+    try {
+        // Obtenemos usuarios e inscripciones activas para mapear clientes reales
+        const snapUsers = await getDocs(collection(db, 'users'));
+        const snapEnroll = await getDocs(collection(db, 'enrollments'));
+        
+        listaUsuariosCache = snapUsers.docs.map(d => ({ id: d.id, ...d.data() }));
+        listaMatriculasCache = snapEnroll.docs.map(d => ({ id: d.id, ...d.data() }));
+
+        // Cargar notas de CRM guardadas localmente o en Firestore si existe colección
+        renderizarKanbanCrm();
+        poblarSelectorCrm();
+    } catch (err) {
+        console.error('Error al inicializar CRM:', err);
+        mostrarAlerta('No se pudo cargar el CRM.');
+    } finally {
+        mostrarCarga(false);
+    }
+}
+
+function renderizarKanbanCrm() {
+    if (!kanbanContainer) return;
+    kanbanContainer.innerHTML = '';
+
+    STAGES.forEach((stageName, stageIndex) => {
+        // Clasificamos estudiantes según matrículas (si tienen matrícula activa = Cliente etapa 3, sino etapa 0 o 1)
+        const leadsEnEtapa = listaUsuariosCache.filter(user => {
+            const tieneMatricula = listaMatriculasCache.some(m => m.userId === user.id && m.status === 'active');
+            const etapaAsignada = user.crmStage ?? (tieneMatricula ? 3 : 0);
+            return etapaAsignada === stageIndex;
+        });
+
+        const col = document.createElement('div');
+        col.className = 'kanban-col';
+        col.innerHTML = `
+            <h3><span>${stageName}</span> <span class="tag">${leadsEnEtapa.length}</span></h3>
+            <div style="display:flex; flex-direction:column; gap:8px;" id="col-leads-${stageIndex}"></div>
+        `;
+
+        const leadsContainer = col.querySelector(`#col-leads-${stageIndex}`);
+
+        if (leadsEnEtapa.length === 0) {
+            leadsContainer.innerHTML = `<p class="text-xs text-gray-400 text-center py-6">Sin contactos</p>`;
+        } else {
+            leadsEnEtapa.forEach(lead => {
+                const card = document.createElement('div');
+                card.className = 'lead-card';
+                card.innerHTML = `
+                    <b>${escaparHTML(lead.name || 'Sin nombre')}</b>
+                    <small>${escaparHTML(lead.email || '')}</small>
+                    <div style="display:flex; gap:4px; margin-top:6px; flex-wrap:wrap;">
+                        ${stageIndex < 4 ? `<button data-action="avanzar" data-id="${lead.id}">Avanzar ›</button>` : ''}
+                        ${stageIndex < 3 ? `<button data-action="perder" data-id="${lead.id}" style="background:#fde8e8; color:var(--error);">Perdido</button>` : ''}
+                    </div>
+                `;
+
+                card.querySelector('[data-action="avanzar"]')?.addEventListener('click', async () => {
+                    await cambiarEtapaCrm(lead.id, stageIndex + 1);
+                });
+
+                card.querySelector('[data-action="perder"]')?.addEventListener('click', async () => {
+                    await cambiarEtapaCrm(lead.id, 4);
+                });
+
+                leadsContainer.appendChild(card);
+            });
+        }
+
+        kanbanContainer.appendChild(col);
+    });
+}
+
+async function cambiarEtapaCrm(userId, nuevaEtapa) {
+    mostrarCarga(true);
+    try {
+        await updateDoc(doc(db, 'users', userId), { crmStage: nuevaEtapa });
+        const userObj = listaUsuariosCache.find(u => u.id === userId);
+        if (userObj) userObj.crmStage = nuevaEtapa;
+        renderizarKanbanCrm();
+        mostrarAlerta('Etapa de contacto actualizada.', 'exito');
+    } catch (e) {
+        console.error(e);
+        mostrarAlerta('No se pudo actualizar el estado del lead.');
+    } finally {
+        mostrarCarga(false);
+    }
+}
+
+function poblarSelectorCrm() {
+    if (!crmContactSelect) return;
+    crmContactSelect.innerHTML = '<option value="">Selecciona un estudiante...</option>';
+    listaUsuariosCache.forEach(u => {
+        const opt = document.createElement('option');
+        opt.value = u.id;
+        opt.textContent = `${u.name || 'Sin nombre'} (${u.email || ''})`;
+        crmContactSelect.appendChild(opt);
+    });
+    renderizarNotasCrm();
+}
+
+crmContactSelect?.addEventListener('change', renderizarNotasCrm);
+
+btnGuardarNotaCrm?.addEventListener('click', () => {
+    const userId = crmContactSelect.value;
+    const texto = crmNotaInput.value.trim();
+
+    if (!userId) {
+        mostrarAlerta('Selecciona un contacto primero.');
+        return;
+    }
+    if (!texto) {
+        mostrarAlerta('Escribe una nota.');
+        return;
+    }
+
+    crmNotasCache.push({ userId, text: texto, date: new Date().toLocaleDateString('es-CO') });
+    crmNotaInput.value = '';
+    renderizarNotasCrm();
+    mostrarAlerta('Nota guardada con éxito.', 'exito');
+});
+
+function renderizarNotasCrm() {
+    if (!crmNotasList) return;
+    const userId = crmContactSelect?.value;
+    const notasFiltradas = crmNotasCache.filter(n => n.userId === userId);
+
+    crmNotasList.innerHTML = '';
+    if (notasFiltradas.length === 0) {
+        crmNotasList.innerHTML = `<li style="color:var(--muted); font-size:13px;">Aún no hay notas registradas para este contacto.</li>`;
+        return;
+    }
+
+    notasFiltradas.forEach(n => {
+        const li = document.createElement('li');
+        li.innerHTML = `<b>[${n.date}]:</b> ${escaparHTML(n.text)}`;
+        crmNotasList.appendChild(li);
+    });
+}
+
+// ==================================================
+// 6. REPORTES DE VENTAS Y RENTABILIDAD
+// ==================================================
+
+async function inicializarReportes() {
+    mostrarCarga(true);
+    try {
+        const snapCourses = await getDocs(collection(db, 'courses'));
+        const snapEnroll = await getDocs(collection(db, 'enrollments'));
+        const snapUsers = await getDocs(collection(db, 'users'));
+
+        const cursos = snapCourses.docs.map(d => ({ id: d.id, ...d.data() }));
+        const matriculas = snapEnroll.docs.map(d => d.data()).filter(m => m.status === 'active');
+        const usuarios = snapUsers.docs.map(d => d.data());
+
+        // Calcular métricas financieras reales
+        let ventasTotales = 0;
+        let costosTotales = 0;
+
+        cursos.forEach(curso => {
+            const inscritosCurso = matriculas.filter(m => m.courseId === curso.id).length;
+            ventasTotales += inscritosCurso * (Number(curso.price) || 0);
+            costosTotales += Number(curso.productionCost) || 0;
+        });
+
+        const totalInscritos = matriculas.length;
+        const tasaConversion = usuarios.length > 0 ? Math.round((totalInscritos / usuarios.length) * 100) : 0;
+        
+        // Renderizar KPIs
+        if (reportesKpis) {
+            reportesKpis.innerHTML = `
+                <div class="card" style="background:var(--wine); color:white;">
+                    <small style="color:var(--rose); font-weight:600; text-transform:uppercase; font-size:11px;">Ventas Totales</small>
+                    <b style="font-size:2rem; font-family:'Playfair Display',serif; display:block; margin-top:4px;">${dinero(ventasTotales)}</b>
+                </div>
+                <div class="card" style="background:var(--wine); color:white;">
+                    <small style="color:var(--rose); font-weight:600; text-transform:uppercase; font-size:11px;">Inscripciones Activas</small>
+                    <b style="font-size:2rem; font-family:'Playfair Display',serif; display:block; margin-top:4px;">${totalInscritos}</b>
+                </div>
+                <div class="card" style="background:var(--wine); color:white;">
+                    <small style="color:var(--rose); font-weight:600; text-transform:uppercase; font-size:11px;">Tasa de Conversión</small>
+                    <b style="font-size:2rem; font-family:'Playfair Display',serif; display:block; margin-top:4px;">${tasaConversion}%</b>
+                </div>
+            `;
+        }
+
+        // Renderizar Gráfico de Barras Ingresos vs Costos
+        if (reportesChart) {
+            reportesChart.innerHTML = '';
+            const maxValor = Math.max(...cursos.map(c => Math.max(matriculas.filter(m => m.courseId === c.id).length * (c.price || 0), c.productionCost || 0)), 100000);
+
+            cursos.forEach(curso => {
+                const inscritos = matriculas.filter(m => m.courseId === curso.id).length;
+                const ingresoCurso = inscritos * (Number(curso.price) || 0);
+                const costoCurso = Number(curso.productionCost) || 0;
+
+                const alturaIngreso = Math.max(Math.round((ingresoCurso / maxValor) * 100), 4);
+                const alturaCosto = Math.max(Math.round((costoCurso / maxValor) * 100), 4);
+
+                const grupo = document.createElement('div');
+                grupo.className = 'bar-group';
+                grupo.innerHTML = `
+                    <div class="bar-wrapper">
+                        <div class="bar-col" style="height: ${alturaIngreso}%;" title="Ingresos: ${dinero(ingresoCurso)}"></div>
+                        <div class="bar-col cost" style="height: ${alturaCosto}%;" title="Costo: ${dinero(costoCurso)}"></div>
+                    </div>
+                    <span style="margin-top:8px; font-weight:600; color:var(--muted);">${escaparHTML(curso.title.split(' ')[0])}</span>
+                `;
+                reportesChart.appendChild(grupo);
+            });
+        }
+    } catch (e) {
+        console.error('Error al generar reportes:', e);
+        mostrarAlerta('No se pudieron generar los reportes de ventas.');
+    } finally {
+        mostrarCarga(false);
+    }
+}
+
+// ==================================================
 // LISTENERS PRINCIPALES
 // ==================================================
 
@@ -858,11 +1107,11 @@ onAuthStateChanged(auth, async usuario => {
 
         if (!documentoUsuario.exists() || documentoUsuario.data().role !== 'admin') {
             document.body.innerHTML = `
-                <div class="min-h-screen flex items-center justify-center p-6 bg-wine-50">
+                <div class="min-h-screen flex items-center justify-center p-6 bg-cream">
                     <div class="max-w-md w-full bg-white rounded-3xl p-8 text-center shadow-xl border border-red-200">
-                        <h2 class="text-2xl font-bold text-wine-900 mb-4">Acceso denegado</h2>
+                        <h2 class="text-2xl font-bold text-wine-900 mb-4" style="font-family:'Playfair Display',serif;">Acceso denegado</h2>
                         <p class="text-sm text-gray-600 mb-6">Esta sección es exclusiva para administradores.</p>
-                        <a href="index.html" class="inline-block w-full py-3 rounded-xl text-white font-bold text-sm custom-gradient">
+                        <a href="index.html" class="inline-block w-full py-3 rounded-xl text-white font-bold text-sm" style="background:var(--wine);">
                             Volver al inicio
                         </a>
                     </div>
