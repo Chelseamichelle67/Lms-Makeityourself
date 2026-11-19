@@ -2,23 +2,19 @@
 <html lang="es">
 <head>
   <meta name="google-site-verification" content="KJQs53NgEU0RJ_sI78E6Q37-wu6YjqMzelCXc_xHcRM" />
-<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "zeqtcbtn0f");
-</script>
-<!-- Google Analytics 4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9DWKGK81HE"></script>
+<!-- Consentimiento por defecto: las mediciones opcionales permanecen desactivadas hasta que la persona elija. -->
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
+  function gtag(){window.dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    analytics_storage: 'denied',
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    functionality_storage: 'granted',
+    security_storage: 'granted'
+  });
   gtag('js', new Date());
-
-  gtag('config', 'G-9DWKGK81HE');
-</script>
-
 </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -592,6 +588,62 @@
             .brand-logo, header.site.scrolled .brand-logo { height: 36px; }
             .brand.inverse .brand-logo { height: 60px; }
         }
+
+        /* ===== Aviso de cookies ===== */
+        .cookie-banner, .cookie-settings { font-family: 'DM Sans', sans-serif; }
+        .cookie-banner[hidden], .cookie-settings[hidden] { display: none !important; }
+        .cookie-banner {
+            position: fixed; left: 22px; bottom: 22px; z-index: 5000;
+            width: min(440px, calc(100vw - 32px)); padding: 25px;
+            color: var(--ink); background: rgba(255,253,249,.98);
+            border: 1px solid rgba(100,20,42,.18); border-radius: 18px;
+            box-shadow: 0 18px 60px rgba(38,7,18,.22); backdrop-filter: blur(14px);
+        }
+        .cookie-banner h2, .cookie-settings h2 {
+            margin: 0 0 9px; color: var(--wine); font: 600 23px/1.2 'Playfair Display',serif;
+        }
+        .cookie-banner p, .cookie-settings p {
+            margin: 0 0 16px; color: #6f6064; font-size: 13px; line-height: 1.65;
+        }
+        .cookie-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+        .cookie-actions button, .cookie-save {
+            min-height: 42px; padding: 0 15px; border: 1px solid var(--wine);
+            border-radius: 100px; background: transparent; color: var(--wine);
+            font: 600 12px 'DM Sans',sans-serif; cursor: pointer;
+        }
+        .cookie-actions .cookie-primary, .cookie-save {
+            background: var(--wine); color: #fff;
+        }
+        .cookie-actions button:hover, .cookie-save:hover { filter: brightness(1.08); }
+        .cookie-options { display: grid; gap: 12px; margin: 16px 0; padding: 15px;
+            background: #fbf2f3; border-radius: 12px; }
+        .cookie-option { display: flex; align-items: flex-start; gap: 10px; color: var(--ink); font-size: 12px; line-height: 1.5; }
+        .cookie-option input { margin-top: 3px; accent-color: var(--wine); }
+        .cookie-option strong { display: block; color: var(--wine); }
+        .cookie-required { color: #817176; font-size: 11px; }
+        .cookie-settings {
+            position: fixed; inset: 0; z-index: 5001; display: grid; place-items: center;
+            padding: 18px; background: rgba(28,7,14,.58);
+        }
+        .cookie-settings-card {
+            width: min(480px, 100%); max-height: min(90vh, 680px); overflow: auto;
+            padding: 26px; border-radius: 18px; background: var(--paper);
+            box-shadow: 0 24px 80px rgba(0,0,0,.28);
+        }
+        .cookie-settings-head { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+        .cookie-close { width:34px; height:34px; border:0; border-radius:50%; background:#f3e3e6; color:var(--wine); cursor:pointer; }
+        .cookie-reopen {
+            position: fixed; left: 16px; bottom: 16px; z-index: 4999;
+            border: 1px solid rgba(100,20,42,.25); border-radius: 100px;
+            padding: 9px 14px; background: #fffdf9; color: var(--wine);
+            box-shadow: 0 5px 20px rgba(38,7,18,.12); font: 600 11px 'DM Sans',sans-serif; cursor:pointer;
+        }
+        @media (max-width: 520px) {
+            .cookie-banner { left: 10px; bottom: 10px; width: calc(100vw - 20px); padding: 20px; }
+            .cookie-actions button { flex: 1 1 100%; }
+            .cookie-settings-card { padding: 21px; }
+        }
+
     </style>
 </head>
 <body>
@@ -1277,5 +1329,138 @@
             });
         });
     </script>
+
+    <!-- Preferencias de cookies: lo esencial funciona siempre; mediciones opcionales requieren elección. -->
+    <section id="cookie-banner" class="cookie-banner" role="dialog" aria-modal="false" aria-labelledby="cookie-title" aria-describedby="cookie-description" hidden>
+        <h2 id="cookie-title">Tu privacidad es importante</h2>
+        <p id="cookie-description">Usamos almacenamiento necesario para que Makeup Yourself funcione. Si lo autorizas, también utilizaremos Google Analytics para estadísticas y Microsoft Clarity para analizar la navegación y mejorar la experiencia.</p>
+        <div class="cookie-actions">
+            <button type="button" id="cookies-reject">Rechazar opcionales</button>
+            <button type="button" id="cookies-configure">Configurar</button>
+            <button type="button" id="cookies-accept" class="cookie-primary">Aceptar todas</button>
+        </div>
+    </section>
+
+    <section id="cookie-settings" class="cookie-settings" role="dialog" aria-modal="true" aria-labelledby="cookie-settings-title" hidden>
+        <div class="cookie-settings-card">
+            <div class="cookie-settings-head">
+                <h2 id="cookie-settings-title">Preferencias de cookies</h2>
+                <button type="button" class="cookie-close" id="cookies-close" aria-label="Cerrar configuración">×</button>
+            </div>
+            <p>Elige qué herramientas opcionales autorizas. Puedes cambiar tu decisión cuando quieras desde el botón “Cookies” de la página.</p>
+            <div class="cookie-options">
+                <div class="cookie-option">
+                    <input type="checkbox" checked disabled aria-label="Cookies necesarias siempre activas">
+                    <span><strong>Necesarias</strong><span class="cookie-required">Siempre activas. Permiten funciones básicas, seguridad y recordar esta elección.</span></span>
+                </div>
+                <label class="cookie-option">
+                    <input type="checkbox" id="cookie-analytics">
+                    <span><strong>Estadísticas — Google Analytics</strong><span class="cookie-required">Ayudan a conocer visitas y uso general del sitio.</span></span>
+                </label>
+                <label class="cookie-option">
+                    <input type="checkbox" id="cookie-clarity">
+                    <span><strong>Mapas de calor — Microsoft Clarity</strong><span class="cookie-required">Ayudan a entender interacciones y mejorar la navegación.</span></span>
+                </label>
+            </div>
+            <button type="button" id="cookies-save" class="cookie-save">Guardar mis preferencias</button>
+        </div>
+    </section>
+    <button type="button" id="cookies-reopen" class="cookie-reopen" aria-label="Cambiar preferencias de cookies">Cookies</button>
+
+    <script>
+    (() => {
+        const STORAGE_KEY = 'makeupYourselfCookieConsentV1';
+        const banner = document.getElementById('cookie-banner');
+        const settings = document.getElementById('cookie-settings');
+        const analyticsToggle = document.getElementById('cookie-analytics');
+        const clarityToggle = document.getElementById('cookie-clarity');
+        const reopenButton = document.getElementById('cookies-reopen');
+        let clarityLoaded = false;
+        let analyticsLoaded = false;
+
+        function readConsent() {
+            try {
+                const value = JSON.parse(localStorage.getItem(STORAGE_KEY));
+                if (value && typeof value.analytics === 'boolean' && typeof value.clarity === 'boolean') return value;
+            } catch (error) { console.warn('No se pudieron leer las preferencias de cookies:', error); }
+            return null;
+        }
+
+        function loadAnalytics() {
+            if (analyticsLoaded) return;
+            analyticsLoaded = true;
+            const script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-9DWKGK81HE';
+            document.head.appendChild(script);
+            gtag('config', 'G-9DWKGK81HE');
+        }
+
+        function loadClarity() {
+            if (clarityLoaded) return;
+            clarityLoaded = true;
+            window.clarity = window.clarity || function () {
+                (window.clarity.q = window.clarity.q || []).push(arguments);
+            };
+            const script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.clarity.ms/tag/zeqtcbtn0f';
+            document.head.appendChild(script);
+        }
+
+        function applyConsent(consent) {
+            const analytics = !!consent.analytics;
+            const clarity = !!consent.clarity;
+            gtag('consent', 'update', {
+                analytics_storage: analytics ? 'granted' : 'denied',
+                ad_storage: 'denied',
+                ad_user_data: 'denied',
+                ad_personalization: 'denied'
+            });
+            if (analytics) loadAnalytics();
+            if (clarity) {
+                loadClarity();
+                window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: 'granted' });
+            } else if (window.clarity) {
+                window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: 'denied' });
+                window.clarity('consent', false);
+            }
+        }
+
+        function saveConsent(consent) {
+            const completeConsent = { necessary: true, analytics: !!consent.analytics, clarity: !!consent.clarity, updatedAt: new Date().toISOString() };
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(completeConsent)); }
+            catch (error) { console.warn('No se pudieron guardar las preferencias de cookies:', error); }
+            applyConsent(completeConsent);
+            banner.hidden = true;
+            settings.hidden = true;
+        }
+
+        function openSettings() {
+            const current = readConsent();
+            analyticsToggle.checked = current ? current.analytics : false;
+            clarityToggle.checked = current ? current.clarity : false;
+            settings.hidden = false;
+        }
+
+        document.getElementById('cookies-accept').addEventListener('click', () => saveConsent({ analytics: true, clarity: true }));
+        document.getElementById('cookies-reject').addEventListener('click', () => saveConsent({ analytics: false, clarity: false }));
+        document.getElementById('cookies-configure').addEventListener('click', openSettings);
+        document.getElementById('cookies-save').addEventListener('click', () => saveConsent({ analytics: analyticsToggle.checked, clarity: clarityToggle.checked }));
+        document.getElementById('cookies-close').addEventListener('click', () => { settings.hidden = true; });
+        reopenButton.addEventListener('click', openSettings);
+        settings.addEventListener('click', event => { if (event.target === settings) settings.hidden = true; });
+        document.addEventListener('keydown', event => { if (event.key === 'Escape') settings.hidden = true; });
+
+        const savedConsent = readConsent();
+        if (savedConsent) {
+            applyConsent(savedConsent);
+            banner.hidden = true;
+        } else {
+            banner.hidden = false;
+        }
+    })();
+    </script>
+
 </body>
 </html>
