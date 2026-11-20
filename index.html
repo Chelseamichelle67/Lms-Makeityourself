@@ -1292,6 +1292,42 @@ body:has(#video-modal:not(.hidden)) {
 
 
 
+<!-- MODAL DE VIDEO PARA LA CLASE GRATUITA -->
+<div id="video-modal" class="modal hidden"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="video-modal-title">
+
+    <div class="modal-box">
+
+        <button
+            type="button"
+            class="modal-close"
+            onclick="closeVideoModal()"
+            aria-label="Cerrar modal de video">
+
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <h3 id="video-modal-title">
+            Masterclass gratuita de muestra
+        </h3>
+
+        <div class="screen">
+
+            <iframe
+                id="free-class-video"
+                src=""
+                title="Masterclass gratuita de Makeup Yourself"
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+
+        </div>
+
+    </div>
+</div>
+
 
     <!-- Scripts interactivos -->
     <script>
