@@ -1886,5 +1886,77 @@ body:has(#video-modal:not(.hidden)) {
 
 <script type="module" src="./js/newsletter.js"></script>
 
+<script>
+    // ABRIR MODAL
+    window.openVideoModal = function () {
+        const modal = document.getElementById("video-modal");
+        const video = document.getElementById("free-class-video");
+
+        if (!modal || !video) {
+            console.error("No se encontró el modal o el iframe");
+            return;
+        }
+
+        video.src = "https://www.youtube.com/embed/FWTz0CsSu84?autoplay=1&rel=0";
+        modal.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+    };
+
+    // CERRAR MODAL
+    window.closeVideoModal = function () {
+        const modal = document.getElementById("video-modal");
+        const video = document.getElementById("free-class-video");
+
+        if (!modal || !video) return;
+
+        video.src = "";
+        modal.classList.add("hidden");
+        document.body.style.overflow = "";
+    };
+
+    // CERRAR AL PULSAR EL FONDO
+    document.addEventListener("click", function (e) {
+        const modal = document.getElementById("video-modal");
+
+        if (modal && e.target === modal) {
+            window.closeVideoModal();
+        }
+    });
+
+    // CERRAR CON ESCAPE
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+            window.closeVideoModal();
+        }
+    });
+</script>
+</body>
+```
+
+### Necesito que me confirmes algo
+
+{@body const [result,setResult] = DIL.useState("no_abre")}
+{@body const [filename,setFilename] = DIL.useState("no_se")}
+<box border radius="lg" padding={3} gap={3}>
+  **¿Qué sucede cuando pulsas el botón de reproducir?**
+  <radio-group direction="col" value={result} onChange={setResult}>
+    <radio value="no_abre">No hace absolutamente nada.</radio>
+    <radio value="oscuro">Se oscurece la pantalla, pero no aparece el video.</radio>
+    <radio value="no_video">Se abre el modal, pero el video no carga.</radio>
+    <radio value="error">Aparece un error en la consola.</radio>
+    <radio value="otro">Sucede algo diferente.</radio>
+  </radio-group>
+  <divider color="subtle"/>
+  **¿Cómo se llama tu archivo JavaScript?**
+  <radio-group direction="col" value={filename} onChange={setFilename}>
+    <radio value="script.js">script.js</radio>
+    <radio value="main.js">main.js</radio>
+    <radio value="index.js">index.js</radio>
+    <radio value="otro">Tiene otro nombre.</radio>
+    <radio value="no_se">No sé / no recuerdo.</radio>
+  </radio-group>
+  <button block onClick={()=>GenUI.issueNewTurn("El modal: "+result+". Mi archivo JavaScript: "+filename+". Ayúdame a corregirlo.")}>Enviar respuestas</button>
+</box>
+
 </body>
 </html>
