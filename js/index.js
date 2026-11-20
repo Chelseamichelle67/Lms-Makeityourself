@@ -232,7 +232,7 @@ if (newsletterForm && newsletterEmail) {
 
 
 // ========================================
-// 6. MODAL DE VIDEO - CLASE GRATUITA
+// MODAL DE VIDEO - CLASE GRATUITA
 // ========================================
 
 function openVideoModal() {
@@ -242,18 +242,19 @@ function openVideoModal() {
 
     if (!modal || !video) return;
 
+    // Cargar el video de YouTube
     video.src = "https://www.youtube.com/embed/FWTz0CsSu84?autoplay=1&rel=0";
 
+    // Mostrar modal
     modal.classList.remove("hidden");
 
+    // Evitar desplazamiento de la página
     document.body.style.overflow = "hidden";
-
-    modal.querySelector(".modal-close")?.focus();
 }
 
 
 // ========================================
-// 7. CERRAR MODAL Y DETENER VIDEO
+// CERRAR MODAL Y DETENER VIDEO
 // ========================================
 
 function closeVideoModal() {
@@ -263,16 +264,19 @@ function closeVideoModal() {
 
     if (!modal || !video) return;
 
+    // Detener video al cerrar
     video.src = "";
 
+    // Ocultar modal
     modal.classList.add("hidden");
 
+    // Recuperar desplazamiento
     document.body.style.overflow = "";
 }
 
 
 // ========================================
-// 8. CERRAR CON LA TECLA ESCAPE
+// CERRAR CON LA TECLA ESCAPE
 // ========================================
 
 document.addEventListener("keydown", (e) => {
