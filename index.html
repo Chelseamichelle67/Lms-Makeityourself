@@ -29,6 +29,147 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+
+<style>
+/* =====================================
+   PROMOCIÓN GUÍA GRATUITA
+   MAKEUP YOURSELF
+===================================== */
+
+.newsletter-promo {
+    position: relative;
+    padding: 35px 0;
+    gap: 35px;
+}
+
+.newsletter-gift-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #e08a95;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.newsletter-promo-copy h4 {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+    line-height: 1.3;
+}
+
+.newsletter-promo-copy h4 em {
+    color: #e08a95;
+}
+
+.newsletter-promo-copy p {
+    max-width: 520px;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    opacity: 0.85;
+}
+
+.newsletter-promo #newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 400px;
+    width: 100%;
+}
+
+.newsletter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.newsletter-promo #newsletter-email {
+    width: 100%;
+    min-width: 0;
+    padding: 15px 18px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    outline: none;
+    font-size: 0.9rem;
+}
+
+.newsletter-promo #newsletter-email::placeholder {
+    color: rgba(255,255,255,0.65);
+}
+
+.newsletter-promo #newsletter-email:focus {
+    border-color: #e08a95;
+}
+
+.newsletter-field small {
+    color: #e8cbd0;
+    font-size: 0.76rem;
+    line-height: 1.5;
+}
+
+.newsletter-field small i {
+    color: #e08a95;
+    margin-right: 5px;
+}
+
+.newsletter-promo #newsletter-form button {
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #a3283c;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.newsletter-promo #newsletter-form button:hover {
+    background: #721422;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 700px) {
+    .newsletter-promo {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 22px;
+    }
+
+    .newsletter-promo #newsletter-form {
+        max-width: 100%;
+    }
+}
+
+/* REPRODUCTOR DE YOUTUBE EN EL MODAL */
+
+#video-modal .screen {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #000;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+#video-modal .screen iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: none;
+}
+
+#video-modal.hidden {
+    display: none !important;
+}
+
+body:has(#video-modal:not(.hidden)) {
+    overflow: hidden;
+}
+
         :root {
             --wine: #64142a;
             --dark: #260712;
@@ -836,25 +977,279 @@
             </div>
         </section>
 
-        <!-- Clase gratuita -->
-        <section class="free-class on-dark" id="clase-gratis">
-            <button type="button" class="video-card" onclick="openVideoModal()" aria-label="Reproducir clase de prueba gratuita">
-                <img src="https://i.pinimg.com/1200x/41/43/5e/41435e184a17b7efc5b1422e13bf9bc0.jpg" alt="Vista previa de la clase de prueba" onerror="this.style.display='none'">
-                <span class="play"><i class="fa-solid fa-play"></i></span>
-                <span class="cap">Reproducir clase de prueba · 15 min</span>
-            </button>
-            <div class="free-copy">
-                <p class="eyebrow">¡Empieza sin costo!</p>
-                <h2>Mira una clase de muestra <em>gratis</em></h2>
-                <p>Comprueba la claridad de nuestras lecciones antes de tomar una decisión. Accede inmediatamente a nuestra miniclase donde revelamos cómo corregir ojeras y unificar el tono de piel sin recargar.</p>
-                <ul class="checks">
-                    <li><i class="fa-solid fa-check"></i> Sin tarjeta de crédito ni compromisos</li>
-                    <li><i class="fa-solid fa-check"></i> Duración: 15 minutos explicados al detalle</li>
-                    <li><i class="fa-solid fa-check"></i> Acceso online inmediato desde cualquier lugar</li>
-                </ul>
-                <button type="button" class="pill light" onclick="openVideoModal()"><i class="fa-solid fa-play"></i> Reproducir clase gratuita ahora</button>
-            </div>
-        </section>
+    
+<!-- ========================================
+     CLASE GRATUITA - MAKEUP YOURSELF
+======================================== -->
+
+<style>
+    .free-class {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        gap: 4rem;
+        padding: 6rem 8%;
+    }
+
+    .free-class .video-card {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        border: none;
+        border-radius: 18px;
+        padding: 0;
+        cursor: pointer;
+        background: #520e18;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    }
+
+    .free-class .video-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.4s ease;
+    }
+
+    .free-class .video-card:hover img {
+        transform: scale(1.05);
+    }
+
+    .free-class .video-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(50,0,10,0.18);
+    }
+
+    .free-class .play {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 75px;
+        height: 75px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #a3283c;
+        color: white;
+        font-size: 25px;
+        z-index: 2;
+        transition: 0.3s ease;
+    }
+
+    .free-class .video-card:hover .play {
+        transform: translate(-50%,-50%) scale(1.12);
+        background: #721422;
+    }
+
+    .free-class .cap {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 20px;
+        text-align: center;
+        color: white;
+        font-size: 0.9rem;
+        font-weight: 600;
+        background: linear-gradient(transparent,rgba(0,0,0,0.8));
+        z-index: 2;
+    }
+
+    .free-copy .eyebrow {
+        color: #e08a95;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.8rem;
+    }
+
+    .free-copy h2 {
+        font-size: clamp(2rem,4vw,3rem);
+        margin: 12px 0 20px;
+    }
+
+    .free-copy h2 em {
+        color: #e08a95;
+    }
+
+    .free-copy > p:not(.eyebrow) {
+        line-height: 1.8;
+        opacity: 0.85;
+    }
+
+    .free-copy .checks {
+        list-style: none;
+        padding: 0;
+        margin: 25px 0;
+    }
+
+    .free-copy .checks li {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 15px;
+        line-height: 1.5;
+    }
+
+    .free-copy .checks li i {
+        color: #e08a95;
+        margin-top: 4px;
+    }
+
+    /* MODAL DEL VIDEO */
+
+    .video-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        background: rgba(20,5,8,0.94);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 25px;
+        animation: videoFade 0.3s ease;
+    }
+
+    .video-modal-content {
+        position: relative;
+        width: 100%;
+        max-width: 950px;
+        aspect-ratio: 16 / 9;
+        background: #000;
+        border-radius: 14px;
+    }
+
+    .video-modal iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: 14px;
+    }
+
+    .close-video {
+        position: absolute;
+        top: -45px;
+        right: 0;
+        width: 38px;
+        height: 38px;
+        border: none;
+        border-radius: 50%;
+        background: #a3283c;
+        color: white;
+        font-size: 22px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .close-video:hover {
+        background: #e08a95;
+        transform: rotate(90deg);
+    }
+
+    @keyframes videoFade {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 850px) {
+        .free-class {
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+            padding: 4rem 6%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .free-class {
+            padding: 3rem 5%;
+        }
+
+        .free-class .play {
+            width: 58px;
+            height: 58px;
+            font-size: 20px;
+        }
+
+        .free-copy h2 {
+            font-size: 2rem;
+        }
+
+        .video-modal {
+            padding: 15px;
+        }
+    }
+</style>
+
+<section class="free-class on-dark" id="clase-gratis">
+
+    <button
+        type="button"
+        class="video-card"
+        onclick="openVideoModal()"
+        aria-label="Reproducir clase de prueba gratuita">
+
+        <img
+            src="https://img.youtube.com/vi/FWTz0CsSu84/maxresdefault.jpg"
+            alt="Vista previa de la clase gratuita"
+            onerror="this.onerror=null; this.src='https://img.youtube.com/vi/FWTz0CsSu84/hqdefault.jpg';">
+
+        <span class="play">
+            <i class="fa-solid fa-play"></i>
+        </span>
+
+        <span class="cap">
+            Reproducir clase de prueba · 15 min
+        </span>
+
+    </button>
+
+    <div class="free-copy">
+
+        <p class="eyebrow">¡Empieza sin costo!</p>
+
+        <h2>Mira una clase de muestra <em>gratis</em></h2>
+
+        <p>
+            Comprueba la claridad de nuestras lecciones antes de tomar
+            una decisión. Accede inmediatamente a nuestra miniclase
+            donde revelamos cómo corregir ojeras y unificar el tono
+            de piel sin recargar.
+        </p>
+
+        <ul class="checks">
+            <li><i class="fa-solid fa-check"></i>
+                Sin tarjeta de crédito ni compromisos
+            </li>
+
+            <li><i class="fa-solid fa-check"></i>
+                Duración: 15 minutos explicados al detalle
+            </li>
+
+            <li><i class="fa-solid fa-check"></i>
+                Acceso online inmediato desde cualquier lugar
+            </li>
+        </ul>
+
+        <button
+            type="button"
+            class="pill light"
+            onclick="openVideoModal()">
+
+            <i class="fa-solid fa-play"></i>
+            Reproducir clase gratuita ahora
+
+        </button>
+
+    </div>
+</section>
+
 
         <!-- Ahorro / beneficios -->
         <section class="savings">
@@ -1085,40 +1480,88 @@
 
         <div class="foot-bottom on-dark">
             <!-- Boletín -->
-            <div class="news">
-                <div>
-                    <h4>Suscríbete a nuestro boletín de tips</h4>
-                    <p>Recibe consejos semanales de maquillaje y ofertas exclusivas.</p>
-                </div>
-                <form id="newsletter-form">
-                    <input type="email" id="newsletter-email" placeholder="Tu correo electrónico" aria-label="Correo para el boletín">
-                    <button type="submit">Suscribirme</button>
-                </form>
-            </div>
-            <div class="legal">
-                <p style="margin:0">&copy; 2026 Makeup Yourself. Todos los derechos reservados.</p>
-                <div>
-                    <a href="#">Términos y Condiciones</a>
-                    <a href="#">Política de Privacidad</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+            
+<!-- PROMOCIÓN: GUÍA GRATUITA DE MAQUILLAJE -->
+<div class="news newsletter-promo">
 
-    <!-- Modal de video para la clase gratuita -->
-    <div id="video-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="video-modal-title">
-        <div class="modal-box">
-            <button type="button" class="modal-close" onclick="closeVideoModal()" aria-label="Cerrar modal de video"><i class="fa-solid fa-xmark"></i></button>
-            <h3 id="video-modal-title">Masterclass gratuita de muestra</h3>
-            <div class="screen">
-                <div>
-                    <i class="fa-solid fa-circle-play"></i>
-                    <p>Reproduciendo lección de muestra...</p>
-                    <small>Aprende la técnica de corrección de ojeras e iluminación en 3 sencillos pasos.</small>
-                </div>
-            </div>
-        </div>
+    <div class="newsletter-promo-copy">
+        <span class="newsletter-gift-tag">
+            <i class="fa-solid fa-gift"></i> UN REGALO PARA TI
+        </span>
+
+        <h4>¡Tu próxima guía de maquillaje es <em>gratis!</em></h4>
+
+        <p>
+            Suscríbete a Makeup Yourself y recibe en tu correo
+            nuestra guía especial de maquillaje. Descubre qué
+            productos necesitas, cómo elegirlos y cómo ahorrar
+            al momento de comprar.
+        </p>
     </div>
+
+    <form id="newsletter-form">
+
+        <div class="newsletter-field">
+            <input
+                type="email"
+                id="newsletter-email"
+                placeholder="Tu correo electrónico"
+                aria-label="Correo electrónico para recibir la guía"
+                autocomplete="email"
+                required>
+
+            <small>
+                <i class="fa-solid fa-envelope"></i>
+                Tu guía gratuita llegará a tu correo electrónico.
+            </small>
+        </div>
+
+        <button type="submit">
+            <i class="fa-solid fa-gift"></i>
+            ¡Quiero mi guía gratis!
+        </button>
+
+    </form>
+
+</div>
+
+
+
+<!-- MODAL DE VIDEO PARA LA CLASE GRATUITA -->
+<div id="video-modal" class="modal hidden"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="video-modal-title">
+
+    <div class="modal-box">
+
+        <button
+            type="button"
+            class="modal-close"
+            onclick="closeVideoModal()"
+            aria-label="Cerrar modal de video">
+
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <h3 id="video-modal-title">
+            Masterclass gratuita de muestra
+        </h3>
+
+        <div class="screen">
+
+            <iframe
+                id="free-class-video"
+                src=""
+                title="Masterclass gratuita de Makeup Yourself"
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+
+        </div>
+
+    </div>
+</div>
 
     <!-- Scripts interactivos -->
     <script>
@@ -1171,15 +1614,6 @@
             if (e.key === 'Escape') closeVideoModal();
         });
 
-        // Boletín
-        document.getElementById('newsletter-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const input = document.getElementById('newsletter-email');
-            if (input.value.trim() !== '') {
-                input.value = '';
-                alert('¡Gracias por suscribirte a nuestro boletín!');
-            }
-        });
     </script>
 
     <script>
@@ -1461,6 +1895,8 @@
         }
     })();
     </script>
+
+<script type="module" src="./js/newsletter.js"></script>
 
 </body>
 </html>
