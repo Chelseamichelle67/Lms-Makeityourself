@@ -1598,22 +1598,7 @@ body:has(#video-modal:not(.hidden)) {
             });
         });
 
-        // Modal de video
-        function openVideoModal() {
-            const modal = document.getElementById('video-modal');
-            modal.classList.remove('hidden');
-            modal.querySelector('.modal-close').focus();
-        }
-        function closeVideoModal() {
-            document.getElementById('video-modal').classList.add('hidden');
-        }
-        document.getElementById('video-modal').addEventListener('click', (e) => {
-            if (e.target.id === 'video-modal') closeVideoModal();
-        });
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeVideoModal();
-        });
-
+      
     </script>
 
     <script>
