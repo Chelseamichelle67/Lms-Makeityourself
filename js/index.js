@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
 
     // 1. RENDERIZADO DINÁMICO DE MÓDULOS
@@ -164,7 +163,6 @@ const newsletterEmail = document.getElementById("newsletter-email");
 
 if (newsletterForm && newsletterEmail) {
 
-    // Crear mensaje de estado debajo del formulario
     let newsletterMessage = document.getElementById("newsletter-message");
 
     if (!newsletterMessage) {
@@ -232,10 +230,9 @@ if (newsletterForm && newsletterEmail) {
     });
 }
 
-// ========================================
 
 // ========================================
-// MODAL DE VIDEO - CLASE GRATUITA
+// 6. MODAL DE VIDEO - CLASE GRATUITA
 // ========================================
 
 function openVideoModal() {
@@ -245,19 +242,18 @@ function openVideoModal() {
 
     if (!modal || !video) return;
 
-    // Cargar el video de YouTube
     video.src = "https://www.youtube.com/embed/FWTz0CsSu84?autoplay=1&rel=0";
 
-    // Mostrar modal
     modal.classList.remove("hidden");
 
-    // Evitar desplazamiento de la página
     document.body.style.overflow = "hidden";
+
+    modal.querySelector(".modal-close")?.focus();
 }
 
 
 // ========================================
-// CERRAR MODAL Y DETENER VIDEO
+// 7. CERRAR MODAL Y DETENER VIDEO
 // ========================================
 
 function closeVideoModal() {
@@ -267,19 +263,16 @@ function closeVideoModal() {
 
     if (!modal || !video) return;
 
-    // Detener video al cerrar
     video.src = "";
 
-    // Ocultar modal
     modal.classList.add("hidden");
 
-    // Recuperar desplazamiento
     document.body.style.overflow = "";
 }
 
 
 // ========================================
-// CERRAR CON LA TECLA ESCAPE
+// 8. CERRAR CON LA TECLA ESCAPE
 // ========================================
 
 document.addEventListener("keydown", (e) => {
@@ -289,50 +282,3 @@ document.addEventListener("keydown", (e) => {
     }
 
 });
-
-
-    const videoId = "FWTz0CsSu84";
-
-    if (document.querySelector(".video-modal")) return;
-
-    const modal = document.createElement("div");
-    modal.className = "video-modal";
-
-    const content = document.createElement("div");
-    content.className = "video-modal-content";
-
-    const iframe = document.createElement("iframe");
-
-    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
-    iframe.title = "Clase gratuita de maquillaje - Makeup Yourself";
-    iframe.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
-    iframe.allowFullscreen = true;
-
-    const closeButton = document.createElement("button");
-    closeButton.className = "close-video";
-    closeButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-    closeButton.setAttribute("aria-label", "Cerrar video");
-
-    function closeModal() {
-        modal.remove();
-        document.removeEventListener("keydown", escapeHandler);
-    }
-
-    function escapeHandler(e) {
-        if (e.key === "Escape") closeModal();
-    }
-
-    closeButton.addEventListener("click", closeModal);
-
-    modal.addEventListener("click", (e) => {
-        if (e.target === modal) closeModal();
-    });
-
-    document.addEventListener("keydown", escapeHandler);
-
-    content.appendChild(iframe);
-    content.appendChild(closeButton);
-    modal.appendChild(content);
-
-    document.body.appendChild(modal);
-}
