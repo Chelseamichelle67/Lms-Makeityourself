@@ -157,84 +157,20 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// ========================================
-// 5. REPRODUCTOR DE CLASE GRATUITA
-// ========================================
-
-function openVideoModal() {
-
-    const videoId = "FWTz0CsSu84";
-
-    // Evitar abrir varias ventanas
-    if (document.querySelector(".video-modal")) {
-        return;
-    }
-
-    // Crear modal
-    const modal = document.createElement("div");
-    modal.className = "video-modal";
-
-    // Crear contenido
-    const content = document.createElement("div");
-    content.className = "video-modal-content";
-
-    // Crear reproductor
-    const iframe = document.createElement("iframe");
-
-    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
-    iframe.title = "Clase gratuita de maquillaje - Makeup Yourself";
-    iframe.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
-    iframe.allowFullscreen = true;
-
-    // Botón para cerrar
-    const closeButton = document.createElement("button");
-
-    closeButton.className = "close-video";
-    closeButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-    closeButton.setAttribute("aria-label", "Cerrar video");
-
-    // Cerrar modal
-    function closeModal() {
-        modal.remove();
-        document.removeEventListener("keydown", escapeHandler);
-    }
-
-    closeButton.addEventListener("click", closeModal);
-
-    // Cerrar al hacer clic fuera del video
-    modal.addEventListener("click", (e) => {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
-
-    // Cerrar con tecla ESC
-    function escapeHandler(e) {
-        if (e.key === "Escape") {
-            closeModal();
-        }
-    }
-
-    document.addEventListener("keydown", escapeHandler);
-
-    // Organizar elementos
-    content.appendChild(iframe);
-    content.appendChild(closeButton);
-    modal.appendChild(content);
-
-    document.body.appendChild(modal);
-
 
 // ========================================
 // MODAL DE VIDEO - CLASE GRATUITA
+// MAKEUP YOURSELF
 // ========================================
 
 function openVideoModal() {
-
     const modal = document.getElementById("video-modal");
     const video = document.getElementById("free-class-video");
 
-    if (!modal || !video) return;
+    if (!modal || !video) {
+        console.error("No se encontró el modal o el reproductor de video.");
+        return;
+    }
 
     // Cargar el video de YouTube
     video.src = "https://www.youtube.com/embed/FWTz0CsSu84?autoplay=1&rel=0";
@@ -242,7 +178,7 @@ function openVideoModal() {
     // Mostrar modal
     modal.classList.remove("hidden");
 
-    // Evitar desplazamiento de la página
+    // Bloquear desplazamiento de la página
     document.body.style.overflow = "hidden";
 }
 
@@ -252,13 +188,12 @@ function openVideoModal() {
 // ========================================
 
 function closeVideoModal() {
-
     const modal = document.getElementById("video-modal");
     const video = document.getElementById("free-class-video");
 
     if (!modal || !video) return;
 
-    // Detener video al cerrar
+    // Detener completamente el video
     video.src = "";
 
     // Ocultar modal
@@ -267,6 +202,28 @@ function closeVideoModal() {
     // Recuperar desplazamiento
     document.body.style.overflow = "";
 }
+
+
+// ========================================
+// CERRAR AL HACER CLIC FUERA DEL VIDEO
+// ========================================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const modal = document.getElementById("video-modal");
+
+    if (modal) {
+        modal.addEventListener("click", (e) => {
+
+            // Solo cerrar si se pulsa el fondo oscuro
+            if (e.target === modal) {
+                closeVideoModal();
+            }
+
+        });
+    }
+
+});
 
 
 // ========================================
@@ -280,3 +237,4 @@ document.addEventListener("keydown", (e) => {
     }
 
 });
+
