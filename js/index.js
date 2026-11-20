@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
 
     // 1. RENDERIZADO DINÁMICO DE MÓDULOS
@@ -156,79 +157,72 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// 5. FORMULARIO DEL BOLETÍN - ENVÍO DE GUÍA GRATIS
+// ========================================
+// 5. REPRODUCTOR DE CLASE GRATUITA
+// ========================================
 
-const newsletterForm = document.getElementById("newsletter-form");
-const newsletterEmail = document.getElementById("newsletter-email");
+function openVideoModal() {
 
-if (newsletterForm && newsletterEmail) {
+    const videoId = "FWTz0CsSu84";
 
-    let newsletterMessage = document.getElementById("newsletter-message");
-
-    if (!newsletterMessage) {
-        newsletterMessage = document.createElement("p");
-        newsletterMessage.id = "newsletter-message";
-        newsletterMessage.setAttribute("role", "status");
-        newsletterMessage.style.marginTop = "12px";
-        newsletterMessage.style.fontSize = "14px";
-        newsletterForm.insertAdjacentElement("afterend", newsletterMessage);
+    // Evitar abrir varias ventanas
+    if (document.querySelector(".video-modal")) {
+        return;
     }
 
-    newsletterForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
+    // Crear modal
+    const modal = document.createElement("div");
+    modal.className = "video-modal";
 
-        const email = newsletterEmail.value.trim();
+    // Crear contenido
+    const content = document.createElement("div");
+    content.className = "video-modal-content";
 
-        if (!email) {
-            newsletterMessage.textContent = "Por favor, escribe tu correo electrónico.";
-            return;
-        }
+    // Crear reproductor
+    const iframe = document.createElement("iframe");
 
-        const boton = newsletterForm.querySelector('button[type="submit"]');
-        const textoOriginal = boton ? boton.innerHTML : "";
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+    iframe.title = "Clase gratuita de maquillaje - Makeup Yourself";
+    iframe.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+    iframe.allowFullscreen = true;
 
-        if (boton) {
-            boton.disabled = true;
-            boton.textContent = "Enviando tu guía...";
-        }
+    // Botón para cerrar
+    const closeButton = document.createElement("button");
 
-        newsletterMessage.textContent = "Estamos preparando tu regalo. 💗";
+    closeButton.className = "close-video";
+    closeButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+    closeButton.setAttribute("aria-label", "Cerrar video");
 
-        try {
-            await fetch(
-                "https://script.google.com/macros/s/AKfycbwUBve-ryL8i31db2OLJPSSXXWnIxV9uBxFDp43G9Qd7PVRrBFjO5lPTEcoGqcB-uRP/exec",
-                {
-                    method: "POST",
-                    mode: "no-cors",
-                    headers: {
-                        "Content-Type": "text/plain;charset=utf-8"
-                    },
-                    body: JSON.stringify({
-                        nombre: "Makeup Lover",
-                        email: email
-                    })
-                }
-            );
+    // Cerrar modal
+    function closeModal() {
+        modal.remove();
+        document.removeEventListener("keydown", escapeHandler);
+    }
 
-            newsletterForm.reset();
+    closeButton.addEventListener("click", closeModal);
 
-            newsletterMessage.textContent =
-                "¡Gracias por suscribirte! 💗 Revisa tu correo y también la carpeta de spam.";
-
-        } catch (error) {
-            console.error("Error al enviar el formulario:", error);
-
-            newsletterMessage.textContent =
-                "No pudimos enviar tu solicitud. Inténtalo nuevamente.";
-
-        } finally {
-            if (boton) {
-                boton.disabled = false;
-                boton.innerHTML = textoOriginal;
-            }
+    // Cerrar al hacer clic fuera del video
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            closeModal();
         }
     });
-}
+
+    // Cerrar con tecla ESC
+    function escapeHandler(e) {
+        if (e.key === "Escape") {
+            closeModal();
+        }
+    }
+
+    document.addEventListener("keydown", escapeHandler);
+
+    // Organizar elementos
+    content.appendChild(iframe);
+    content.appendChild(closeButton);
+    modal.appendChild(content);
+
+    document.body.appendChild(modal);
 
 
 // ========================================
